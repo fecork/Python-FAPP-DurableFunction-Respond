@@ -1,0 +1,74 @@
+#---- TICKETS ----
+
+scripts_content_ticket:
+  type: PartitionedDataSet
+  dataset: text.TextDataSet
+  path: data/01_raw/scripts/ticket/articles
+  filename_suffix: ".txt"
+  layer: raw
+
+scripts_content_ticket_clean:
+  type: PartitionedDataSet
+  dataset:
+    type: text.TextDataSet
+  path: data/02_intermediate/scripts/ticket
+  filename_suffix: ".txt"
+  layer: intermediate
+
+scripts_questions_ticket:
+  type: text.TextDataSet
+  filepath: data/01_raw/scripts/ticket/questions/questions.txt
+  layer: raw
+
+scripts_joined_ticket:
+  type: PartitionedDataSet
+  dataset: text.TextDataSet
+  path: data/05_model_input/scripts/ticket
+  filename_suffix: ".txt"
+  layer: model_input
+
+scripts_joined_ticket_fs:
+  type: PartitionedDataSet
+  dataset: text.TextDataSet
+  path: data/04_feature/scripts/ticket
+  filename_suffix: ".txt"
+  layer: feature
+
+gpt_responses_ticket:
+  type: PartitionedDataSet
+  dataset: text.TextDataSet
+  path: data/07_model_output/scripts/ticket
+  filename_suffix: ".txt"
+  layer: model_output
+
+#---- INFORMATION ----
+
+scripts_content_information_ticket:
+  type: PartitionedDataSet
+  dataset: text.TextDataSet
+  path: data/01_raw/scripts/ticket/information
+  filename_suffix: ".txt"
+  layer: raw
+
+# --- STRUCTURE ----
+
+scripts_structure_answer_ticket:
+    type: text.TextDataSet
+    filepath: data/01_raw/scripts/ticket/structure/structure.txt
+    layer: raw
+    
+#---- DATASET TRAIN CLASSIFICATION MODEL ----
+
+reporting_gpt:
+  type: PartitionedDataSet
+  dataset: text.TextDataSet
+  path: data/08_reporting/scripts/ticket/gpt
+  filename_suffix: ".txt"
+  layer: reporting
+
+dataset_train_classification_text:
+  type: PartitionedDataSet
+  dataset: text.TextDataSet
+  path: data/05_model_input/text_classification
+  filename_suffix: ".txt"
+  layer: model_input
