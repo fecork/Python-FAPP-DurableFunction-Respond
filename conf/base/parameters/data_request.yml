@@ -8,44 +8,44 @@ open_ai_parameters:
   presence_penalty: 0
 
 question_paragraph: |
-          extract the paragraph that corresponds just to cancellations 
+          extract verbatim the paragraph that corresponds just to cancellations:
 
-          CANCELLATION:
+          CANCELLATIONS
 
 question_fare_rules: |
-  
+
           according to the above rules, answer
 
           1. The text says that the CANCELLATIONS is?
-          A. CANCELLATIONS PERMITTED FOR REFUND.
-          B. TICKET IS NONREFUNDABLE.
-          C. None
+          -CANCELLATIONS PERMITTED FOR REFUND.
+          -TICKET IS NONREFUNDABLE.
+          -None
 
-          2. The text says that the CANCELLATIONS is. Select A or B
-          A. ANY TIME.
-          B. BEFORE DEPARTURE.
-          D. None
+          2. According to the rules at which time you can cancel?. Choose one.
+          -ANY TIME.
+          -BEFORE DEPARTURE.
+          -None
 
-          3. How much is the CHARGE FOR CANCEL? Select A or B
-          A. CHARGE: ___.
-          B. None
+          3. How much is the CHARGE FOR CANCEL? Complete.
+          -CHARGE: ___.
+          -None
 
-          4. What is the departure date?
-          A. ___.
+          4. According to the ticket information, the departure date is?.
+          -
 
           5. If Question 1 is not None and Question 3 content a numeric value, the ticket is refundable, so reply refundable. In this case dont put quote.
-          A. refundable
-          B. nonrefundable
+          -refundable
+          -nonrefundable
 
 structure_fare_rules: |
-  
+
           choose the best opstion and answer with the JSON structure:
           {
             "number_question":1,
             "answer":"your answer",
             "quote":"THE QUOTE"
           }
-            
+
 
           from quote value, add the text from which you extract the answer
 
@@ -57,4 +57,12 @@ structure_fare_rules: |
 tag_structure: |
           {
           "number_question":1,
-          
+
+
+list_question_fare_rules: [
+          "1. The text says that the CANCELLATIONS is?",
+          "2.  According to the rules at which time you can cancel",
+          "3. How much is the CHARGE FOR CANCEL?",
+          "4. What is the departure date?",
+          "5. According to the above, is the ticket refundable?"
+          ]

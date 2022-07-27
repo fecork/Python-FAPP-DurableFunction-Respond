@@ -18,7 +18,7 @@ def paragraph_segmentation(text):
     for token in document:
 
         if token.is_space and token.text.count("\n") > 1:
-            yield document[start : token.i]
+            yield document[start: token.i]
             start = token.i
     yield document[start:]
 
@@ -48,10 +48,8 @@ def individual_paragraphs(text) -> pd.DataFrame:
     paragraph_detected = paragraph_segmentation(text)
 
     list_probe = split_paragraph(paragraph_detected)
+    logging.warning(list_probe)
     dict_questions = text_to_json(list_probe)
-    # dataframe = pd.DataFrame(dict_questions)
-    # result = dataframe.to_json(orient="split")
-    # logging.info(dict_questions)
     return json.dumps(dict_questions)
 
 
@@ -72,10 +70,28 @@ def split_paragraph(paragraph_detected):
 
 def text_to_json(list_probe):
     dict_questions = {}
+    list_questions = [
+              "1. The text says that the CANCELLATIONS is?",
+              "2.  According to the rules at which time you can cancel",
+              "3. How much is the CHARGE FOR CANCEL?",
+              "4. What is the departure date?",
+              "5. According to the above, is the ticket refundable?"
+              ]
 
+    # NOTE: Prueba
+    # list_probe= list_probe[:2]
+    #
     for paragraphs in list_probe:
         text = paragraphs.split("\n")
-        dict_response = {}
+        dict_response = {"answer": "",
+                         "number_question": "",
+                         "quote": "",
+
+                         }
+
+        logging.info(text)
+
+        key_number = 1
 
         for line in text:
 
@@ -86,12 +102,16 @@ def text_to_json(list_probe):
             value = clear_value_json(line, "number_question")
             if value is not None:
                 dict_response["number_question"] = value
+                dict_response["question"]=list_questions[int(value)-1]
 
             value = clear_value_json(line, "quote")
             if value is not None:
                 dict_response["quote"] = value
         key_number = dict_response["number_question"].strip()
-        dict_questions["question_" + key_number] = dict_response
+
+        dict_questions["question_" + str(key_number)] = dict_response
+        # key_number=key_number+1
+        logging.warning(dict_questions)
 
     return dict_questions
 
@@ -104,6 +124,6 @@ def clear_value_json(line, key):
 
     if key_json in line:
         res = line.replace(key, "")
-        res = res.translate({ord(i): None for i in '".,:'})
+        res = res.translate({ord(i): None for i in '",:'})
         res = res.strip()
         return res
