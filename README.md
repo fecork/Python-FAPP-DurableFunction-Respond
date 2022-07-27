@@ -40,6 +40,44 @@ En Azure las librerías se instalan automaticamente
 func host start
 ```
 
+## API
+
+consultar al modelo por la ruta
+
+```
+https://tptravel-model.azurewebsites.net/api/HttpTrigger1?
+```
+
+Recibe el objeto Json
+
+```
+    {
+        "string":"CANCELLATIONS ANY"
+    }
+```
+```
+
+    las respuestas del modelo GPT
+
+    {
+	"question_1": {
+		"number_question": "1",
+		"answer": "B",
+		"quote": "TICKET IS NONREFUNDABLE"
+	},
+	"question_2": {
+		"number_question": "2",
+		"answer": "B",
+		"quote": "BEFORE DEPARTURE"
+	},
+	"question_3": {
+		"number_question": "3",
+		"answer": "A",
+		"quote": "CHARGE ___"
+	},
+    }
+```
+
 ## Despliegue 📦
 
 Para desplegar usando [Visual Studio Code](https://fecork.notion.site/Desplegar-c-digo-en-Azure-Function-con-Visual-Studio-Code-df55f8a586af43709ef499ab4dc298c4)
