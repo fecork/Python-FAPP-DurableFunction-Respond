@@ -1,32 +1,34 @@
 {
-    "question_1": {
-        "answer": "CANCELLATIONS PERMITTED FOR REFUND.",
-        "number_question": "1",
-        "quote": "ANY TIME",
-        "question": "1. The text says that the CANCELLATIONS is?"
-    },
-    "question_2": {
-        "answer": "ANY TIME.",
-        "number_question": "2",
-        "quote": "CHARGE USD 200.00 FOR CANCEL.",
-        "question": "2.  According to the rules at which time you can cancel"
-    },
-    "question_3": {
-        "answer": "USD 200.00",
-        "number_question": "3",
-        "quote": "CHARGE USD 200.00 FOR CANCEL.",
-        "question": "3. How much is the CHARGE FOR CANCEL?"
-    },
-    "question_4": {
-        "answer": "2022-11-05T211500",
-        "number_question": "4",
-        "quote": "departureDate = 2022-11-05T211500",
-        "question": "4. What is the departure date?"
-    },
-    "question_5": {
-        "answer": "refundable",
-        "number_question": "5",
-        "quote": "CANCELLATIONS PERMITTED FOR REFUND.",
-        "question": "5. According to the above, is the ticket refundable?"
-    }
+	"question_1": {
+		"answer": "CANCELLATIONS PERMITTED FOR REFUND.",
+		"quote": "ANY TIME.\\nCHARGE USD 200.00 FOR CANCEL.\\nNOTE  TEXT BELOW NOT VALIDATED FOR AUTOPRICING.",
+		"boolean": true,
+		"question": "The text says that the CANCELLATIONS is?"
+	},
+	"question_2": {
+		"answer": "ANY TIME.",
+		"quote": "ANY TIME.\\nCHARGE USD 200.00 FOR CANCEL.\\nNOTE  TEXT BELOW NOT VALIDATED FOR AUTOPRICING.",
+		"boolean": true,
+		"question": "According to the rules at which time you can cancel"
+	},
+	"question_3": {
+		"answer": "USD 200.00",
+		"quote": "CHARGE USD 200.00 FOR CANCEL.",
+		"boolean": true,
+		"question": "How much is the CHARGE FOR CANCEL?",
+		"value": 200.0,
+		"denomination": "USD"
+	},
+	"question_4": {
+		"answer": "2022-11-05T211500",
+		"quote": "fareBasis = H13USR3APO/CH25\\nairLine = SQ \\ndepartureDate = 2022-11-05T211500\\nroute = origin JFK\\ndestination FRA \\nticketNumber 6185860002240\\nticketIssuanceDate 2022-05-31T000000+0000\\nreservationDate 2022-05-05T211500\\ncancelationDate 2022-05-10T021500",
+		"boolean": true,
+		"question": "What is the departure date?"
+	},
+	"question_5": {
+		"answer": "refundable",
+		"quote": "CANCELLATIONS PERMITTED FOR REFUND.\\nCHARGE USD 200.00 FOR CANCEL.",
+		"boolean": true,
+		"question": "According to the above, is the ticket refundable?"
+	}
 }

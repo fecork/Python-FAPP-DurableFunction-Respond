@@ -6,26 +6,30 @@ import azure.functions as func
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-
 from shared import pipeline
+
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info("Python HTTP trigger function processed a request.")
+    parameter_task = get_parameter(req, "task")
+    parameter_rules = get_parameter(req, "rules")
+    parameter_information = get_parameter(req, "information")
 
-    parameter_rules = get_parameter(req,"rules")
-    parameter_information = get_parameter(req,"information")
+    logging.info("task:" + parameter_task)
 
-    if parameter_rules:
 
-        gpt_response = pipeline.execute(parameter_rules,parameter_information)
+    if parameter_task == "CANCELLATION":
+
+        gpt_response = pipeline.execute(parameter_rules, parameter_information)
         logging.info(gpt_response)
 
         return func.HttpResponse(f"{gpt_response}")
     else:
         return func.HttpResponse(
-            "This HTTP triggered function executed successfully. Pass a parameter_string in the query string or in the request body for a gpt response.",
+            "This HTTP triggered function executed successfully. Pass a task, rules and information in the query string or in the request body for a gpt response.",
             status_code=200,
         )
+
 
 def get_parameter(req, parameter):
 
