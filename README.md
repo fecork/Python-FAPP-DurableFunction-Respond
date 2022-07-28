@@ -188,7 +188,7 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 
 _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
 
-* **Wilberth Ferney Córdoba Canchala** - *Trabajo Inicial* - [LinkenId](https://github.com/villanuevand)
+* **Wilberth Ferney Córdoba Canchala** - *Trabajo Inicial* - [LinkenId](https://www.linkedin.com/in/wilberth-ferney-córdoba-canchala-9734b74b/)
 ## Licencia 📄
 
 Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
