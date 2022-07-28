@@ -2,8 +2,16 @@ import logging
 import spacy
 import json
 import pandas as pd
+import re
 
 nlp = spacy.load("en_core_web_sm")
+list_questions = [
+    "The text says that the CANCELLATIONS is?",
+    "According to the rules at which time you can cancel",
+    "How much is the CHARGE FOR CANCEL?",
+    "What is the departure date?",
+    "According to the above, is the ticket refundable?"
+]
 
 
 def paragraph_segmentation(text):
@@ -71,27 +79,19 @@ def split_paragraph(paragraph_detected):
 def text_to_json(list_probe):
     dict_questions = {}
     list_questions = [
-              "1. The text says that the CANCELLATIONS is?",
-              "2.  According to the rules at which time you can cancel",
-              "3. How much is the CHARGE FOR CANCEL?",
-              "4. What is the departure date?",
-              "5. According to the above, is the ticket refundable?"
-              ]
+        "The text says that the CANCELLATIONS is?",
+        "According to the rules at which time you can cancel",
+        "How much is the CHARGE FOR CANCEL?",
+        "What is the departure date?",
+        "According to the above, is the ticket refundable?"
+    ]
 
-    # NOTE: Prueba
-    # list_probe= list_probe[:2]
-    #
     for paragraphs in list_probe:
         text = paragraphs.split("\n")
         dict_response = {"answer": "",
-                         "number_question": "",
                          "quote": "",
-
+                         "boolean": ""
                          }
-
-        logging.info(text)
-
-        key_number = 1
 
         for line in text:
 
@@ -101,18 +101,22 @@ def text_to_json(list_probe):
 
             value = clear_value_json(line, "number_question")
             if value is not None:
-                dict_response["number_question"] = value
-                dict_response["question"]=list_questions[int(value)-1]
+                key_number = value
+                dict_response["question"] = list_questions[int(value)-1]
 
             value = clear_value_json(line, "quote")
             if value is not None:
                 dict_response["quote"] = value
-        key_number = dict_response["number_question"].strip()
+
+            value = clear_value_json(line, "boolean")
+            if value is not None:
+                value = validate_boolean(value)
+                dict_response["boolean"] = value
 
         dict_questions["question_" + str(key_number)] = dict_response
-        # key_number=key_number+1
-        logging.warning(dict_questions)
 
+    dict_questions = validate_charge_number(dict_questions)
+    validate_structure_json(dict_questions)
     return dict_questions
 
 
@@ -127,3 +131,37 @@ def clear_value_json(line, key):
         res = res.translate({ord(i): None for i in '",:'})
         res = res.strip()
         return res
+
+
+def validate_boolean(text):
+    text = str(text).lower()
+    if "true" in text:
+        return True
+    if "false" in text:
+        return False
+    return None
+
+
+def validate_charge_number(dict_questions):
+
+    text = dict_questions["question_3"]["answer"]
+    number = [float(s) for s in re.findall(r'-?\d+\.?\d*', text)]
+    denomination = ''.join([i for i in text if not i.isdigit()])
+    dict_questions["question_3"]["value"] = number[0]
+    dict_questions["question_3"]["denomination"] = denomination
+    return dict_questions
+
+
+def validate_structure_json(dict_questions):
+    number_questions = 5
+    list_numbers = range(number_questions)
+
+    for number in list_numbers:
+        number = number + 1
+        if "question_" + str(number) not in dict_questions:
+            dict_questions["question_" + str(number)] = {"answer": "",
+                                                         "quote": "",
+                                                         "boolean": "",
+                                                         "question": list_questions[int(number)],
+                                                         }
+    return dict_questions
