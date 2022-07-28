@@ -39,7 +39,7 @@ question_fare_rules: |
 
 structure_fare_rules: |
 
-          choose the best opstion and answer with the JSON structure:
+          choose the best option and answer with the JSON structure:
           {
             "number_question":1,
             "answer":"your answer",
