@@ -1,7 +1,6 @@
-# Reading Comprehension.
+# Reading Comprehension con GPT Para lectura de Fare Rules
 
-Código para Leer texto de Fare Rules de TP Travel, y responder si hay cancelación
-y si es reembolsable. 
+Código para Leer texto de Fare Rules de TPTravel, y responder si es posible una cancelación y si es reembolsable. 
 
 
 ## Comenzando 🚀
@@ -20,11 +19,7 @@ Instalar
 ### Instalación 🔧
 
 
-clonar el proyecto
 
-```
-git clone https://github.com/fecork/Python-FAPP-GPT-Spacy-ReadingComprehension
-```
 
 Para ejecutar en local
 
@@ -40,50 +35,133 @@ En Azure las librerías se instalan automaticamente
 func host start
 ```
 
-## API
+## API 🦉
 
 consultar al modelo por la ruta
 
 ```
-https://tptravel-model.azurewebsites.net/api/HttpTrigger1?
+https://tptravel-model.azurewebsites.net/api/GptCancelaciones?
 ```
 
 Recibe el objeto Json
 
-```
+```json
     {
-        "string":"CANCELLATIONS ANY"
+        "task": str,
+		"information": str,
+		"rules": str
+
     }
 ```
+donde:
+- Task: string con la tarea a ejecutar: CANCELLATION, CHANGE, etc
+- Information: string de la información del ticket: fareBasis, origin, date departure, etc
+- Rules: string de la clase con las reglas correspondiente, por ejemplo para cancelación es la clase 16.
+
+por ejemplo
+
+```json
+    {
+        "task": "CANCELLATION",
+		"information": "Ticket Information:\n fareBasis = H13USR3APO/CH25\n airLine = SQ \n departureDate = 2022-11-05T21:15:00\n route = origin: JFK\n destination: FRA \nticketNumber: 6185860002240\n ticketIssuanceDate: 2022-05-31T00:00:00+00:00\n reservationDate: 2022-05-05T21:15:00\n cancelationDate: 2022-05-10T02:15:00\n",
+		"rules" :"CANCELLATIONS\nANY TIME\nCHARGE USD 200.00 FOR CANCEL.\nNOTE - TEXT BELOW NOT VALIDATED FOR AUTOPRICING.
+
+    }
 ```
 
-    las respuestas del modelo GPT
+el modelo GPT responderá:
+- question: pregunta que se realiza acerca de las reglas entregadas.
 
-    {
+- quote: parrafo o texto de donde extrajo la respuesta.
+- answer: respuesta del modelo
+- boolean: para indicar con True o False si el modelo encontró una respuesta.
+
+Por ejemplo: 
+
+```json
+   {
 	"question_1": {
-		"number_question": "1",
-		"answer": "B",
-		"quote": "TICKET IS NONREFUNDABLE"
+		"answer": "CANCELLATIONS PERMITTED FOR REFUND.",
+		"quote": "ANY TIME\\nCHARGE USD 200.00 FOR CANCEL.\\nNOTE  TEXT BELOW NOT VALIDATED FOR AUTOPRICING.",
+		"boolean": true,
+		"question": "The text says that the CANCELLATIONS is?"
 	},
 	"question_2": {
-		"number_question": "2",
-		"answer": "B",
-		"quote": "BEFORE DEPARTURE"
+		"answer": "ANY TIME.",
+		"quote": "ANY TIME\\nCHARGE USD 200.00 FOR CANCEL.\\nNOTE  TEXT BELOW NOT VALIDATED FOR AUTOPRICING.",
+		"boolean": true,
+		"question": "According to the rules at which time you can cancel"
 	},
 	"question_3": {
-		"number_question": "3",
-		"answer": "A",
-		"quote": "CHARGE ___"
+		"answer": "USD 200.00",
+		"quote": "CHARGE USD 200.00 FOR CANCEL.",
+		"boolean": true,
+		"question": "How much is the CHARGE FOR CANCEL?",
+		"value": 200.0,
+		"denomination": "USD"
 	},
-    }
+	"question_4": {
+		"answer": "2022-11-05T211500",
+		"quote": "fareBasis = H13USR3APO/CH25\\nairLine = SQ \\ndepartureDate = 2022-11-05T211500\\nroute = origin JFK\\ndestination FRA \\nticketNumber 6185860002240\\nticketIssuanceDate 2022-05-31T000000+0000\\nreservationDate 2022-05-05T211500\\ncancelationDate 2022-05-10T021500",
+		"boolean": false,
+		"question": "What is the departure date?"
+	},
+	"question_5": {
+		"answer": "refundable",
+		"quote": "CANCELLATIONS PERMITTED FOR REFUND.\\nCHARGE USD 200.00 FOR CANCEL.",
+		"boolean": true,
+		"question": "According to the above, is the ticket refundable?"
+	}
+}
 ```
+
+para la question_3 se entrega además:
+
+- value: valor flotante con el cargo encontrado
+- denomination: moneda o denominación del cargo: USD, JPY, GBP
+
+por ejemplo.
+
+```json
+	"question_3": {
+		"answer": "USD 200.00",
+		"quote": "CHARGE USD 200.00 FOR CANCEL.",
+		"boolean": true,
+		"question": "How much is the CHARGE FOR CANCEL?",
+		"value": 200.0,
+		"denomination": "USD"
+	},
+```
+
+
+
 
 ## Despliegue 📦
 
-Para desplegar usando [Visual Studio Code](https://fecork.notion.site/Desplegar-c-digo-en-Azure-Function-con-Visual-Studio-Code-df55f8a586af43709ef499ab4dc298c4)
+El código se encuentra desplegado en la Azure Function.
 
-Para desplegar a través de DevOps
+```
+tptravel-model
+```
+
+del grupo de recursos
+
+```
+TPTravelDEV12901
+```
+
+de la suscripción
+
+```
+Teleperformance Colombia
+```
+
+Los guías usadas para desplegar son:
+
+[Visual Studio Code](https://fecork.notion.site/Desplegar-c-digo-en-Azure-Function-con-Visual-Studio-Code-df55f8a586af43709ef499ab4dc298c4)
+
 [Pipeline](https://fecork.notion.site/Pipeline-para-Azure-Function-4a46b6b2529a4311841d6a51516ecf2a)
+
 [Release](https://fecork.notion.site/Release-para-Azure-Function-3203b3a312aa40a79c2074533fc252d5)
 
 ## Construido con 🛠️
