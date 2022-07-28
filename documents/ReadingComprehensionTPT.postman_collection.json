@@ -21,7 +21,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://tptravel-model.azurewebsites.net/api/GptCancelaciones?",
+					"raw": "https://tptravel-model.azurewebsites.net/api/GptModelPoliciesTpt?",
 					"protocol": "https",
 					"host": [
 						"tptravel-model",
@@ -30,7 +30,7 @@
 					],
 					"path": [
 						"api",
-						"GptCancelaciones"
+						"GptModelPoliciesTpt"
 					],
 					"query": [
 						{

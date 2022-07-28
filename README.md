@@ -40,7 +40,7 @@ func host start
 consultar al modelo por la ruta
 
 ```
-https://tptravel-model.azurewebsites.net/api/GptCancelaciones?
+https://tptravel-model.azurewebsites.net/api/GptModelPoliciesTpt?
 ```
 
 Recibe el objeto Json
