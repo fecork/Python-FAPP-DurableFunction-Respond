@@ -1,5 +1,4 @@
 import re
-import logging
 
 list_questions = [
     "The text says that the CANCELLATIONS is?",
@@ -8,6 +7,7 @@ list_questions = [
     "What is the departure date?",
     "According to the above, is the ticket refundable?"
 ]
+
 
 def validate_boolean(text):
     text = str(text).lower()
@@ -19,12 +19,13 @@ def validate_boolean(text):
 
 
 def validate_charge_number(dict_questions):
-
-    text = dict_questions["question_3"]["answer"]
-    number = [float(s) for s in re.findall(r'-?\d+\.?\d*', text)]
-    denomination = ''.join([i for i in text if not i.isdigit()])
-    dict_questions["question_3"]["value"] = number[0]
-    dict_questions["question_3"]["denomination"] = denomination[:3]
+    if "question_3" in dict_questions:
+        text = dict_questions["question_3"]["answer"]
+        number = [float(s) for s in re.findall(r'-?\d+\.?\d*', text)]
+        denomination = ''.join([i for i in text if not i.isdigit()])
+        if len(number) > 0:
+            dict_questions["question_3"]["value"] = number[0]
+        dict_questions["question_3"]["denomination"] = denomination
     return dict_questions
 
 
@@ -50,14 +51,8 @@ def validate_refund(dict_questions):
     ischarge = False
     istime = False
 
-    logging.info('99999')
-    logging.info(ischarge)
-    logging.info(istime)
-    logging.info('99999')
-
-
     if type(charge) is float or type(charge) is int:
-        ischarge= True
+        ischarge = True
     if not "None" in time:
         ischarge = True
 

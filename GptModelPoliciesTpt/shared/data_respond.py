@@ -1,4 +1,5 @@
 import logging
+from typing import Dict
 import spacy
 import json
 import pandas as pd
@@ -58,7 +59,7 @@ def iterate_paragraphs(dataset):
     return res
 
 
-def individual_paragraphs(text) -> pd.DataFrame:
+def individual_paragraphs(text) -> Dict:
 
     paragraph_detected = paragraph_segmentation(text)
 
@@ -66,6 +67,7 @@ def individual_paragraphs(text) -> pd.DataFrame:
     logging.warning(list_probe)
     dict_questions = text_to_json(list_probe)
     return json.dumps(dict_questions)
+    # return dict_questions
 
 
 def extrac_answer_and_quote(text):
@@ -118,6 +120,7 @@ def text_to_json(list_probe):
     dict_questions = validate_charge_number(dict_questions)
     dict_questions = validate_structure_json(dict_questions)
     # dict_questions = validate_refund(dict_questions)
+    logging.warning(dict_questions)
     return dict_questions
 
 
