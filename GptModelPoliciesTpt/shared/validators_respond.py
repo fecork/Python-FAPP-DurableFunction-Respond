@@ -53,8 +53,8 @@ def validate_refund(dict_questions):
 
     if type(charge) is float or type(charge) is int:
         ischarge = True
-    if not "None" in time:
-        ischarge = True
+    if "None" in time:
+        ischarge = False
 
     if ischarge and istime:
         dict_questions["question_5"]["answer"] = 'refundable'
