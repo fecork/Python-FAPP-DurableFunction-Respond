@@ -1,26 +1,27 @@
 import logging
-from typing import Dict
 import spacy
 import json
-import pandas as pd
 import os
 import sys
+
+import pandas as pd
+from typing import Dict
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from validators_respond import validate_boolean, validate_charge_number, validate_structure_json, validate_refund
+from validators_respond import (
+                                validate_boolean, 
+                                validate_charge_number, 
+                                validate_structure_json, 
+                                )
+from shared.load_parameter import load_parameters
 
 
 nlp = spacy.load("en_core_web_sm")
-list_questions = [
-    "The text says that the CANCELLATIONS is?",
-    "According to the rules at which time you can cancel",
-    "How much is the CHARGE FOR CANCEL?",
-    "What is the departure date?",
-    "According to the above, is the ticket refundable?"
-]
-
+loaded_parameters = load_parameters()
+list_questions = loaded_parameters["list_question_fare_rules"].split(",")
+number_question = loaded_parameters["number_question"]
 
 def paragraph_segmentation(text):
     sentence = []
@@ -67,7 +68,6 @@ def individual_paragraphs(text) -> Dict:
     logging.warning(list_probe)
     dict_questions = text_to_json(list_probe)
     return json.dumps(dict_questions)
-    # return dict_questions
 
 
 def extrac_answer_and_quote(text):
@@ -101,10 +101,13 @@ def text_to_json(list_probe):
             if value is not None:
                 dict_response["answer"] = value
 
-            value = clear_value_json(line, "number_question")
+            value = clear_value_json(line, "number_question")            
+            
             if value is not None:
-                key_number = value
-                dict_response["question"] = list_questions[int(value)-1]
+                if int(value) < int(number_question):
+                    key_number = int(value)
+
+                    dict_response["question"] = list_questions[key_number-1]
 
             value = clear_value_json(line, "quote")
             if value is not None:
@@ -119,7 +122,6 @@ def text_to_json(list_probe):
 
     dict_questions = validate_charge_number(dict_questions)
     dict_questions = validate_structure_json(dict_questions)
-    # dict_questions = validate_refund(dict_questions)
     logging.warning(dict_questions)
     return dict_questions
 

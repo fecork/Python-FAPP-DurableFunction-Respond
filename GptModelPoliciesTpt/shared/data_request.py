@@ -1,7 +1,13 @@
-from kedro.config import ConfigLoader, MissingConfigException
+import os
+import sys
 import openai
+
 from typing import Dict
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, dir_path)
+
+from shared.load_parameter import load_parameters, load_credentials
 
 def ask_openai(text: str) -> str:
     """
@@ -26,21 +32,6 @@ def ask_openai(text: str) -> str:
     return response.choices[0].text.lstrip()
 
 
-def load_parameters() -> Dict:
-    """
-    Funtion for load parameters from /parameters.
-    """
-
-    conf_loader = ConfigLoader(conf_source="conf", env="local")
-
-    try:
-        parameters = conf_loader.get("parameters*", "parameters*/**")
-    except MissingConfigException:
-        parameters = {}
-
-    return parameters
-
-
 def login_openai() -> Dict:
     """
     This is a function for  login to openai.
@@ -55,34 +46,3 @@ def login_openai() -> Dict:
 
     openai.api_key = openai_credentials
     return openai
-
-
-def load_parameters() -> Dict:
-    """
-    Funtion for load parameters from /parameters.
-    """
-
-    conf_loader = ConfigLoader(conf_source="conf", env="local")
-
-    try:
-        parameters = conf_loader.get("parameters*", "parameters*/**")
-    except MissingConfigException:
-        parameters = {}
-
-    return parameters
-
-
-def load_credentials() -> Dict:
-    """
-    This is a function for  search the credentials.
-    in credential.yml.
-    """
-
-    conf_loader = ConfigLoader(conf_source="conf", env="local")
-
-    try:
-        credentials = conf_loader.get("credentials*", "credentials*/**")
-    except MissingConfigException:
-        credentials = {}
-
-    return credentials

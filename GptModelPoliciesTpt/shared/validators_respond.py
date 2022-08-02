@@ -1,13 +1,16 @@
 import re
+import os
+import sys
 
-list_questions = [
-    "The text says that the CANCELLATIONS is?",
-    "According to the rules at which time you can cancel",
-    "How much is the CHARGE FOR CANCEL?",
-    "What is the departure date?",
-    "According to the above, is the ticket refundable?"
-]
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, dir_path)
 
+from shared.load_parameter import load_parameters
+
+
+loaded_parameters = load_parameters()
+number_questions = loaded_parameters["number_question"]
+list_questions = loaded_parameters["list_question_fare_rules"].split(",")
 
 def validate_boolean(text):
     text = str(text).lower()
@@ -30,8 +33,8 @@ def validate_charge_number(dict_questions):
 
 
 def validate_structure_json(dict_questions):
-    number_questions = 5
-    list_numbers = range(number_questions)
+    
+    list_numbers = range(number_questions-1)
 
     for number in list_numbers:
         number = number + 1
@@ -44,22 +47,22 @@ def validate_structure_json(dict_questions):
     return dict_questions
 
 
-def validate_refund(dict_questions):
-    charge = dict_questions["question_3"]["value"]
-    time = dict_questions["question_2"]["answer"]
+# def validate_refund(dict_questions):
+#     charge = dict_questions["question_3"]["value"]
+#     time = dict_questions["question_2"]["answer"]
 
-    ischarge = False
-    istime = False
+#     ischarge = False
+#     istime = False
 
-    if type(charge) is float or type(charge) is int:
-        ischarge = True
-    if "None" in time:
-        ischarge = False
+#     if type(charge) is float or type(charge) is int:
+#         ischarge = True
+#     if "None" in time:
+#         ischarge = False
 
-    if ischarge and istime:
-        dict_questions["question_5"]["answer"] = 'refundable'
-        dict_questions["question_5"]["boolean"] = True
-    else:
-        dict_questions["question_5"]["answer"] = 'nonrefundable'
-        dict_questions["question_5"]["boolean"] = False
-    return dict_questions
+#     if ischarge and istime:
+#         dict_questions["question_5"]["answer"] = 'refundable'
+#         dict_questions["question_5"]["boolean"] = True
+#     else:
+#         dict_questions["question_5"]["answer"] = 'nonrefundable'
+#         dict_questions["question_5"]["boolean"] = False
+#     return dict_questions

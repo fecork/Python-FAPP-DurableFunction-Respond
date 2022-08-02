@@ -33,11 +33,6 @@ def execute(data_rules: str, data_information: str):
         question_fare_rules + "\n" * 2 + structure_fare_rules
     )
 
-    logging.info('++++++')
-    logging.info('Text Input Model')
-    logging.info(quiz_text_and_question)
-    logging.info('++++++')
-
     gpt_quiz = ask_openai(quiz_text_and_question)
     gpt_quiz = tag + gpt_quiz
     response = individual_paragraphs(gpt_quiz)
