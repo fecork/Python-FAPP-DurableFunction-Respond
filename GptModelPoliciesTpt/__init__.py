@@ -8,7 +8,6 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 from shared import pipeline
 
-
 def main(req: func.HttpRequest) -> func.HttpResponse:
     """
     main function to execute the pipeline
@@ -21,11 +20,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     parameter_task = get_parameter(req, "task")
     parameter_information = get_parameter(req, "information")
     parameter_penalty_text = get_parameter(req, "penaltyText")
-
-    logging.info("task:" + parameter_task)
-    logging.info("information:" + parameter_information)
-    logging.info("penaltyText Len:" + str(len(parameter_penalty_text)))
-
     if parameter_task == "CANCELLATION":
         gpt_response = iterate_penalty_text(
             parameter_penalty_text, parameter_information)

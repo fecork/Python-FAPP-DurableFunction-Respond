@@ -1,6 +1,5 @@
 import logging
 import spacy
-import json
 import os
 import sys
 
@@ -10,20 +9,27 @@ from typing import Dict
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from validators_respond import (
-                                validate_boolean, 
-                                validate_charge_number, 
-                                validate_structure_json, 
-                                )
 from shared.load_parameter import load_parameters
-
+from validators_respond import (
+    validate_boolean,
+    validate_charge_number,
+    validate_structure_json,
+)
 
 nlp = spacy.load("en_core_web_sm")
 loaded_parameters = load_parameters()
 list_questions = loaded_parameters["list_question_fare_rules"].split(",")
 number_question = loaded_parameters["number_question"]
 
-def paragraph_segmentation(text):
+
+def paragraph_segmentation(text: str):
+    """
+    Function to segment paragraphs in a text
+    Args:
+        text: text to segment
+    return:
+        list of paragraphs in yield
+    """
     sentence = []
     doc = nlp(text)
     document = nlp(text)
@@ -41,6 +47,15 @@ def paragraph_segmentation(text):
 
 
 def iterate_paragraphs(dataset):
+    
+    """
+    function to iterate over the paragraphs in the dataset
+    in Kedro
+    Args:
+        dataset: dataset to iterate
+    return:
+        dataframe with the information of the paragraphs
+    """
 
     dict_responses = {}
     id_file = []
@@ -56,26 +71,33 @@ def iterate_paragraphs(dataset):
         dict_responses[partition_id] = dict_questions
         id_file.append(partition_id)
 
-    res = pd.DataFrame(dict_responses)
-    return res
+    respond = pd.DataFrame(dict_responses)
+    return respond
 
 
-def individual_paragraphs(text) -> Dict:
+def individual_paragraphs(text: str) -> Dict:
+    """
+    function to iterate over the paragraphs in the dataset
+    Args:
+        text: text to iterate
+    return:
+        dictionary with the information of the paragraphs
+    """
 
     paragraph_detected = paragraph_segmentation(text)
 
     list_probe = split_paragraph(paragraph_detected)
-    logging.warning(list_probe)
     dict_questions = text_to_json(list_probe)
-    return json.dumps(dict_questions)
+    return dict_questions
 
-
-def extrac_answer_and_quote(text):
-    text.replace("\n", "")
-    return text
-
-
-def split_paragraph(paragraph_detected):
+def split_paragraph(paragraph_detected: list)->list:
+    """
+    split the paragraphs in the text
+    Args:
+        paragraph_detected: list of paragraphs
+    return:
+        list of paragraphs
+    """
     list_format_text = []
     for paragraph in paragraph_detected:
         content = paragraph.text
@@ -86,6 +108,14 @@ def split_paragraph(paragraph_detected):
 
 
 def text_to_json(list_probe):
+    # TODO: Arreglar complejidad
+    """
+    function to transform the text in json
+    Args:
+        list_probe: list of paragraphs
+    return:
+        dictionary with the information of the paragraphs
+    """
     dict_questions = {}
 
     for paragraphs in list_probe:
@@ -101,8 +131,8 @@ def text_to_json(list_probe):
             if value is not None:
                 dict_response["answer"] = value
 
-            value = clear_value_json(line, "number_question")            
-            
+            value = clear_value_json(line, "number_question")
+
             if value is not None:
                 if int(value) < int(number_question):
                     key_number = int(value)

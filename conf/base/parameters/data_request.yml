@@ -62,7 +62,6 @@ question_class_refund: |
 
           Text ="TICKET RULES:
           CANCELLATIONS
-          CANCELLATIONS
           ANY TIME
           CANCELLATIONS PERMITTED FOR CANCEL or REFUND.
           WAIVED FOR DEATH OF PASSENGER OR FAMILY MEMBER.
@@ -113,19 +112,12 @@ structure_fare_rules: |
 
           SOLUTION QUESTIONS 1-3:
 
+tag_structure: |
           {
             "number_question":1,
 
 structure_class_refund: |
-          answer if the following text is refund or norefund according to the examples, with the structure
-
-          Text=""
           Class=""
-
-tag_structure: |
-          {
-          "number_question":1,
-
 
 list_question_fare_rules: |
           "1. According to the rules at which time you can cancel",
