@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 import openai
@@ -48,6 +49,9 @@ def ask_openai(text: str, task: str) -> str:
         top_p=parameters["top_p"],
         frequency_penalty=parameters["frequency_penalty"],
         presence_penalty=parameters["presence_penalty"],
+        # logprobs=1,
     )
-
+    # TODO: respuesta a tptravel del score
+    # logging.info("OpenAI response:")
+    # logging.warning(response)
     return response.choices[0].text.lstrip()

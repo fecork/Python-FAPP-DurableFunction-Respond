@@ -134,7 +134,12 @@ def text_to_json(list_probe):
             value = clear_value_json(line, "number_question")
 
             if value is not None:
-                if int(value) < int(number_question):
+                logging.warning('?????')
+                logging.info(value)
+                logging.info(number_question)
+                logging.warning('?????')
+
+                if int(value) < int(number_question)+1:
                     key_number = int(value)
 
                     dict_response["question"] = list_questions[key_number-1]

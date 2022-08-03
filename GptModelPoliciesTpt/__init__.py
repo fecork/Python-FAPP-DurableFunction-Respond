@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import json 
 
 import azure.functions as func
 
@@ -26,7 +27,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         for elements in gpt_response:
             logging.info(elements["fareBasis"])
 
-        return func.HttpResponse(f"{gpt_response}")
+        # return func.HttpResponse(gpt_response)
+        return func.HttpResponse(json.dumps(gpt_response), mimetype="application/json")
     else:
         return func.HttpResponse(
             """

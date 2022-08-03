@@ -113,8 +113,9 @@ structure_fare_rules: |
           SOLUTION QUESTIONS 1-3:
 
 tag_structure: |
-          {
-            "number_question":1,
+           1. {
+              "number_question":1,
+              "answer":
 
 structure_class_refund: |
           Class=""

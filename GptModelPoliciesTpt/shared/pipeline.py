@@ -1,6 +1,6 @@
+import logging
 import os
 import sys
-import json
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 from data_processing import format_text
@@ -8,7 +8,8 @@ from data_request import ask_openai
 from data_request import load_parameters
 from data_respond import individual_paragraphs
 
-def execute(data_rules: str, data_information: str):
+
+def execute(data_rules: str, data_information: str)->dict:
     """Pipeline that clean the text and consult GPT
 
     Args:
@@ -33,6 +34,7 @@ def execute(data_rules: str, data_information: str):
 
     gpt_quiz = ask_openai(quiz_text_and_question, "question")
     gpt_quiz = tag + gpt_quiz
+    logging.warning(gpt_quiz)
     response = individual_paragraphs(gpt_quiz)
 
     tag_class = parameters["structure_class_refund"]
@@ -42,10 +44,9 @@ def execute(data_rules: str, data_information: str):
     gpt_text_classification = ask_openai(gpt_paragraph_tag, "classification")
     gpt_text_classification = gpt_text_classification.replace(
         'Class=', '').strip()
-    response['question_4'] = {"question": '4. Is refundable?',
-                              "answer": gpt_text_classification,
-                              "quote": '',
-                              "boolean": False if 'non' in gpt_text_classification.lower() else True
+    response['question_4'] = {'question': "4. Is refundable?",
+                              'answer': gpt_text_classification,
+                              'quote': "",
+                              'boolean': False if 'non' in gpt_text_classification.lower() else True
                               }
-    response = json.dumps(response)
     return response
