@@ -9,7 +9,7 @@ from data_request import load_parameters
 from data_respond import individual_paragraphs
 
 
-def execute(data_rules: str, data_information: str)->dict:
+def execute(data_rules: str, data_information: str)->list:
     """Pipeline that clean the text and consult GPT
 
     Args:
@@ -46,6 +46,10 @@ def execute(data_rules: str, data_information: str)->dict:
     response['question_4'] = {'question': "4. Is refundable?",
                               'answer': gpt_text_classification,
                               'quote': "",
+                              'number_question': 4,
                               'boolean': False if 'non' in gpt_text_classification.lower() else True
                               }
-    return response
+    list_response = []
+    for key, value in response.items():
+        list_response.append({"question":value})
+    return list_response

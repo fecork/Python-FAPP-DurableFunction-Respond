@@ -122,7 +122,8 @@ def text_to_json(list_probe):
         text = paragraphs.split("\n")
         dict_response = {"answer": "",
                          "quote": "",
-                         "boolean": ""
+                         "boolean": "",
+                         "number_question": "",
                          }
 
         for line in text:
@@ -134,11 +135,13 @@ def text_to_json(list_probe):
             value = clear_value_json(line, "number_question")
 
             if value is not None:
+                value = extract_number(value)[0]
 
                 if int(value) < int(number_question)+1:
                     key_number = int(value)
 
                     dict_response["question"] = list_questions[key_number-1]
+                    dict_response["number_question"] = key_number
 
             value = clear_value_json(line, "quote")
             if value is not None:
@@ -167,3 +170,14 @@ def clear_value_json(line, key):
         res = res.translate({ord(i): None for i in '",:'})
         res = res.strip()
         return res
+    
+    
+def extract_number(sentence):
+
+    s = []
+    for t in sentence.split():
+        try:
+            s.append(float(t))
+        except ValueError:
+            pass
+    return s
