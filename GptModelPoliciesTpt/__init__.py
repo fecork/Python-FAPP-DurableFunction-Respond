@@ -1,13 +1,14 @@
 import logging
 import os
 import sys
-import json 
+import json
 
 import azure.functions as func
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 from shared import pipeline
+
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     """
@@ -27,8 +28,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         for elements in gpt_response:
             logging.info(elements["fareBasis"])
 
-        # return func.HttpResponse(gpt_response)
-        return func.HttpResponse(json.dumps(gpt_response), mimetype="application/json")
+        return func.HttpResponse(json.dumps(gpt_response), mimetype="application/json", status_code=200,)
     else:
         return func.HttpResponse(
             """
@@ -40,7 +40,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         )
 
 
-def get_parameter(req:object, parameter:str)->str:
+def get_parameter(req: object, parameter: str) -> str:
     """
     get the parameter from the request
     Args:

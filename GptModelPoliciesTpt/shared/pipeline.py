@@ -34,7 +34,6 @@ def execute(data_rules: str, data_information: str)->dict:
 
     gpt_quiz = ask_openai(quiz_text_and_question, "question")
     gpt_quiz = tag + gpt_quiz
-    logging.warning(gpt_quiz)
     response = individual_paragraphs(gpt_quiz)
 
     tag_class = parameters["structure_class_refund"]

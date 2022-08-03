@@ -134,10 +134,6 @@ def text_to_json(list_probe):
             value = clear_value_json(line, "number_question")
 
             if value is not None:
-                logging.warning('?????')
-                logging.info(value)
-                logging.info(number_question)
-                logging.warning('?????')
 
                 if int(value) < int(number_question)+1:
                     key_number = int(value)
@@ -157,7 +153,6 @@ def text_to_json(list_probe):
 
     dict_questions = validate_charge_number(dict_questions)
     dict_questions = validate_structure_json(dict_questions)
-    logging.warning(dict_questions)
     return dict_questions
 
 
