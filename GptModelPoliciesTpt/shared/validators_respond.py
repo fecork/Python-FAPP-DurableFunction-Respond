@@ -66,6 +66,6 @@ def validate_structure_json(dict_questions: dict) -> dict:
                                                          "quote": "",
                                                          "boolean": "",
                                                          "number_question": number,
-                                                         "question": list_questions[int(number)],
+                                                         "question": list_questions[int(number)-1],
                                                          }
     return dict_questions
