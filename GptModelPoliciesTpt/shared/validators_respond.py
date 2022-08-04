@@ -12,6 +12,7 @@ loaded_parameters = load_parameters()
 number_questions = loaded_parameters["number_question"]
 list_questions = loaded_parameters["list_question_fare_rules"].split(",")
 
+
 def validate_boolean(text: str) -> bool:
     """
     convert the text to boolean
@@ -67,5 +68,6 @@ def validate_structure_json(dict_questions: dict) -> dict:
                                                          "boolean": "",
                                                          "number_question": number,
                                                          "question": list_questions[int(number)-1],
+                                                         "score": 0,
                                                          }
     return dict_questions

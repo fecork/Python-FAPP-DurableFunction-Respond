@@ -1,0 +1,17 @@
+[<OpenAIObject at 0x1af4cf65cc0> JSON: {
+  "\n": -0.0025198793
+}, <OpenAIObject at 0x1af4cf8e180> JSON: {
+  "Non": -0.105453834
+}, <OpenAIObject at 0x1af4cf8e590> JSON: {
+  "Ref": -0.14183983
+}, <OpenAIObject at 0x1af4cf8e630> JSON: {
+  "und": -1.6402679e-05
+}, <OpenAIObject at 0x1af4cf8e6d0> JSON: {
+  "able": -0.00077069976
+}, <OpenAIObject at 0x1af4cf8e770> JSON: {
+  "<|endoftext|>": -9.7351025e-05
+}, <OpenAIObject at 0x1af4cf8e810> JSON: {
+  "#": -2.2804358
+}, <OpenAIObject at 0x1af4cf8e8b0> JSON: {
+  "use": -0.015813852
+}]

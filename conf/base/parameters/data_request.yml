@@ -101,8 +101,15 @@ question_fare_rules: |
 structure_fare_rules: |
 
           choose the best option and answer with the JSON structure:
-          {
+          1. {
             "number_question":1,
+            "answer":"your answer",
+            "quote":"THE TEXT EXCERPT",
+            "boolean": True or False,
+          }
+
+          2. {
+            "number_question":2,
             "answer":"your answer",
             "quote":"THE TEXT EXCERPT",
             "boolean": True or False,

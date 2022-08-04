@@ -1,3 +1,4 @@
+from shared.load_parameter import load_parameters
 import logging
 import spacy
 import os
@@ -9,7 +10,6 @@ from typing import Dict
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from shared.load_parameter import load_parameters
 from validators_respond import (
     validate_boolean,
     validate_charge_number,
@@ -46,8 +46,7 @@ def paragraph_segmentation(text: str):
     yield document[start:]
 
 
-def iterate_paragraphs(dataset):
-    
+def iterate_paragraphs(dataset: dict, score: float) -> pd.DataFrame:
     """
     function to iterate over the paragraphs in the dataset
     in Kedro
@@ -67,7 +66,7 @@ def iterate_paragraphs(dataset):
         paragraph_detected = paragraph_segmentation(text)
 
         list_probe = split_paragraph(paragraph_detected)
-        dict_questions = text_to_json(list_probe)
+        dict_questions = text_to_json(list_probe, score)
         dict_responses[partition_id] = dict_questions
         id_file.append(partition_id)
 
@@ -75,7 +74,7 @@ def iterate_paragraphs(dataset):
     return respond
 
 
-def individual_paragraphs(text: str) -> Dict:
+def individual_paragraphs(text: str, score: float) -> Dict:
     """
     function to iterate over the paragraphs in the dataset
     Args:
@@ -87,10 +86,11 @@ def individual_paragraphs(text: str) -> Dict:
     paragraph_detected = paragraph_segmentation(text)
 
     list_probe = split_paragraph(paragraph_detected)
-    dict_questions = text_to_json(list_probe)
+    dict_questions = text_to_json(list_probe, score)
     return dict_questions
 
-def split_paragraph(paragraph_detected: list)->list:
+
+def split_paragraph(paragraph_detected: list) -> list:
     """
     split the paragraphs in the text
     Args:
@@ -107,7 +107,7 @@ def split_paragraph(paragraph_detected: list)->list:
     return list_format_text
 
 
-def text_to_json(list_probe):
+def text_to_json(list_probe: list, score: float) -> dict:
     # TODO: Arreglar complejidad
     """
     function to transform the text in json
@@ -117,17 +117,17 @@ def text_to_json(list_probe):
         dictionary with the information of the paragraphs
     """
     dict_questions = {}
-
+    
     for paragraphs in list_probe:
         text = paragraphs.split("\n")
         dict_response = {"answer": "",
                          "quote": "",
                          "boolean": "",
                          "number_question": "",
+                         "mean_probability": score
                          }
 
         for line in text:
-
             value = clear_value_json(line, "answer")
             if value is not None:
                 dict_response["answer"] = value
@@ -153,13 +153,25 @@ def text_to_json(list_probe):
                 dict_response["boolean"] = value
 
         dict_questions["question_" + str(key_number)] = dict_response
+    logging.warning('-----------------------------------------------------')
+    logging.warning('Dictionary with Question')
+    logging.warning(dict_questions)
+    logging.warning('-----------------------------------------------------')
 
     dict_questions = validate_charge_number(dict_questions)
     dict_questions = validate_structure_json(dict_questions)
     return dict_questions
 
 
-def clear_value_json(line, key):
+def clear_value_json(line: str, key: str) -> str:
+    """
+    clear the text from the value
+    Args:
+        line: line to clear the value
+        key: key to clear the value
+    return:
+        value of the key
+    """
     key_json = key.translate({ord(i): None for i in ":"})
 
     if "quote" in line:
@@ -170,14 +182,21 @@ def clear_value_json(line, key):
         res = res.translate({ord(i): None for i in '",:'})
         res = res.strip()
         return res
-    
-    
-def extract_number(sentence):
 
-    s = []
-    for t in sentence.split():
+
+def extract_number(sentence: str) -> list:
+    """
+    function to extract the number from the sentence
+    Args:
+        sentence: sentence to extract the number
+    return:
+        list with the numbers
+    """
+
+    list_number = []
+    for text in sentence.split():
         try:
-            s.append(float(t))
+            list_number.append(float(text))
         except ValueError:
             pass
-    return s
+    return list_number

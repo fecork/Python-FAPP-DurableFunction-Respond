@@ -3,6 +3,7 @@ import os
 import sys
 import openai
 
+import numpy as np
 from typing import Dict
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -26,7 +27,7 @@ def login_openai() -> Dict:
     return openai
 
 
-def ask_openai(text: str, task: str) -> str:
+def ask_openai(text: str, task: str) -> dict:
     """
     This is a function for  
     ask question to GPT API by OpenAI.
@@ -49,9 +50,31 @@ def ask_openai(text: str, task: str) -> str:
         top_p=parameters["top_p"],
         frequency_penalty=parameters["frequency_penalty"],
         presence_penalty=parameters["presence_penalty"],
-        # logprobs=1,
+        logprobs=1,
     )
-    # TODO: respuesta a tptravel del score
-    # logging.info("OpenAI response:")
-    # logging.warning(response)
-    return response.choices[0].text.lstrip()
+
+    with open('response.txt', 'w') as f:
+        f.write(str(response.choices[0].logprobs.top_logprobs))
+
+    response_mean_probability = mean_probability(response)
+
+    return {
+            "text": response.choices[0].text.lstrip(), 
+            "mean_probability": response_mean_probability
+            }
+
+
+def mean_probability(response: object) -> float:
+    """
+    This is a function for 
+    calculate mean probability.
+    """
+    list_probs = []
+    list_top_logprobs = list(response.choices[0].logprobs.top_logprobs)
+    for top_logprobs_object in list_top_logprobs:
+        for key, logprob in top_logprobs_object.items():
+            list_probs.append(np.e**float(logprob))
+
+    mean_probability = sum(list_probs) / len(list_probs)*100
+
+    return mean_probability
