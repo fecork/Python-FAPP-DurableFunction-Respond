@@ -1,17 +1,17 @@
-[<OpenAIObject at 0x22258be9bd0> JSON: {
-  "\n": -0.00033558442
-}, <OpenAIObject at 0x22258be9040> JSON: {
-  "Non": -0.60363483
-}, <OpenAIObject at 0x22258be9b80> JSON: {
-  "und": -2.0966954e-06
-}, <OpenAIObject at 0x22258c115e0> JSON: {
-  "<|endoftext|>": -0.24197747
-}, <OpenAIObject at 0x22258c11040> JSON: {
-  "#": -2.202941
-}, <OpenAIObject at 0x22258c11860> JSON: {
-  "include": -0.96272886
-}, <OpenAIObject at 0x22258c11c70> JSON: {
-  " <": -0.6699507
-}, <OpenAIObject at 0x22258c11ae0> JSON: {
-  "std": -1.1706326
+[<OpenAIObject at 0x292ce2f53b0> JSON: {
+  "\n": -0.0025023706
+}, <OpenAIObject at 0x292ce2f5680> JSON: {
+  "Non": -0.10369476
+}, <OpenAIObject at 0x292ce2f5900> JSON: {
+  "Ref": -0.14574492
+}, <OpenAIObject at 0x292ce2f59a0> JSON: {
+  "und": -1.676031e-05
+}, <OpenAIObject at 0x292ce2f5a40> JSON: {
+  "able": -0.0007868051
+}, <OpenAIObject at 0x292ce2f5ae0> JSON: {
+  "<|endoftext|>": -9.615988e-05
+}, <OpenAIObject at 0x292ce2f5b80> JSON: {
+  "#": -2.2785168
+}, <OpenAIObject at 0x292ce2f5c20> JSON: {
+  " com": -0.6407315
 }]

@@ -53,8 +53,8 @@ def ask_openai(text: str, task: str) -> dict:
         logprobs=1,
     )
 
-    with open('response.txt', 'w') as f:
-        f.write(str(response.choices[0].logprobs.top_logprobs))
+    # with open('response.txt', 'w') as f:
+    #     f.write(str(response.choices[0].logprobs.top_logprobs))
 
     response_mean_probability = mean_probability(response)
 
