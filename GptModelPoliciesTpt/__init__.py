@@ -88,9 +88,11 @@ def iterate_categories(dict_penalty: dict, parameter_information: str) -> dict:
     for dict_category in categorias:
         code = dict_category['code']
         if code == '16':
+            text_category_sixteen = dict_category['freeText']
             model_response = pipeline.execute(
-                dict_category['freeText'], parameter_information)
+                text_category_sixteen, parameter_information)
             dict_respond_categories["model_respond"] = model_response
             dict_penalty.update(dict_respond_categories)
+            dict_penalty.update({"freeText": text_category_sixteen})
             del dict_penalty["categories"]
     return dict_penalty
