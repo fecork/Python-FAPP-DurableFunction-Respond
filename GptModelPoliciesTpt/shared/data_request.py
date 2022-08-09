@@ -1,3 +1,4 @@
+from shared.load_parameter import load_parameters, load_credentials
 import logging
 import os
 import sys
@@ -8,7 +9,6 @@ from typing import Dict
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-from shared.load_parameter import load_parameters, load_credentials
 
 
 def login_openai() -> Dict:
@@ -59,9 +59,9 @@ def ask_openai(text: str, task: str) -> dict:
     response_mean_probability = mean_probability(response)
 
     return {
-            "text": response.choices[0].text.lstrip(), 
-            "mean_probability": response_mean_probability
-            }
+        "text": response.choices[0].text.lstrip(),
+        "mean_probability": response_mean_probability
+    }
 
 
 def mean_probability(response: object) -> float:

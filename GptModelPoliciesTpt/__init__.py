@@ -22,6 +22,16 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     parameter_task = get_parameter(req, "task")
     parameter_information = get_parameter(req, "information")
     parameter_penalty_text = get_parameter(req, "penaltyText")
+
+    list_passengers_type = []
+    for dict_penalty in parameter_penalty_text:
+        passenger_type = search_passenger_types(dict_penalty)
+        list_passengers_type.append(passenger_type)
+        list_passengers_type = list(set(list_passengers_type))
+
+    parameter_penalty_text = remove_duplicate_passenger(
+        parameter_penalty_text, list_passengers_type)
+
     if parameter_task == "CANCELLATION":
         gpt_response = iterate_penalty_text(
             parameter_penalty_text, parameter_information)
@@ -70,7 +80,6 @@ def iterate_penalty_text(penalty_text: list, parameter_information: str) -> list
     lista_respuestas = []
     for dict_penalty in penalty_text:
         dict_response = iterate_categories(dict_penalty, parameter_information)
-
         lista_respuestas.append(dict_response)
     return lista_respuestas
 
@@ -89,10 +98,43 @@ def iterate_categories(dict_penalty: dict, parameter_information: str) -> dict:
         code = dict_category['code']
         if code == '16':
             text_category_sixteen = dict_category['freeText']
-            model_response = pipeline.execute(
+            model_response = pipeline.execute_concurrent(
                 text_category_sixteen, parameter_information)
             dict_respond_categories["model_respond"] = model_response
             dict_penalty.update(dict_respond_categories)
             dict_penalty.update({"freeText": text_category_sixteen})
             del dict_penalty["categories"]
     return dict_penalty
+
+
+def search_passenger_types(dict_penalty: dict) -> list:
+    """
+    search passenger types
+    Args:
+        dict_penalty: json
+    Returns:
+        list of passenger types
+    """
+    for key, value in dict_penalty.items():
+        if key == "passengerTypes":
+            return value[0]
+
+
+def remove_duplicate_passenger(penalty_text: list, list_passenger_type: list) -> list:
+    """
+    remove duplicate passenger types
+    Args:
+        penalty_text: list of jsons
+        list_passenger_type: list of passenger types
+    Returns:
+        list of jsons
+    """
+
+    list_clean = []
+    for dict_penalty in penalty_text:
+        passenger_type = dict_penalty['passengerTypes']
+        if passenger_type[0] in list_passenger_type:
+            list_passenger_type.pop(
+                list_passenger_type.index(passenger_type[0]))
+            list_clean.append(dict_penalty)
+    return list_clean
