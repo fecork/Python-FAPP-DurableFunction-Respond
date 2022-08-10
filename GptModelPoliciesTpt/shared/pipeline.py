@@ -5,10 +5,10 @@ import concurrent.futures
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-from data_processing import format_text
-from data_request import ask_openai
-from data_request import load_parameters
 from data_respond import individual_paragraphs
+from data_request import load_parameters
+from data_request import ask_openai
+from data_processing import format_text
 
 def execute_concurrent(data_rules: str, data_information: str):
 
@@ -35,7 +35,7 @@ def execute_concurrent(data_rules: str, data_information: str):
         response['question_4'] = dict_question_4
         list_response = []
         for key, value in response.items():
-            list_response.append({"question": value})
+            list_response.append(value)
         result = list_response
         return result
 

@@ -53,6 +53,7 @@ def ask_openai(text: str, task: str) -> dict:
         logprobs=1,
     )
 
+    # NOTE: This is a line for debug
     # with open('response.txt', 'w') as f:
     #     f.write(str(response.choices[0].logprobs.top_logprobs))
 
