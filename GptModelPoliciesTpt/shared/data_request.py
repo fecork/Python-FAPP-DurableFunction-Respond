@@ -53,15 +53,16 @@ def ask_openai(text: str, task: str) -> dict:
         logprobs=1,
     )
 
+    # NOTE: This is a line for debug
     # with open('response.txt', 'w') as f:
     #     f.write(str(response.choices[0].logprobs.top_logprobs))
 
     response_mean_probability = mean_probability(response)
 
     return {
-            "text": response.choices[0].text.lstrip(), 
-            "mean_probability": response_mean_probability
-            }
+        "text": response.choices[0].text.lstrip(),
+        "meanProbability": response_mean_probability
+    }
 
 
 def mean_probability(response: object) -> float:

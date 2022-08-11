@@ -1,4 +1,3 @@
-from shared.load_parameter import load_parameters
 import logging
 import spacy
 import os
@@ -9,12 +8,12 @@ from typing import Dict
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-
 from validators_respond import (
-    validate_boolean,
     validate_charge_number,
     validate_structure_json,
 )
+from shared.load_parameter import load_parameters
+from shared.clear_respond import execute_clean_json
 
 nlp = spacy.load("en_core_web_sm")
 loaded_parameters = load_parameters()
@@ -117,42 +116,12 @@ def text_to_json(list_probe: list, score: float) -> dict:
         dictionary with the information of the paragraphs
     """
     dict_questions = {}
-    
+
     for paragraphs in list_probe:
         text = paragraphs.split("\n")
-        dict_response = {"answer": "",
-                         "quote": "",
-                         "boolean": "",
-                         "number_question": "",
-                         "mean_probability": score
-                         }
-
-        for line in text:
-            value = clear_value_json(line, "answer")
-            if value is not None:
-                dict_response["answer"] = value
-
-            value = clear_value_json(line, "number_question")
-
-            if value is not None:
-                value = extract_number(value)[0]
-
-                if int(value) < int(number_question)+1:
-                    key_number = int(value)
-
-                    dict_response["question"] = list_questions[key_number-1]
-                    dict_response["number_question"] = key_number
-
-            value = clear_value_json(line, "quote")
-            if value is not None:
-                dict_response["quote"] = value
-
-            value = clear_value_json(line, "boolean")
-            if value is not None:
-                value = validate_boolean(value)
-                dict_response["boolean"] = value
-
-        dict_questions["question_" + str(key_number)] = dict_response
+        response_clean = execute_clean_json(score, text)
+        dict_questions["question_" +
+                       str(response_clean["key_number"])] = response_clean["dict_response"]
     logging.warning('-----------------------------------------------------')
     logging.warning('Dictionary with Question')
     logging.warning(dict_questions)
@@ -161,42 +130,3 @@ def text_to_json(list_probe: list, score: float) -> dict:
     dict_questions = validate_charge_number(dict_questions)
     dict_questions = validate_structure_json(dict_questions)
     return dict_questions
-
-
-def clear_value_json(line: str, key: str) -> str:
-    """
-    clear the text from the value
-    Args:
-        line: line to clear the value
-        key: key to clear the value
-    return:
-        value of the key
-    """
-    key_json = key.translate({ord(i): None for i in ":"})
-
-    if "quote" in line:
-        line = line.replace("\n", " ")
-
-    if key_json in line:
-        res = line.replace(key, "")
-        res = res.translate({ord(i): None for i in '",:'})
-        res = res.strip()
-        return res
-
-
-def extract_number(sentence: str) -> list:
-    """
-    function to extract the number from the sentence
-    Args:
-        sentence: sentence to extract the number
-    return:
-        list with the numbers
-    """
-
-    list_number = []
-    for text in sentence.split():
-        try:
-            list_number.append(float(text))
-        except ValueError:
-            pass
-    return list_number
