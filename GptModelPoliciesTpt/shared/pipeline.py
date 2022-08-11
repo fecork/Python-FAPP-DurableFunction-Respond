@@ -63,9 +63,9 @@ def execute_classification_refund(gpt_paragraph_text: str) -> dict:
     return {'question': "4. Is refundable?",
             'answer': gpt_text_classification_text,
             'quote': "",
-            'number_question': 4,
+            'numberQuestion': 4,
             'boolean': False if 'non' in gpt_text_classification_text.lower() else True,
-            'mean_probability': gpt_text_classification['mean_probability']
+            'meanProbability': gpt_text_classification['meanProbability']
             }
 
 
@@ -73,5 +73,5 @@ def execute_quiz(quiz_text_and_question: str) -> dict:
     gpt_quiz = ask_openai(quiz_text_and_question, "question")
     gpt_quiz_text = gpt_quiz["text"]
 
-    gpt_quiz_mean_probability = gpt_quiz["mean_probability"]
+    gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
     return individual_paragraphs(gpt_quiz_text, gpt_quiz_mean_probability)

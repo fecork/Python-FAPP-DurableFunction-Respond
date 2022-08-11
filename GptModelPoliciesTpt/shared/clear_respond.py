@@ -63,8 +63,8 @@ def execute_clean_json(score, text) -> dict:
     dict_response = {"answer": "",
                      "quote": "",
                      "boolean": "",
-                     "number_question": "",
-                     "mean_probability": score
+                     "numberQuestion": "",
+                     "meanProbability": score
                      }
     key_number = ''
 
@@ -84,7 +84,7 @@ def execute_clean_json(score, text) -> dict:
                 key_number = int(value)
 
                 dict_response["question"] = list_questions[key_number-1]
-                dict_response["number_question"] = key_number
+                dict_response["numberQuestion"] = key_number
 
         value = clear_value_json(line, "quote")
         if value is not None:
