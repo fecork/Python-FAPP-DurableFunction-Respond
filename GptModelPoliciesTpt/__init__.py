@@ -106,9 +106,14 @@ def iterate_categories(dict_penalty: dict, parameter_information: str, is_child:
         text_category_sixteen, text_category_nineteen, parameter_information, is_child)
     dict_respond_categories["modelRespond"] = model_response
     dict_penalty.update(dict_respond_categories)
-    list_free_text = [
-        {"category": 16, "text": text_category_sixteen}, 
-        {"category": 19, "text": text_category_nineteen}]
+    
+    if is_child:
+        list_free_text = [
+            {"category": 16, "text": text_category_sixteen}, 
+            {"category": 19, "text": text_category_nineteen}]
+    else:
+        list_free_text = [
+            {"category": 16, "text": text_category_sixteen}]
     dict_penalty.update({"freeText": list_free_text})
     del dict_penalty["categories"]
     return dict_penalty
