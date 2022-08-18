@@ -98,6 +98,10 @@ question_fare_rules: |
           3. According to the ticket information, the departure date is?.
           -
 
+question_fare_rules_nineteen: |
+          List all the CHARGES shown in the text.
+  
+
 structure_fare_rules: |
 
           choose the best option and answer with the JSON structure:
@@ -118,6 +122,20 @@ structure_fare_rules: |
           from quote value, add the text from which you extract the answer
 
           SOLUTION QUESTIONS 1-3:
+
+structure_fare_rules_nineteen: |
+  
+          choose the best option and answer with the list structure answer and quote,
+          for instance:
+            
+          Answer: "[your answer charge with cause, your answer charge with cause]"
+          Quote: "[TEXT EXTRACTION, TEXT EXTRACTION, TEXT EXTRACTION]"
+
+          from quote value, add the text from which you extract the answer
+
+          SOLUTION 
+
+          Answer: 
 
 tag_structure: |
            1. {

@@ -61,6 +61,7 @@ def execute_clean_json(score, text) -> dict:
         dictionary with the information of the paragraphs
     """
     dict_response = {"answer": "",
+                     "categoty": 16,
                      "quote": "",
                      "boolean": "",
                      "numberQuestion": "",
