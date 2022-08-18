@@ -69,6 +69,7 @@ def execute_classification_refund(gpt_paragraph_text: str) -> dict:
         'Class=', '').strip()
     return {'question': "4. Is refundable?",
             'answer': gpt_text_classification_text,
+            'category': 16,
             'quote': "",
             'numberQuestion': 4,
             'boolean': False if 'non' in gpt_text_classification_text.lower() else True,
@@ -104,6 +105,7 @@ def execute_child_discount(text_category_nineteen: str) -> dict:
 
     return {'question': "5. List all the charges shown in the text",
             'answer': list_answer,
+            'category': 19,
             'quote': list_quote,
             'numberQuestion': 5,
             'boolean': False if len(list_answer) == 0 else True,

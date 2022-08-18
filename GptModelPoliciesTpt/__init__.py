@@ -29,7 +29,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         list_passengers_type.append(passenger_type)
         list_passengers_type = list(set(list_passengers_type))
 
-    is_child = True if "child" in list_passengers_type else False
+    # is_child = True if "child" in list_passengers_type else False
+    is_child = False
+    if "child" in list_passengers_type:
+        is_child = True
+    if "infant" in list_passengers_type:
+        is_child = True
+        
+    
     parameter_penalty_text = remove_duplicate_passenger(
         parameter_penalty_text, list_passengers_type)
 
