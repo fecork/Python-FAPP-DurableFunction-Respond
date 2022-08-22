@@ -1,16 +1,18 @@
 import sys
 import os
+import re
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
+from shared.dto_respond import Respond
 from validators_respond import (
     validate_boolean
 )
 from shared.load_parameter import load_parameters
-
 loaded_parameters = load_parameters()
 list_questions = loaded_parameters["list_question_fare_rules"].split(",")
 number_question = loaded_parameters["number_question"]
+
 
 def clear_value_json(line: str, key: str) -> str:
     """
@@ -60,13 +62,9 @@ def execute_clean_json(score, text) -> dict:
     return:
         dictionary with the information of the paragraphs
     """
-    dict_response = {"answer": "",
-                     "categoty": 16,
-                     "quote": "",
-                     "boolean": "",
-                     "numberQuestion": "",
-                     "meanProbability": score
-                     }
+
+    dict_response = Respond(question="", answer="", category=16, quote="",
+                            boolean=False, numberQuestion=0, meanProbability=score).__dict__
     key_number = ''
 
     for line in text:
@@ -74,6 +72,7 @@ def execute_clean_json(score, text) -> dict:
         value = clear_value_json(line, "answer")
         if value is not None:
             dict_response["answer"] = value
+            # dict_response(answer=value)
 
         value = clear_value_json(line, "number_question")
 
@@ -96,3 +95,18 @@ def execute_clean_json(score, text) -> dict:
             value = validate_boolean(value)
             dict_response["boolean"] = value
     return {"dict_response": dict_response, "key_number": key_number}
+
+
+def format_text(text: str) -> str:
+    """Preprocesses the data text, clean it.
+
+    Args:
+        text: String Raw data.
+    Returns:
+        Preprocessed data text, without stranger character.
+    """
+
+    text = text.replace(str("\\n"), "\n")
+    text = text.replace(str("/"), " ")
+    text = re.sub(r"[^a-zA-Z0-9\s\n.,;]", "", text)
+    return text
