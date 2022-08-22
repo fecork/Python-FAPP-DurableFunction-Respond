@@ -8,7 +8,7 @@ from clear_respond import format_text
 from adapter_gpt import ask_openai
 from shared.load_parameter import load_parameters
 from handler_respond import individual_paragraphs
-from dto_respond import respond, Respond
+from dto_respond import Respond
 
 parameters = load_parameters()
 
