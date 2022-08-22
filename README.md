@@ -49,7 +49,7 @@ Recibe el objeto Json
     {
         "task": str,
 		"information": str,
-		"rules": str
+		"penaltyText": [objects]
 
     }
 ```
@@ -61,58 +61,87 @@ donde:
 por ejemplo
 
 ```json
+"penaltyText":[
     {
-        "task": "CANCELLATION",
-		"information": "Ticket Information:\n fareBasis = H13USR3APO/CH25\n airLine = SQ \n departureDate = 2022-11-05T21:15:00\n route = origin: JFK\n destination: FRA \nticketNumber: 6185860002240\n ticketIssuanceDate: 2022-05-31T00:00:00+00:00\n reservationDate: 2022-05-05T21:15:00\n cancelationDate: 2022-05-10T02:15:00\n",
-		"rules" :"CANCELLATIONS\nANY TIME\nCHARGE USD 200.00 FOR CANCEL.\nNOTE - TEXT BELOW NOT VALIDATED FOR AUTOPRICING.
-
-    }
+      "fareBasis": "KLEQPZ0K",
+      "categories": [
+        {
+          "code": "16",
+          "freeText": "CHANGES\nANY TIME\nCHANGES NOT PERMITTED IN CASE OF REISSUE/\nREVALIDATION.\nANY TIME\nCHANGES NOT PERMITTED IN CASE OF NO-SHOW.\nNOTE"
+		  "name":"Penalties"
+		}
+		{
+		 "code":"19",
+		 "freeText":
+		 "name":
+		}
 ```
 
 el modelo GPT responderá:
 - question: pregunta que se realiza acerca de las reglas entregadas.
-
 - quote: parrafo o texto de donde extrajo la respuesta.
 - answer: respuesta del modelo
 - boolean: para indicar con True o False si el modelo encontró una respuesta.
+- category: para indicar de que categoría extrajo la respuesta
+- meanProbability: indica la probabilidad media de generación de cada token en la respuesta
 
 Por ejemplo: 
 
 ```json
    {
-	"question_1": {
-		"answer": "CANCELLATIONS PERMITTED FOR REFUND.",
-		"quote": "ANY TIME\\nCHARGE USD 200.00 FOR CANCEL.\\nNOTE  TEXT BELOW NOT VALIDATED FOR AUTOPRICING.",
-		"boolean": true,
-		"question": "The text says that the CANCELLATIONS is?"
-	},
-	"question_2": {
-		"answer": "ANY TIME.",
-		"quote": "ANY TIME\\nCHARGE USD 200.00 FOR CANCEL.\\nNOTE  TEXT BELOW NOT VALIDATED FOR AUTOPRICING.",
-		"boolean": true,
-		"question": "According to the rules at which time you can cancel"
-	},
-	"question_3": {
-		"answer": "USD 200.00",
-		"quote": "CHARGE USD 200.00 FOR CANCEL.",
-		"boolean": true,
-		"question": "How much is the CHARGE FOR CANCEL?",
-		"value": 200.0,
-		"denomination": "USD"
-	},
-	"question_4": {
-		"answer": "2022-11-05T211500",
-		"quote": "fareBasis = H13USR3APO/CH25\\nairLine = SQ \\ndepartureDate = 2022-11-05T211500\\nroute = origin JFK\\ndestination FRA \\nticketNumber 6185860002240\\nticketIssuanceDate 2022-05-31T000000+0000\\nreservationDate 2022-05-05T211500\\ncancelationDate 2022-05-10T021500",
-		"boolean": false,
-		"question": "What is the departure date?"
-	},
-	"question_5": {
-		"answer": "refundable",
-		"quote": "CANCELLATIONS PERMITTED FOR REFUND.\\nCHARGE USD 200.00 FOR CANCEL.",
-		"boolean": true,
-		"question": "According to the above, is the ticket refundable?"
-	}
-}
+				"question": "\"1. According to the rules at which time you can cancel\"",
+				"answer": "You can cancel at ANY TIME.",
+				"category": 16,
+				"quote": "ANY TIME. TICKET IS NONREFUNDABLE.",
+				"numberQuestion": 1,
+				"boolean": true,
+				"meanProbability": 97.75423896420118
+			},
+			{
+				"question": "\n\"2. How much is the CHARGE FOR CANCEL?\"",
+				"answer": "The charge for cancel is the sum of the cancellation fees of all cancelled fare components.",
+				"category": 16,
+				"quote": "WHEN COMBINING REFUNDABLE FARES WITH NON REFUNDABLE FARES PROVISIONS WILL APPLY AS FOLLOWS THE AMOUNT PAID ON THE REFUNDABLE FARE COMPONENT WILL BE REFUNDED UPON PAYMENT OF THE PENALTY AMOUNT IF APPLICABLE. THE AMOUNT PAID ON THE NON-REFUNDABLE FARE COMPONENT WILL NOT BE REFUNDED. WHEN COMBINING FARES CHARGE THE SUM OF THE CANCELLATION FEES OF ALL CANCELLED FARE COMPONENTS.",
+				"numberQuestion": 2,
+				"boolean": true,
+				"meanProbability": 97.75423896420118,
+				"value": null,
+				"denomination": "The charge for cancel is the sum of the cancellation fees of all cancelled fare components."
+			},
+			{
+				"question": "\n\"3. What is the departure date?\"\n",
+				"answer": "The departure date is November 5th 2022 at 2115.",
+				"category": 16,
+				"quote": "Ticket Information fareBasis = H13USR3APO/CH25 airLine = SQ departureDate = 2022-11-05T211500 route = origin JFK destination FRA ticketNumber 6185860002240 ticketIssuanceDate 2022-05-31T000000+0000 reservationDate 2022-05-05T211500 cancelationDate 2022-05-10T021500",
+				"numberQuestion": 3,
+				"boolean": true,
+				"meanProbability": 97.75423896420118
+			},
+			{
+				"question": "4. Is refundable?",
+				"answer": "NonRefundable",
+				"category": 16,
+				"quote": "",
+				"numberQuestion": 4,
+				"boolean": false,
+				"meanProbability": 82.63212880372367
+			},
+			{
+				"question": "5. List all the charges shown in the text",
+				"answer": [
+					"100 percent of the fare for accompanied children 2-11 no discount for infants with a seat under 2 10 percent of the fare for first infants without a seat under 2 100 percent of the fare for unaccompanied children 8-11"
+				],
+				"category": 19,
+				"quote": [
+					"CNNACCOMPANIED CHILD PSGR 2-11 - CHARGE 100 PERCENT OF THE FARE.",
+					"OR - INSINFANT WITH A SEAT PSGR UNDER 2 - NO DISCOUNT.",
+					"OR - 1ST INFINFANT WITHOUT A SEAT PSGR UNDER 2 - CHARGE 10 PERCENT OF THE FARE.",
+					"OR - UNNUNACCOMPANIED CHILD PSGR 8-11 - CHARGE 100 PERCENT OF THE FARE."
+				],
+				"numberQuestion": 5,
+				"boolean": true,
+				"meanProbability": 95.83486723862995
+			}
 ```
 
 para la question_3 se entrega además:

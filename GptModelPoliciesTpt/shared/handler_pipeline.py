@@ -1,18 +1,20 @@
-import logging
 import os
 import sys
 import concurrent.futures
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-from data_processing import format_text
-from data_request import ask_openai
-from data_request import load_parameters
-from data_respond import individual_paragraphs
+from clear_respond import format_text
+from adapter_gpt import ask_openai
+from shared.load_parameter import load_parameters
+from handler_respond import individual_paragraphs
+from dto_respond import respond, Respond
 
-def execute_concurrent(text_category_sixteen: str, text_category_nineteen: str, data_information: str, is_child: bool) -> dict:
+parameters = load_parameters()
 
-    parameters = load_parameters()
+
+def execute_concurrent_cancellation(text_category_sixteen: str, text_category_nineteen: str, data_information: str, is_child: bool) -> dict:
+
     question_fare_rules = parameters["question_fare_rules"]
     structure_fare_rules = parameters["structure_fare_rules"]
 
@@ -48,7 +50,6 @@ def execute_concurrent(text_category_sixteen: str, text_category_nineteen: str, 
 
 
 def execute_extract_paragraph(data_rules: str) -> dict:
-    parameters = load_parameters()
     question_paragraph = parameters["question_paragraph"]
     formated_text = format_text(data_rules)
     paragraph_text_and_question = formated_text + "\n" * 2 + question_paragraph
@@ -57,7 +58,6 @@ def execute_extract_paragraph(data_rules: str) -> dict:
 
 
 def execute_classification_refund(gpt_paragraph_text: str) -> dict:
-    parameters = load_parameters()
     tag_class = parameters["structure_class_refund"]
     question_class_refund = parameters["question_class_refund"]
     gpt_paragraph_tag = question_class_refund + \
@@ -67,18 +67,18 @@ def execute_classification_refund(gpt_paragraph_text: str) -> dict:
     gpt_text_classification_text = gpt_text_classification["text"]
     gpt_text_classification_text = gpt_text_classification_text.replace(
         'Class=', '').strip()
-    return {'question': "4. Is refundable?",
-            'answer': gpt_text_classification_text,
-            'category': 16,
-            'quote': "",
-            'numberQuestion': 4,
-            'boolean': False if 'non' in gpt_text_classification_text.lower() else True,
-            'meanProbability': gpt_text_classification['meanProbability']
-            }
+
+    return Respond(
+        question="4. Is refundable?",
+        answer=gpt_text_classification_text,
+        category=16,
+        quote='',
+        numberQuestion=4,
+        boolean=True if gpt_text_classification_text == "Yes" else False,
+        meanProbability=gpt_text_classification['meanProbability']).__dict__
 
 
 def execute_child_discount(text_category_nineteen: str) -> dict:
-    parameters = load_parameters()
     question_fare_rules_nineteen = parameters["question_fare_rules_nineteen"]
     structure_fare_rules_nineteen = parameters["structure_fare_rules_nineteen"]
     quiz_text_and_question_five = (
@@ -95,22 +95,22 @@ def execute_child_discount(text_category_nineteen: str) -> dict:
         if "quote" in text.lower():
             flag = True
 
-        if flag == True:
+        if flag is True:
             list_quote.append(text.replace("Quote", "").lstrip())
-        if flag == False:
+        if flag is False:
             list_answer.append(text.replace("Answer", "").lstrip())
 
     list_quote = list(filter(None, list_quote))
     list_answer = list(filter(None, list_answer))
 
-    return {'question': "5. List all the charges shown in the text",
-            'answer': list_answer,
-            'category': 19,
-            'quote': list_quote,
-            'numberQuestion': 5,
-            'boolean': False if len(list_answer) == 0 else True,
-            'meanProbability': gpt_text_five['meanProbability']
-            }
+    return Respond(
+        question="5. List all the charges shown in the text",
+        answer=list_answer,
+        category=19,
+        quote=list_quote,
+        numberQuestion=5,
+        boolean=False if len(list_answer) == 0 else True,
+        meanProbability=gpt_text_five['meanProbability']).__dict__
 
 
 def execute_quiz(quiz_text_and_question: str) -> dict:

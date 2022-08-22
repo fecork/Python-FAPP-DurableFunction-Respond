@@ -1,9 +1,5 @@
 import sys
 import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
-sys.path.insert(0, dir_path)
-
-from shared import pipeline
 
 def search_passenger_types(dict_penalty: dict) -> list:
     """

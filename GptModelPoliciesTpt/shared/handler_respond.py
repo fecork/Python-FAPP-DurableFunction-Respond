@@ -107,7 +107,6 @@ def split_paragraph(paragraph_detected: list) -> list:
 
 
 def text_to_json(list_probe: list, score: float) -> dict:
-    # TODO: Arreglar complejidad
     """
     function to transform the text in json
     Args:
