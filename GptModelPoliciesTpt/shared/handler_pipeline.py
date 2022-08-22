@@ -31,15 +31,16 @@ def execute_concurrent_cancellation(text_category_sixteen: str, text_category_ni
             execute_quiz, quiz_text_and_question)
         response_classification = executor.submit(
             execute_classification_refund, gpt_paragraph_text)
-
+        response_child_discount = executor.submit(
+                execute_child_discount, text_category_nineteen, is_child)
+        dict_question_five = response_child_discount.result()
+        
         response = response_quiz.result()
         dict_question_4 = response_classification.result()
 
         response['question_4'] = dict_question_4
-        if is_child:
-            response_child_discount = executor.submit(
-                execute_child_discount, text_category_nineteen)
-            dict_question_five = response_child_discount.result()
+        
+        if dict_question_five is not None:
             response['question_5'] = dict_question_five
 
         list_response = []
@@ -78,39 +79,44 @@ def execute_classification_refund(gpt_paragraph_text: str) -> dict:
         meanProbability=gpt_text_classification['meanProbability']).__dict__
 
 
-def execute_child_discount(text_category_nineteen: str) -> dict:
-    question_fare_rules_nineteen = parameters["question_fare_rules_nineteen"]
-    structure_fare_rules_nineteen = parameters["structure_fare_rules_nineteen"]
-    quiz_text_and_question_five = (
-        text_category_nineteen + question_fare_rules_nineteen + "\n" * 2 + structure_fare_rules_nineteen)
-    gpt_text_five = ask_openai(quiz_text_and_question_five, "question")
-    list_quote = []
-    list_answer = []
-    gpt_text_five_text = gpt_text_five["text"].split("\n")
-    flag = False
-    for text in gpt_text_five_text:
-        text = text.replace('\n', '\\n')
-        text = text.translate({ord(i): None for i in '",:/\\'})
+def execute_child_discount(text_category_nineteen: str, is_child:bool) -> dict:
+    if is_child:
+        question_fare_rules_nineteen = parameters["question_fare_rules_nineteen"]
+        structure_fare_rules_nineteen = parameters["structure_fare_rules_nineteen"]
+        quiz_text_and_question_five = (
+            text_category_nineteen + question_fare_rules_nineteen + "\n" * 2 + structure_fare_rules_nineteen)
+        gpt_text_five = ask_openai(quiz_text_and_question_five, "question")
+        list_quote = []
+        list_answer = []
+        gpt_text_five_text = gpt_text_five["text"].split("\n")
+        flag = False
+        for text in gpt_text_five_text:
+            text = text.replace('\n', '\\n')
+            text = text.translate({ord(i): None for i in '",:/\\'})
 
-        if "quote" in text.lower():
-            flag = True
+            if "quote" in text.lower():
+                flag = True
 
-        if flag is True:
-            list_quote.append(text.replace("Quote", "").lstrip())
-        if flag is False:
-            list_answer.append(text.replace("Answer", "").lstrip())
+            if flag is True:
+                list_quote.append(text.replace("Quote", "").lstrip())
+            if flag is False:
+                list_answer.append(text.replace("Answer", "").lstrip())
 
-    list_quote = list(filter(None, list_quote))
-    list_answer = list(filter(None, list_answer))
+        list_quote = list(filter(None, list_quote))
+        list_answer = list(filter(None, list_answer))
+        
+        return Respond(
+            question="5. List all the charges shown in the text",
+            answer=list_answer,
+            category=19,
+            quote=list_quote,
+            numberQuestion=5,
+            boolean=False if len(list_answer) == 0 else True,
+            meanProbability=gpt_text_five['meanProbability']).__dict__
+    else:
+        return None
 
-    return Respond(
-        question="5. List all the charges shown in the text",
-        answer=list_answer,
-        category=19,
-        quote=list_quote,
-        numberQuestion=5,
-        boolean=False if len(list_answer) == 0 else True,
-        meanProbability=gpt_text_five['meanProbability']).__dict__
+       
 
 
 def execute_quiz(quiz_text_and_question: str) -> dict:
