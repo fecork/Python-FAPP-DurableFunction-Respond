@@ -9,5 +9,12 @@
 import logging
 
 
-def main(name: str) -> str:
-    return f"Hello {name}!"
+def main(name: dict) -> dict:
+    dict_prueba = {"nombre": "prueba"}
+    dict_prueba["modelResponse"] = text()
+    logging.warning(dict_prueba)
+    return dict_prueba
+
+
+def text():
+    return "Hello World"
