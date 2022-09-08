@@ -16,9 +16,7 @@ def main(name: list) -> list:
     is_child = parameters_dict["is_child"]
     text_category_sixteen = parameters_dict["text_category_sixteen"]
     text_category_nineteen = parameters_dict["text_category_nineteen"]
-    logging.warning("?????????")
     logging.info(parameters_dict["dict_penalty"])
-    logging.warning("?????????")
     dict_penalty = parameters_dict["dict_penalty"]
 
     lista = questions[0]
