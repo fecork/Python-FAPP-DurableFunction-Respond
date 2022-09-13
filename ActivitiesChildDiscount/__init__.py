@@ -16,13 +16,21 @@ sys.path.insert(0, dir_path)
 from Utilities.load_parameter import load_parameters
 from Utilities.clear_respond import format_text
 from Utilities.dto_respond import Respond
-from AdaptadorOpenAI import adapter_gpt
+from Adapters import adapter_gpt
 
 
-def main(name: dict) -> dict:
+def main(parametersCancellation: dict) -> dict:
+
+    """This is a function for extract child discount of the text
+    Args:
+        parametersCancellation (dict): This is a dictionary with text and task.
+    Returns:
+        dict: This is a dictionary with text and mean probability.
+    """
+    logging.warning("Executing ActivitiesChildDiscount")
     parameters = load_parameters()
-    is_child = name["is_child"]
-    text_category_nineteen = name["text_category_nineteen"]
+    is_child = parametersCancellation["is_child"]
+    text_category_nineteen = parametersCancellation["text_category_nineteen"]
     if is_child:
         question_fare_rules_nineteen = parameters[
             "question_fare_rules_nineteen"

@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 import openai
@@ -7,26 +8,21 @@ from typing import Dict
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-from Utilities.load_parameter import (
-    load_parameters,
-    load_credentials,
-)
+from Utilities.load_parameter import load_parameters
 
 
 def login_openai() -> Dict:
     """
     This is a function for  login to openai.
     """
+    logging.warning("Executing login_openai")
+    openai_credentials = os.environ["OPENAIKEY"]
+    if openai_credentials:
+        openai.api_key = openai_credentials
+        return openai
 
-    credentials = load_credentials()
-
-    if "open_ai" in credentials:
-        openai_credentials = credentials["open_ai"]["KEY"]
     else:
         print("No credentials for openai")
-
-    openai.api_key = openai_credentials
-    return openai
 
 
 def ask_openai(text: str, task: str) -> dict:
@@ -34,6 +30,7 @@ def ask_openai(text: str, task: str) -> dict:
     This is a function for
     ask question to GPT API by OpenAI.
     """
+    logging.warning("Executing ask_openai")
 
     loaded_parameters = load_parameters()
     if task == "question":
@@ -55,10 +52,6 @@ def ask_openai(text: str, task: str) -> dict:
         logprobs=1,
     )
 
-    # NOTE: This is a line for debug
-    # with open('response.txt', 'w') as f:
-    #     f.write(str(response.choices[0].logprobs.top_logprobs))
-
     response_mean_probability = mean_probability(response)
 
     return {
@@ -72,6 +65,7 @@ def mean_probability(response: object) -> float:
     This is a function for
     calculate mean probability.
     """
+    logging.warning("Executing mean_probability")
     list_probs = []
     list_top_logprobs = list(response.choices[0].logprobs.top_logprobs)
     for top_logprobs_object in list_top_logprobs:

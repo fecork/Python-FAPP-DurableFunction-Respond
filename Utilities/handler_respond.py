@@ -21,7 +21,7 @@ list_questions = loaded_parameters["list_question_fare_rules"].split(",")
 number_question = loaded_parameters["number_question"]
 
 
-def paragraph_segmentation(text: str):
+def paragraph_segmentation(text: str) -> list:
     """
     Function to segment paragraphs in a text
     Args:

@@ -23,7 +23,14 @@ parameters = load_parameters()
 
 def orchestrator_function(
     context: df.DurableOrchestrationContext,
-):
+) -> dict:
+    """
+    This is the main orchestrator function.
+    Args:
+        context (DurableOrchestrationContext): The context object for the
+    Returns:
+        dict: This is a dictionary with the respond of the GPT
+    """
     parameters = context.get_input()
     parameter_task = parameters["task"]
     parameter_information = parameters["information"]
@@ -105,18 +112,23 @@ def iterate_categories(
 
 
 def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
+    """
+    This is the main pipeline function. Execute in parallel the activities
+    Args:
+        context (DurableOrchestrationContext): The context object for durable function
+        parameters_dict (dict): This is a dictionary with the parameters
+    Returns:
+        parameters_dict: This is a dictionary with the respond of the GPT
+    """
 
     question_fare_rules = parameters["question_fare_rules"]
     structure_fare_rules = parameters["structure_fare_rules"]
     data_information = parameters_dict["data_information"]
 
-    logging.warning("wait for gpt_paragraph")
     gpt_paragraph_text = yield context.call_activity(
         "ActivitieExtractParagraph", parameters_dict
     )
 
-    logging.warning("extract text")
-    logging.warning("define question")
     quiz_text_and_question = (
         data_information
         + "\n" * 2
@@ -127,7 +139,6 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         + structure_fare_rules
     )
 
-    logging.warning("response quiz")
     response_quiz = context.call_activity(
         "ActivitiesExecuteQuiz", quiz_text_and_question
     )

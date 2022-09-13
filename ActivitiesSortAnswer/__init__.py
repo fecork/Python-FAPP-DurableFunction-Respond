@@ -9,14 +9,22 @@
 import logging
 
 
-def main(name: list) -> list:
-    parameters_dict = name[1]
-    questions = name[0]
+def main(listRespond: list) -> list:
+    """
+    This is a function for sort the respond of the GPT in a JSON.
+    Args:
+        listRespond (list): This is a list with the respond of the GPT.
+    Returns:
+        list: This is a list with the respond of the GPT sorted.
+    """
+
+    logging.warning("Executing ActivitiesSortAnswer")
+    parameters_dict = listRespond[1]
+    questions = listRespond[0]
 
     is_child = parameters_dict["is_child"]
     text_category_sixteen = parameters_dict["text_category_sixteen"]
     text_category_nineteen = parameters_dict["text_category_nineteen"]
-    logging.info(parameters_dict["dict_penalty"])
     dict_penalty = parameters_dict["dict_penalty"]
 
     lista = questions[0]
@@ -44,7 +52,11 @@ def main(name: list) -> list:
         list_free_text = [{"category": 16, "text": text_category_sixteen}]
     # dict_penalty.update({"freeText": list_free_text})
 
-    dict_response["modelRespond"] = [respuesta]
+    lista_respuesta = []
+    for value in respuesta.values():
+        lista_respuesta.append(value)
+
+    dict_response["modelRespond"] = lista_respuesta
     dict_response["freeText"] = list_free_text
     dict_response["fareBasis"] = dict_penalty["fareBasis"]
     dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
