@@ -45,7 +45,7 @@ def main(parametersCancellation: dict) -> dict:
             + structure_fare_rules_nineteen
         )
         gpt_text_five = adapter_gpt.ask_openai(
-            quiz_text_and_question_five, "question"
+            quiz_text_and_question_five, "list"
         )
         list_quote = []
         list_answer = []

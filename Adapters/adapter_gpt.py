@@ -38,6 +38,10 @@ def ask_openai(text: str, task: str) -> dict:
 
     if task == "classification":
         parameters = loaded_parameters["open_ai_parameters_classification"]
+
+    if task == "list":
+        parameters = loaded_parameters["open_ai_parameters_list"]
+
     openai = login_openai()
     prompt = parameters["prompt"]
     prompt = f"{prompt}:\n\n{text}"
