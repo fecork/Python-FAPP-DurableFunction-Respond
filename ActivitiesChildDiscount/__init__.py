@@ -32,21 +32,15 @@ def main(parametersCancellation: dict) -> dict:
     is_child = parametersCancellation["is_child"]
     text_category_nineteen = parametersCancellation["text_category_nineteen"]
     if is_child:
-        question_fare_rules_nineteen = parameters[
-            "question_fare_rules_nineteen"
-        ]
-        structure_fare_rules_nineteen = parameters[
-            "structure_fare_rules_nineteen"
-        ]
+        question_fare_rules_nineteen = parameters["question_fare_rules_nineteen"]
+        structure_fare_rules_nineteen = parameters["structure_fare_rules_nineteen"]
         quiz_text_and_question_five = (
             text_category_nineteen
             + question_fare_rules_nineteen
             + "\n" * 2
             + structure_fare_rules_nineteen
         )
-        gpt_text_five = adapter_gpt.ask_openai(
-            quiz_text_and_question_five, "list"
-        )
+        gpt_text_five = adapter_gpt.ask_openai(quiz_text_and_question_five, "list")
         list_quote = []
         list_answer = []
         gpt_text_five_text = gpt_text_five["text"].split("\n")
@@ -66,7 +60,7 @@ def main(parametersCancellation: dict) -> dict:
         list_quote = list(filter(None, list_quote))
         list_answer = list(filter(None, list_answer))
 
-        return Respond(
+        respond = Respond(
             question="5. List all the charges shown in the text",
             answer=list_answer,
             category=19,
@@ -75,5 +69,21 @@ def main(parametersCancellation: dict) -> dict:
             boolean=False if len(list_answer) == 0 else True,
             meanProbability=gpt_text_five["meanProbability"],
         ).__dict__
+
+        # LOG
+        logging.warning("ActivitiesChildDiscount")
+        logging.warning(respond)
+        logging.warning("ActivitiesChildDiscount")
+
+        return respond
     else:
-        return None
+        respond = Respond(
+            question="5. List all the charges shown in the text",
+            answer="passengerTypes is not child or infant",
+            category=19,
+            quote=[],
+            numberQuestion=5,
+            boolean=False,
+            meanProbability=0,
+        ).__dict__
+        return respond

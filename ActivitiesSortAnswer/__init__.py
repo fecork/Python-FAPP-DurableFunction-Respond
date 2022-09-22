@@ -28,6 +28,7 @@ def main(listRespond: list) -> list:
     dict_penalty = parameters_dict["dict_penalty"]
 
     lista = questions[0]
+
     respuesta = {
         "question_1": lista["question_1"],
         "question_2": lista["question_2"],

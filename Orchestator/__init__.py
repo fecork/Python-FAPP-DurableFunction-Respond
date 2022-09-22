@@ -38,9 +38,7 @@ def orchestrator_function(
 
     list_passengers_type = []
     for dict_penalty in parameter_penalty_text:
-        passenger_type = handler_select_text.search_passenger_types(
-            dict_penalty
-        )
+        passenger_type = handler_select_text.search_passenger_types(dict_penalty)
         list_passengers_type.append(passenger_type)
         list_passengers_type = list(set(list_passengers_type))
 
@@ -157,7 +155,5 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
 
     data_respond = [outputs, parameters_dict]
 
-    respuesta = yield context.call_activity(
-        "ActivitiesSortAnswer", data_respond
-    )
+    respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
     return respuesta

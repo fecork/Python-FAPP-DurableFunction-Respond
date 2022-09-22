@@ -33,5 +33,5 @@ def main(parametersCancellation: str) -> dict:
     gpt_quiz_text = gpt_quiz["text"]
 
     gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
-    logging.warning("gpt_quiz")
+
     return individual_paragraphs(gpt_quiz_text, gpt_quiz_mean_probability)

@@ -9,8 +9,8 @@ open_ai_parameters:
   presence_penalty: 0
 
 open_ai_parameters_classification:
-  # model: text-davinci-002
-  model: text-curie-001
+  model: text-davinci-002
+  # model: text-curie-001
   prompt: Classify the following text in refund or nonrefund
   temperature: 0.7
   max_tokens: 100

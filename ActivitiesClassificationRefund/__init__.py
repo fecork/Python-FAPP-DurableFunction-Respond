@@ -35,11 +35,7 @@ def main(parametersCancellation: str) -> dict:
     tag_class = parameters["structure_class_refund"]
     question_class_refund = parameters["question_class_refund"]
     gpt_paragraph_tag = (
-        question_class_refund
-        + "\n" * 2
-        + gpt_paragraph_text
-        + "\n" * 2
-        + tag_class
+        question_class_refund + "\n" * 2 + gpt_paragraph_text + "\n" * 2 + tag_class
     )
 
     gpt_text_classification = adapter_gpt.ask_openai(
@@ -51,8 +47,7 @@ def main(parametersCancellation: str) -> dict:
     ).strip()
 
     logging.warning("gpt_text_classification_text")
-
-    return dto_respond.Respond(
+    respond = dto_respond.Respond(
         question="4. Is refundable?",
         answer=gpt_text_classification_text,
         category=16,
@@ -61,3 +56,5 @@ def main(parametersCancellation: str) -> dict:
         boolean=True if gpt_text_classification_text == "Yes" else False,
         meanProbability=gpt_text_classification["meanProbability"],
     ).__dict__
+
+    return respond
