@@ -102,9 +102,9 @@ question_fare_rules: |
           -BEFORE DEPARTURE.
           -None
 
-          2. How much is the CHARGE FOR CANCEL? Complete.
+          2. How much is the CHARGE FOR CANCEL? Complete, in there is not charge respond null.
           -CHARGE: ___.
-          -None
+          -null
 
           3. According to the ticket information, the departure date is?.
           -

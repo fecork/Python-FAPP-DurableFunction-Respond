@@ -70,11 +70,6 @@ def main(parametersCancellation: dict) -> dict:
             meanProbability=gpt_text_five["meanProbability"],
         ).__dict__
 
-        # LOG
-        logging.warning("ActivitiesChildDiscount")
-        logging.warning(respond)
-        logging.warning("ActivitiesChildDiscount")
-
         return respond
     else:
         respond = Respond(

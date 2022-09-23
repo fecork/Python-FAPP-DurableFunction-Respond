@@ -6,7 +6,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
 from Utilities.load_parameter import load_parameters
-
+from Utilities import clear_respond
 
 loaded_parameters = load_parameters()
 number_questions = loaded_parameters["number_question"]
@@ -38,15 +38,19 @@ def validate_charge_number(dict_questions: dict) -> dict:
         dictionary with the formated information of the questions
     """
     question_charge = "question_2"
+
     if question_charge in dict_questions:
         text = dict_questions[question_charge]["answer"]
         number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
         denomination = "".join([i for i in text if not i.isdigit()])
-        if len(number) > 1:
+        if len(number) > 0:
             dict_questions[question_charge]["value"] = number[0]
-        if len(number) < 1:
+            dict_questions[question_charge][
+                "denomination"
+            ] = clear_respond.format_denomination(denomination).strip()
+        if len(number) == 0:
             dict_questions[question_charge]["value"] = None
-        dict_questions[question_charge]["denomination"] = denomination
+            dict_questions[question_charge]["denomination"] = None
     return dict_questions
 
 

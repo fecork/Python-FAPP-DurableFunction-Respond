@@ -116,3 +116,18 @@ def format_text(text: str) -> str:
     text = text.replace(str("/"), " ")
     text = re.sub(r"[^a-zA-Z0-9\s\n.,;]", "", text)
     return text
+
+
+def format_denomination(text: str) -> str:
+    """Preprocesses the data text, clean it.
+
+    Args:
+        text: String Raw data.
+    Returns:
+        Preprocessed data text, without stranger character.
+    """
+
+    text = text.replace(str("\\n"), "\n")
+    text = text.replace(str("/"), " ")
+    text = re.sub(r"[^a-zA-Z0-9\s\n;]", "", text)
+    return text

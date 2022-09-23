@@ -63,3 +63,18 @@ def main(listRespond: list) -> list:
     dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
 
     return [dict_response]
+
+
+def validate_number(text):
+    """
+    This is a function for validate if the text is a number.
+    Args:
+        txt (str): This is a string with the text to validate.
+    Returns:
+        bool: This is a boolean with the result of the validation.
+    """
+    for words in text.split():
+        if words.isdigit():
+            return True
+        else:
+            return False
