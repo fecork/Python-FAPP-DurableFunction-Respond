@@ -28,6 +28,7 @@ def main(listRespond: list) -> list:
     dict_penalty = parameters_dict["dict_penalty"]
 
     lista = questions[0]
+    questions[2] = list_to_string(questions[2])
 
     respuesta = {
         "question_1": lista["question_1"],
@@ -78,3 +79,17 @@ def validate_number(text):
             return True
         else:
             return False
+
+
+def list_to_string(questions):
+    """
+    This is a function for convert a list to string.
+    Args:
+        list (list): This is a list with the text to convert.
+    Returns:
+        str: This is a string with the text converted.
+    """
+
+    questions["quote"] = "---".join(questions["quote"])
+    questions["answer"] = "---".join(questions["answer"])
+    return questions
