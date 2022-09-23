@@ -10,6 +10,8 @@ class Respond:
         numberQuestion: int,
         boolean: bool,
         meanProbability: float,
+        value: float,
+        denomination: str,
     ) -> None:
         self.question = question
         self.answer = answer
@@ -18,3 +20,5 @@ class Respond:
         self.numberQuestion = numberQuestion
         self.boolean = boolean
         self.meanProbability = meanProbability
+        self.value = value
+        self.denomination = denomination

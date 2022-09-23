@@ -68,6 +68,8 @@ def main(parametersCancellation: dict) -> dict:
             numberQuestion=5,
             boolean=False if len(list_answer) == 0 else True,
             meanProbability=gpt_text_five["meanProbability"],
+            value=None,
+            denomination=None,
         ).__dict__
 
         return respond
@@ -80,5 +82,7 @@ def main(parametersCancellation: dict) -> dict:
             numberQuestion=5,
             boolean=False,
             meanProbability=0,
+            value=None,
+            denomination=None,
         ).__dict__
         return respond

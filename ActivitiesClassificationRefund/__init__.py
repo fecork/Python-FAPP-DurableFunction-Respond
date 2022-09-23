@@ -55,6 +55,8 @@ def main(parametersCancellation: str) -> dict:
         numberQuestion=4,
         boolean=True if gpt_text_classification_text == "Yes" else False,
         meanProbability=gpt_text_classification["meanProbability"],
+        value=None,
+        denomination=None,
     ).__dict__
 
     return respond

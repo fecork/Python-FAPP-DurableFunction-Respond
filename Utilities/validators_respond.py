@@ -66,17 +66,7 @@ def validate_structure_json(dict_questions: dict) -> dict:
 
     for number in list_numbers:
         number = number + 1
-        if "question_" + str(number) not in dict_questions and number != 2:
-            dict_questions["question_" + str(number)] = {
-                "answer": "",
-                "category": "",
-                "quote": "",
-                "boolean": False,
-                "numberQuestion": number,
-                "question": list_questions[int(number) - 1],
-                "score": 0,
-            }
-        if "question_" + str(number) not in dict_questions and number == 2:
+        if "question_" + str(number) not in dict_questions:
             dict_questions["question_" + str(number)] = {
                 "answer": "",
                 "category": "",
@@ -88,5 +78,17 @@ def validate_structure_json(dict_questions: dict) -> dict:
                 "value": None,
                 "denomination": None,
             }
+        # if "question_" + str(number) not in dict_questions and number == 2:
+        #     dict_questions["question_" + str(number)] = {
+        #         "answer": "",
+        #         "category": "",
+        #         "quote": "",
+        #         "boolean": False,
+        #         "numberQuestion": number,
+        #         "question": list_questions[int(number) - 1],
+        #         "score": 0,
+        #         "value": None,
+        #         "denomination": None,
+        #     }
 
     return dict_questions

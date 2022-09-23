@@ -70,6 +70,8 @@ def execute_clean_json(score, text) -> dict:
         boolean=False,
         numberQuestion=0,
         meanProbability=score,
+        value=None,
+        denomination=None,
     ).__dict__
     key_number = ""
 
