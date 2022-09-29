@@ -67,6 +67,7 @@ def execute_clean_json(score, text) -> dict:
         answer="",
         category=16,
         quote="",
+        freeText=True,
         boolean=False,
         numberQuestion=0,
         meanProbability=score,
@@ -93,6 +94,9 @@ def execute_clean_json(score, text) -> dict:
 
                 dict_response["question"] = list_questions[key_number - 1]
                 dict_response["numberQuestion"] = key_number
+
+                if key_number == 3:
+                    dict_response["freeText"] = False
 
         value = clear_value_json(line, "quote")
         if value is not None:

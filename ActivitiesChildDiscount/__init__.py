@@ -14,7 +14,6 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
 from Utilities.load_parameter import load_parameters
-from Utilities.clear_respond import format_text
 from Utilities.dto_respond import Respond
 from Adapters import adapter_gpt
 
@@ -65,6 +64,7 @@ def main(parametersCancellation: dict) -> dict:
             answer=list_answer,
             category=19,
             quote=list_quote,
+            freeText=True,
             numberQuestion=5,
             boolean=False if len(list_answer) == 0 else True,
             meanProbability=gpt_text_five["meanProbability"],
@@ -79,6 +79,7 @@ def main(parametersCancellation: dict) -> dict:
             answer=["passengerTypes is not child or infant"],
             category=19,
             quote="",
+            freeText=False,
             numberQuestion=5,
             boolean=False,
             meanProbability=0,

@@ -7,6 +7,7 @@ class Respond:
         answer: str,
         category: int,
         quote: str,
+        freeText: bool,
         numberQuestion: int,
         boolean: bool,
         meanProbability: float,
@@ -17,6 +18,7 @@ class Respond:
         self.answer = answer
         self.category = category
         self.quote = quote
+        self.freeText = freeText
         self.numberQuestion = numberQuestion
         self.boolean = boolean
         self.meanProbability = meanProbability
