@@ -38,7 +38,9 @@ def orchestrator_function(
 
     list_passengers_type = []
     for dict_penalty in parameter_penalty_text:
-        passenger_type = handler_select_text.search_passenger_types(dict_penalty)
+        passenger_type = handler_select_text.search_passenger_types(
+            dict_penalty
+        )
         list_passengers_type.append(passenger_type)
         list_passengers_type = list(set(list_passengers_type))
 
@@ -141,19 +143,25 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "ActivitiesExecuteQuiz", quiz_text_and_question
     )
 
-    response_classification = context.call_activity(
-        "ActivitiesClassificationRefund", gpt_paragraph_text
-    )
-
     response_child_discount = context.call_activity(
         "ActivitiesChildDiscount", parameters_dict
     )
 
-    outputs = yield context.task_all(
-        [response_quiz, response_classification, response_child_discount]
-    )
+    # Descomentar para clasificar con GPT
+
+    # response_classification = context.call_activity(
+    #     "ActivitiesClassificationRefund", gpt_paragraph_text
+    # )
+
+    # outputs = yield context.task_all(
+    #     [response_quiz, response_classification, response_child_discount]
+    # )
+
+    outputs = yield context.task_all([response_quiz, response_child_discount])
 
     data_respond = [outputs, parameters_dict]
 
-    respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
+    respuesta = yield context.call_activity(
+        "ActivitiesSortAnswer", data_respond
+    )
     return respuesta

@@ -44,11 +44,13 @@ def validate_charge_number(dict_questions: dict) -> dict:
         number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
         denomination = "".join([i for i in text if not i.isdigit()])
         if len(number) > 0:
+            dict_questions[question_charge]["boolean"] = True
             dict_questions[question_charge]["value"] = number[0]
             dict_questions[question_charge][
                 "denomination"
             ] = clear_respond.format_denomination(denomination).strip()
         if len(number) == 0:
+            dict_questions[question_charge]["boolean"] = False
             dict_questions[question_charge]["value"] = None
             dict_questions[question_charge]["denomination"] = None
     return dict_questions
@@ -78,17 +80,5 @@ def validate_structure_json(dict_questions: dict) -> dict:
                 "value": None,
                 "denomination": None,
             }
-        # if "question_" + str(number) not in dict_questions and number == 2:
-        #     dict_questions["question_" + str(number)] = {
-        #         "answer": "",
-        #         "category": "",
-        #         "quote": "",
-        #         "boolean": False,
-        #         "numberQuestion": number,
-        #         "question": list_questions[int(number) - 1],
-        #         "score": 0,
-        #         "value": None,
-        #         "denomination": None,
-        #     }
 
     return dict_questions

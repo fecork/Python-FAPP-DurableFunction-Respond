@@ -7,6 +7,7 @@
 # - run pip install -r requirements.txt
 
 import logging
+from Utilities import dto_respond
 
 
 def main(listRespond: list) -> list:
@@ -28,14 +29,17 @@ def main(listRespond: list) -> list:
     dict_penalty = parameters_dict["dict_penalty"]
 
     lista = questions[0]
-    questions[2] = list_to_string(questions[2])
+    answer_5 = questions[1]
+    # questions[2] = list_to_string(questions[2])
+    answer_5 = list_to_string(answer_5)
+    answer_4 = ver_booleans(lista)
 
     respuesta = {
         "question_1": lista["question_1"],
         "question_2": lista["question_2"],
         "question_3": lista["question_3"],
-        "question_4": questions[1],
-        "question_5": questions[2],
+        "question_4": answer_4,
+        "question_5": answer_5,
     }
 
     dict_response = {
@@ -64,6 +68,30 @@ def main(listRespond: list) -> list:
     dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
 
     return [dict_response]
+
+
+def ver_booleans(lista):
+    boolean_1 = lista["question_1"]["boolean"]
+    boolean_2 = lista["question_2"]["boolean"]
+    boolean_3 = lista["question_3"]["boolean"]
+    validate = boolean_1 and boolean_2 and boolean_3
+    if validate:
+        print("Refundable")
+
+    respond = dto_respond.Respond(
+        question="4. Is refundable?",
+        answer="Refundable" if validate else "Non Refundable",
+        category=16,
+        quote="",
+        freeText=False,
+        numberQuestion=4,
+        boolean=validate,
+        meanProbability=0,
+        value=None,
+        denomination=None,
+    ).__dict__
+
+    return respond
 
 
 def validate_number(text):
