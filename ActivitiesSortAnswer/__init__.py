@@ -8,6 +8,7 @@
 
 import logging
 from Utilities import dto_respond
+from datetime import datetime
 
 
 def main(listRespond: list) -> list:
@@ -31,9 +32,12 @@ def main(listRespond: list) -> list:
     lista = questions[0]
     answer_5 = questions[1]
     # questions[2] = list_to_string(questions[2])
+    # convert string 2022-11-05T211500 to datetime
+    lista["question_3"]["answer"] = datetime.strptime(
+        lista["question_3"]["answer"], "%Y-%m-%dT%H%M%S"
+    ).strftime("%d/%m/%Y, %H:%M:%S")
     answer_5 = list_to_string(answer_5)
     answer_4 = ver_booleans(lista)
-
     respuesta = {
         "question_1": lista["question_1"],
         "question_2": lista["question_2"],
