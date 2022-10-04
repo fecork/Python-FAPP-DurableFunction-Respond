@@ -1,0 +1,47 @@
+question_paragraph_change: |
+          extract verbatim the paragraph that corresponds just to changes:
+
+          CHANGES
+
+question_fare_rules_change: |
+
+          according to the above rules,answer:
+
+          1. according to the rules at which time you can make changes?. Choose one:
+          - ANY TIME
+          - AFTER AND BEFORE DEPARTURE
+          - BEFORE DEPARTURE
+          - AFTER DEPARTURE
+          - None
+
+          2. How much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION? Choose one and complete:
+          - CHARGE: __ FOR REISSUE OR REVALIDATION
+          - None
+
+          3. How much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW. Choose one and complete:
+          - FEE: __ FOR NO SHOW
+          - None.
+
+          4. Changes is permitted in case of no-show? Choose one:
+          - Yes, is permitted in case of no-show
+          - No, is not permitted in case of no-show
+          - None
+
+          5. According to the ticket information, the departure date is?:
+          -
+  
+
+structure_fare_rules_change: |
+
+          SOLUTION QUESTIONS 1-5:
+
+list_question_fare_rules_change: |
+          "1. According to the rules at which time you can make changes?",
+          "2. How much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION?",
+          "3. How much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW.",
+          "4. Changes is permitted in case of no-show?",
+          "5. According to the ticket information the departure date is?"
+
+number_question_change: 5
+
+list_question_charge_change: [question_2, question_3]

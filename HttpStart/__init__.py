@@ -25,9 +25,7 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
     logging.warning("starter: " + starter)
 
     client = df.DurableOrchestrationClient(starter)
-    # instance_id = await client.start_new(
-    #     req.route_params["functionName"], None, dict_parameters
-    # )
+
     instance_id = await client.start_new("Orchestator", None, dict_parameters)
 
     logging.info(f"Started orchestration with ID = '{instance_id}'.")

@@ -18,7 +18,12 @@ from Utilities.handler_respond import individual_paragraphs
 from Adapters import adapter_gpt
 
 
-def main(parametersCancellation: str) -> dict:
+from Utilities.load_parameter import load_parameters
+
+loaded_parameters = load_parameters()
+
+
+def main(parameters: dict) -> dict:
     """
     This is a function for send a GPT a text and get a respond.
     Args:
@@ -28,9 +33,17 @@ def main(parametersCancellation: str) -> dict:
 
     """
     logging.warning("Executing ActivitiesExtractParagraph")
-    quiz_text_and_question = parametersCancellation
+    quiz_text_and_question = parameters["quiz_text_and_question"]
+    list_question_charge = parameters["list_question_charge"]
     gpt_quiz = adapter_gpt.ask_openai(quiz_text_and_question, "question")
     gpt_quiz_text = gpt_quiz["text"]
     gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
 
-    return individual_paragraphs(gpt_quiz_text, gpt_quiz_mean_probability)
+    logging.error(list_question_charge)
+
+    return individual_paragraphs(
+        gpt_quiz_text,
+        gpt_quiz_mean_probability,
+        parameters,
+        list_question_charge,
+    )
