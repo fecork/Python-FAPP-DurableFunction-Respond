@@ -41,12 +41,18 @@ def validate_charge_number(
     return:
         dictionary with the formated information of the questions
     """
-    # question_charge_list = ["question_2"]
+
+    list_denomination = loaded_parameters["denomination"].split("\n")
     for question_charge in question_charge_list:
         if question_charge in dict_questions:
             text = dict_questions[question_charge]["answer"]
             number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
-            denomination = "".join([i for i in text if not i.isdigit()])
+            # select text with the denomination in denomination list
+            denomination = [
+                value for value in list_denomination if value in text
+            ][0]
+            # denomination = "".join([i for i in text if not i.isdigit()])
+
             if len(number) > 0:
                 dict_questions[question_charge]["boolean"] = True
                 dict_questions[question_charge]["value"] = number[0]
