@@ -51,7 +51,6 @@ def validate_charge_number(
             denomination = [
                 value for value in list_denomination if value in text
             ][0]
-            # denomination = "".join([i for i in text if not i.isdigit()])
 
             if len(number) > 0:
                 dict_questions[question_charge]["boolean"] = True

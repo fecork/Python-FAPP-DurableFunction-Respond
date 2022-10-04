@@ -68,30 +68,6 @@ def main(listRespond: list) -> list:
     return [dict_response]
 
 
-# def ver_booleans(lista):
-#     boolean_1 = lista["question_1"]["boolean"]
-#     boolean_2 = lista["question_2"]["boolean"]
-#     boolean_3 = lista["question_3"]["boolean"]
-#     validate = boolean_1 and boolean_2 and boolean_3
-#     if validate:
-#         print("Refundable")
-
-#     respond = dto_respond.Respond(
-#         question="4. Is refundable?",
-#         answer="Refundable" if validate else "Non Refundable",
-#         category=16,
-#         quote="",
-#         freeText=False,
-#         numberQuestion=4,
-#         boolean=validate,
-#         meanProbability=0,
-#         value=None,
-#         denomination=None,
-#     ).__dict__
-
-#     return respond
-
-
 def validate_number(text):
     """
     This is a function for validate if the text is a number.
