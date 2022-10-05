@@ -1,0 +1,16 @@
+question_fare_rules_nineteen: |
+          List all the CHARGES shown in the text.
+
+structure_fare_rules_nineteen: |
+  
+          choose the best option and answer with the list structure answer and quote,
+          for instance:
+            
+          Answer: "[your answer charge with cause, your answer charge with cause]"
+          Quote: "[TEXT EXTRACTION, TEXT EXTRACTION, TEXT EXTRACTION]"
+
+          from quote value, add the text from which you extract the answer
+
+          SOLUTION 
+
+          Answer: 

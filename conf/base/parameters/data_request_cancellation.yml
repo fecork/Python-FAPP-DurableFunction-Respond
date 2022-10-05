@@ -1,0 +1,33 @@
+question_paragraph_cancellation: |
+          extract verbatim the paragraph that corresponds just to cancellations:
+
+          CANCELLATIONS
+
+question_fare_rules_cancellation: |
+
+          according to the above rules, answer
+
+          1. According to the rules at which time you can cancel?. Choose one.
+          -ANY TIME.
+          -BEFORE DEPARTURE.
+          -None
+
+          2. How much is the CHARGE FOR CANCEL? Complete, in there is not charge respond null.
+          -CHARGE: ___.
+          -null
+
+          3. According to the ticket information, the departure date is?.
+          -
+
+structure_fare_rules_cancellation: |
+
+          SOLUTION QUESTIONS 1-3:
+
+list_question_fare_rules_cancellation: |
+          "1. According to the rules at which time you can cancel",
+          "2. How much is the CHARGE FOR CANCEL?",
+          "3. What is the departure date?"
+
+number_question_cancellation: 3
+
+list_question_charge_cancellation: [question_2]

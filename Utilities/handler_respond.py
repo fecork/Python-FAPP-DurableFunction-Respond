@@ -17,11 +17,9 @@ from Utilities.clear_respond import execute_clean_json
 
 nlp = spacy.load("en_core_web_sm")
 loaded_parameters = load_parameters()
-list_questions = loaded_parameters["list_question_fare_rules"].split(",")
-number_question = loaded_parameters["number_question"]
 
 
-def paragraph_segmentation(text: str):
+def paragraph_segmentation(text: str) -> list:
     """
     Function to segment paragraphs in a text
     Args:
@@ -45,7 +43,9 @@ def paragraph_segmentation(text: str):
     yield document[start:]
 
 
-def iterate_paragraphs(dataset: dict, score: float) -> pd.DataFrame:
+def iterate_paragraphs(
+    dataset: dict, score: float, list_question_charge: list
+) -> pd.DataFrame:
     """
     function to iterate over the paragraphs in the dataset
     in Kedro
@@ -65,7 +65,7 @@ def iterate_paragraphs(dataset: dict, score: float) -> pd.DataFrame:
         paragraph_detected = paragraph_segmentation(text)
 
         list_probe = split_paragraph(paragraph_detected)
-        dict_questions = text_to_json(list_probe, score)
+        dict_questions = text_to_json(list_probe, score, list_question_charge)
         dict_responses[partition_id] = dict_questions
         id_file.append(partition_id)
 
@@ -73,7 +73,9 @@ def iterate_paragraphs(dataset: dict, score: float) -> pd.DataFrame:
     return respond
 
 
-def individual_paragraphs(text: str, score: float) -> Dict:
+def individual_paragraphs(
+    text: str, score: float, dict_question: dict, list_question_charge: list
+) -> Dict:
     """
     function to iterate over the paragraphs in the dataset
     Args:
@@ -85,7 +87,9 @@ def individual_paragraphs(text: str, score: float) -> Dict:
     paragraph_detected = paragraph_segmentation(text)
 
     list_probe = split_paragraph(paragraph_detected)
-    dict_questions = text_to_json(list_probe, score)
+    dict_questions = text_to_json(
+        list_probe, score, dict_question, list_question_charge
+    )
     return dict_questions
 
 
@@ -106,7 +110,12 @@ def split_paragraph(paragraph_detected: list) -> list:
     return list_format_text
 
 
-def text_to_json(list_probe: list, score: float) -> dict:
+def text_to_json(
+    list_probe: list,
+    score: float,
+    dict_question: dict,
+    list_question_charge: list,
+) -> dict:
     """
     function to transform the text in json
     Args:
@@ -118,11 +127,13 @@ def text_to_json(list_probe: list, score: float) -> dict:
 
     for paragraphs in list_probe:
         text = paragraphs.split("\n")
-        response_clean = execute_clean_json(score, text)
+        response_clean = execute_clean_json(score, text, dict_question)
         dict_questions[
             "question_" + str(response_clean["key_number"])
         ] = response_clean["dict_response"]
 
-    dict_questions = validate_charge_number(dict_questions)
+    dict_questions = validate_charge_number(
+        dict_questions, list_question_charge
+    )
     dict_questions = validate_structure_json(dict_questions)
     return dict_questions

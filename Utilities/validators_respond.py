@@ -6,11 +6,13 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
 from Utilities.load_parameter import load_parameters
-
+from Utilities import clear_respond
 
 loaded_parameters = load_parameters()
-number_questions = loaded_parameters["number_question"]
-list_questions = loaded_parameters["list_question_fare_rules"].split(",")
+number_questions = loaded_parameters["number_question_cancellation"]
+list_questions = loaded_parameters[
+    "list_question_fare_rules_cancellation"
+].split(",")
 
 
 def validate_boolean(text: str) -> bool:
@@ -29,7 +31,9 @@ def validate_boolean(text: str) -> bool:
     return None
 
 
-def validate_charge_number(dict_questions: dict) -> dict:
+def validate_charge_number(
+    dict_questions: dict, question_charge_list: list
+) -> dict:
     """
     build a dictionary with the information about the charge number
     Args:
@@ -37,16 +41,27 @@ def validate_charge_number(dict_questions: dict) -> dict:
     return:
         dictionary with the formated information of the questions
     """
-    question_charge = "question_2"
-    if question_charge in dict_questions:
-        text = dict_questions[question_charge]["answer"]
-        number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
-        denomination = "".join([i for i in text if not i.isdigit()])
-        if len(number) > 1:
-            dict_questions[question_charge]["value"] = number[0]
-        if len(number) < 1:
-            dict_questions[question_charge]["value"] = None
-        dict_questions[question_charge]["denomination"] = denomination
+
+    list_denomination = loaded_parameters["denomination"].split("\n")
+    for question_charge in question_charge_list:
+        if question_charge in dict_questions:
+            text = dict_questions[question_charge]["answer"]
+            number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
+            # select text with the denomination in denomination list
+            denomination = [
+                value for value in list_denomination if value in text
+            ][0]
+
+            if len(number) > 0:
+                dict_questions[question_charge]["boolean"] = True
+                dict_questions[question_charge]["value"] = number[0]
+                dict_questions[question_charge][
+                    "denomination"
+                ] = clear_respond.format_denomination(denomination).strip()
+            if len(number) == 0:
+                dict_questions[question_charge]["boolean"] = False
+                dict_questions[question_charge]["value"] = None
+                dict_questions[question_charge]["denomination"] = None
     return dict_questions
 
 
@@ -67,9 +82,12 @@ def validate_structure_json(dict_questions: dict) -> dict:
                 "answer": "",
                 "category": "",
                 "quote": "",
-                "boolean": "",
+                "boolean": False,
                 "numberQuestion": number,
                 "question": list_questions[int(number) - 1],
                 "score": 0,
+                "value": None,
+                "denomination": None,
             }
+
     return dict_questions

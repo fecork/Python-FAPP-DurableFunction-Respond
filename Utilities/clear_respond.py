@@ -1,3 +1,4 @@
+import logging
 import sys
 import os
 import re
@@ -9,8 +10,6 @@ from validators_respond import validate_boolean
 from Utilities.load_parameter import load_parameters
 
 loaded_parameters = load_parameters()
-list_questions = loaded_parameters["list_question_fare_rules"].split(",")
-number_question = loaded_parameters["number_question"]
 
 
 def clear_value_json(line: str, key: str) -> str:
@@ -22,6 +21,7 @@ def clear_value_json(line: str, key: str) -> str:
     return:
         value of the key
     """
+    logging.info("clear_value_json")
     key_json = key.translate({ord(i): None for i in ":"})
 
     if "quote" in line:
@@ -42,7 +42,7 @@ def extract_number(sentence: str) -> list:
     return:
         list with the numbers
     """
-
+    logging.info("extract_number")
     list_number = []
     for text in sentence.split():
         try:
@@ -52,7 +52,7 @@ def extract_number(sentence: str) -> list:
     return list_number
 
 
-def execute_clean_json(score, text) -> dict:
+def execute_clean_json(score, text: str, dict_question: dict) -> dict:
     """
     block to execute the clean json
     Args:
@@ -61,15 +61,20 @@ def execute_clean_json(score, text) -> dict:
     return:
         dictionary with the information of the paragraphs
     """
-
+    logging.info("execute_clean_json")
+    list_questions = dict_question["list_questions"].split(",")
+    number_question = dict_question["number_questions"]
     dict_response = Respond(
         question="",
         answer="",
         category=16,
         quote="",
+        freeText=True,
         boolean=False,
         numberQuestion=0,
         meanProbability=score,
+        value=None,
+        denomination=None,
     ).__dict__
     key_number = ""
 
@@ -78,7 +83,6 @@ def execute_clean_json(score, text) -> dict:
         value = clear_value_json(line, "answer")
         if value is not None:
             dict_response["answer"] = value
-            # dict_response(answer=value)
 
         value = clear_value_json(line, "number_question")
 
@@ -91,6 +95,9 @@ def execute_clean_json(score, text) -> dict:
 
                 dict_response["question"] = list_questions[key_number - 1]
                 dict_response["numberQuestion"] = key_number
+
+                if key_number == 3:
+                    dict_response["freeText"] = False
 
         value = clear_value_json(line, "quote")
         if value is not None:
@@ -111,8 +118,23 @@ def format_text(text: str) -> str:
     Returns:
         Preprocessed data text, without stranger character.
     """
-
+    logging.info("format_text")
     text = text.replace(str("\\n"), "\n")
     text = text.replace(str("/"), " ")
     text = re.sub(r"[^a-zA-Z0-9\s\n.,;]", "", text)
+    return text
+
+
+def format_denomination(text: str) -> str:
+    """Preprocesses the data text, clean it.
+
+    Args:
+        text: String Raw data.
+    Returns:
+        Preprocessed data text, without stranger character.
+    """
+    logging.info("format_denomination")
+    text = text.replace(str("\\n"), "\n")
+    text = text.replace(str("/"), " ")
+    text = re.sub(r"[^a-zA-Z0-9\s\n;]", "", text)
     return text

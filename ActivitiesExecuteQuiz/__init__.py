@@ -15,15 +15,35 @@ sys.path.insert(0, dir_path)
 
 
 from Utilities.handler_respond import individual_paragraphs
-from AdaptadorOpenAI import adapter_gpt
+from Adapters import adapter_gpt
 
 
-def main(name: str) -> dict:
+from Utilities.load_parameter import load_parameters
+
+loaded_parameters = load_parameters()
+
+
+def main(parameters: dict) -> dict:
+    """
+    This is a function for send a GPT a text and get a respond.
+    Args:
+        parametersCancellation (dict): This is a dictionary with text and task.
+    Returns:
+        dict: This is a dictionary with text and mean probability.
+
+    """
     logging.warning("Executing ActivitiesExtractParagraph")
-    quiz_text_and_question = name
+    quiz_text_and_question = parameters["quiz_text_and_question"]
+    list_question_charge = parameters["list_question_charge"]
     gpt_quiz = adapter_gpt.ask_openai(quiz_text_and_question, "question")
     gpt_quiz_text = gpt_quiz["text"]
-
     gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
-    logging.warning("gpt_quiz")
-    return individual_paragraphs(gpt_quiz_text, gpt_quiz_mean_probability)
+
+    logging.error(list_question_charge)
+
+    return individual_paragraphs(
+        gpt_quiz_text,
+        gpt_quiz_mean_probability,
+        parameters,
+        list_question_charge,
+    )

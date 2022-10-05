@@ -6,7 +6,7 @@
       "name": "req",
       "type": "httpTrigger",
       "direction": "in",
-      "route": "orchestrators/{functionName}",
+      "route": "GptModelPoliciesTpt",
       "methods": [
         "post",
         "get"
