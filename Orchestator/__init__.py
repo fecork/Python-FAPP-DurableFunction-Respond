@@ -15,7 +15,10 @@ import azure.durable_functions as df
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from shared import handler_select_text
+from shared import pipeline_cancel
+from shared import pipeline_change
+from Utilities import object_iterator
+from Utilities import handler_select_text
 from Utilities.load_parameter import load_parameters
 
 parameters = load_parameters()
@@ -57,111 +60,24 @@ def orchestrator_function(
     parameter_penalty_text = handler_select_text.extract_passenger(
         parameter_penalty_text, "adult"
     )
-    if parameter_task == "CANCELLATION":
-        parameters_cancellation = iterate_penalty_text(
-            parameter_penalty_text, parameter_information, is_child
-        )
 
-        gpt_response = pipeline(context, parameters_cancellation)
+    parameters_object = object_iterator.iterate_penalty_text(
+        parameter_penalty_text, parameter_information, is_child
+    )
+
+    parameters_object["task"] = parameter_task
+
+    if parameter_task == "CANCELLATION":
+
+        gpt_response = pipeline_cancel.pipeline(context, parameters_object)
+
+        return gpt_response
+
+    if parameter_task == "CHANGE":
+
+        gpt_response = pipeline_change.pipeline(context, parameters_object)
 
         return gpt_response
 
 
 main = df.Orchestrator.create(orchestrator_function)
-
-
-def iterate_penalty_text(
-    penalty_text: list, parameter_information: str, is_child: bool
-) -> list:
-    """
-    iterate over the penalty text and execute the pipeline
-    Args:
-        penalty_text: list of jsons
-    Returns:
-        list of gpt responses
-    """
-    for dict_penalty in penalty_text:
-        dict_response = iterate_categories(
-            dict_penalty, parameter_information, is_child
-        )
-    return dict_response
-
-
-def iterate_categories(
-    dict_penalty: dict, parameter_information: str, is_child: bool
-) -> dict:
-    """
-    iterate over the categories and execute the pipeline
-    Args:
-        categories: list of jsons
-    Returns:
-        dict penalty
-    """
-    result_categories = handler_select_text.extract_categories(dict_penalty)
-    text_category_sixteen = result_categories["16"]
-    text_category_nineteen = result_categories["19"]
-
-    dict_parameters = {
-        "text_category_sixteen": text_category_sixteen,
-        "text_category_nineteen": text_category_nineteen,
-        "data_information": parameter_information,
-        "is_child": is_child,
-        "dict_penalty": dict_penalty,
-    }
-    return dict_parameters
-
-
-def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
-    """
-    This is the main pipeline function. Execute in parallel the activities
-    Args:
-        context (DurableOrchestrationContext): The context object for durable function
-        parameters_dict (dict): This is a dictionary with the parameters
-    Returns:
-        parameters_dict: This is a dictionary with the respond of the GPT
-    """
-
-    question_fare_rules = parameters["question_fare_rules"]
-    structure_fare_rules = parameters["structure_fare_rules"]
-    data_information = parameters_dict["data_information"]
-
-    gpt_paragraph_text = yield context.call_activity(
-        "ActivitieExtractParagraph", parameters_dict
-    )
-
-    quiz_text_and_question = (
-        data_information
-        + "\n" * 2
-        + gpt_paragraph_text
-        + "\n" * 2
-        + question_fare_rules
-        + "\n" * 2
-        + structure_fare_rules
-    )
-
-    response_quiz = context.call_activity(
-        "ActivitiesExecuteQuiz", quiz_text_and_question
-    )
-
-    response_child_discount = context.call_activity(
-        "ActivitiesChildDiscount", parameters_dict
-    )
-
-    # Descomentar para clasificar con GPT
-
-    # response_classification = context.call_activity(
-    #     "ActivitiesClassificationRefund", gpt_paragraph_text
-    # )
-
-    # outputs = yield context.task_all(
-    #     [response_quiz, response_classification, response_child_discount]
-    # )
-
-    outputs = yield context.task_all([response_quiz, response_child_discount])
-
-    data_respond = [outputs, parameters_dict]
-
-    respuesta = yield context.call_activity(
-        "ActivitiesSortAnswer", data_respond
-    )
-    return respuesta
