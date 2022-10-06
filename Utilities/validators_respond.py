@@ -10,9 +10,7 @@ from Utilities import clear_respond
 
 loaded_parameters = load_parameters()
 number_questions = loaded_parameters["number_question_cancellation"]
-list_questions = loaded_parameters[
-    "list_question_fare_rules_cancellation"
-].split(",")
+list_questions = loaded_parameters["list_question_fare_rules_cancellation"].split(",")
 
 
 def validate_boolean(text: str) -> bool:
@@ -31,9 +29,7 @@ def validate_boolean(text: str) -> bool:
     return None
 
 
-def validate_charge_number(
-    dict_questions: dict, question_charge_list: list
-) -> dict:
+def validate_charge_number(dict_questions: dict, question_charge_list: list) -> dict:
     """
     build a dictionary with the information about the charge number
     Args:
@@ -48,9 +44,13 @@ def validate_charge_number(
             text = dict_questions[question_charge]["answer"]
             number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
             # select text with the denomination in denomination list
-            denomination = [
-                value for value in list_denomination if value in text
-            ][0]
+
+            denomination = [value for value in list_denomination if value in text]
+
+            if len(denomination) > 0:
+                denomination = denomination[0]
+            else:
+                denomination = text
 
             if len(number) > 0:
                 dict_questions[question_charge]["boolean"] = True

@@ -41,18 +41,20 @@ def orchestrator_function(
 
     list_passengers_type = []
     for dict_penalty in parameter_penalty_text:
-        passenger_type = handler_select_text.search_passenger_types(
-            dict_penalty
-        )
+        passenger_type = handler_select_text.search_passenger_types(dict_penalty)
         list_passengers_type.append(passenger_type)
         list_passengers_type = list(set(list_passengers_type))
 
     is_child = False
+    prueba = tuple(list_passengers_type)
+
+    logging.info("list_passengers_type: %s", list_passengers_type)
     if "child" in list_passengers_type:
+        logging.info(list_passengers_type)
         is_child = True
     if "infant" in list_passengers_type:
+        logging.info(list_passengers_type)
         is_child = True
-
     parameter_penalty_text = handler_select_text.remove_duplicate_passenger(
         parameter_penalty_text, list_passengers_type
     )
@@ -64,9 +66,12 @@ def orchestrator_function(
     parameters_object = object_iterator.iterate_penalty_text(
         parameter_penalty_text, parameter_information, is_child
     )
-
+    logging.info("parameters_object: %s", parameters_object)
+    logging.info("list_passengers_type: %s", list_passengers_type)
+    logging.info("prueba: %s", prueba)
     parameters_object["task"] = parameter_task
-
+    parameters_object["dict_penalty"]["passengerTypes"] = list(prueba)
+    logging.info("parameters_objecZZZZZZZZZt: %s", parameters_object)
     if parameter_task == "CANCELLATION":
 
         gpt_response = pipeline_cancel.pipeline(context, parameters_object)
