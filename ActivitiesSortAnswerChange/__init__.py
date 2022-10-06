@@ -29,8 +29,6 @@ def main(listRespond: list) -> list:
     dict_penalty = parameters_dict["dict_penalty"]
 
     lista = questions[0]
-    logging.info("REVISAR RESPUESTAS")
-    logging.warning(lista)
 
     respuesta = {
         "question_1": lista["question_1"],

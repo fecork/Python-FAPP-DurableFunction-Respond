@@ -39,8 +39,6 @@ def main(parameters: dict) -> dict:
     gpt_quiz_text = gpt_quiz["text"]
     gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
 
-    logging.error(list_question_charge)
-
     return individual_paragraphs(
         gpt_quiz_text,
         gpt_quiz_mean_probability,
