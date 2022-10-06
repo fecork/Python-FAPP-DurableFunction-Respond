@@ -28,10 +28,19 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     parameters_dict["question_paragraph"] = parameters[
         "question_paragraph_cancellation"
     ]
+    parameters_dict["paragraph"] = "CANCELLATION"
 
-    gpt_paragraph_text = yield context.call_activity(
-        "ActivitieExtractParagraph", parameters_dict
-    )
+    try:
+        gpt_paragraph_text = yield context.call_activity(
+            "ActivitieExtractParagraphIndex", parameters_dict
+        )
+    except Exception as e:
+        logging.error("Error in ActivitieExtractParagraphIndex")
+        logging.error(e)
+
+    # gpt_paragraph_text = yield context.call_activity(
+    #     "ActivitieSummary", gpt_paragraph_text
+    # )
 
     quiz_text_and_question = (
         data_information
@@ -52,9 +61,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "list_question_charge": parameters["list_question_charge_cancellation"],
     }
 
-    response_quiz = context.call_activity(
-        "ActivitiesExecuteQuiz", parameters_quiz
-    )
+    response_quiz = context.call_activity("ActivitiesExecuteQuiz", parameters_quiz)
 
     response_child_discount = context.call_activity(
         "ActivitiesChildDiscount", parameters_dict
@@ -64,7 +71,5 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
 
     data_respond = [outputs, parameters_dict]
 
-    respuesta = yield context.call_activity(
-        "ActivitiesSortAnswer", data_respond
-    )
+    respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
     return respuesta
