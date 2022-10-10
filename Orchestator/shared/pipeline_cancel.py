@@ -38,10 +38,6 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         logging.error("Error in ActivitieExtractParagraphIndex")
         logging.error(e)
 
-    # gpt_paragraph_text = yield context.call_activity(
-    #     "ActivitieSummary", gpt_paragraph_text
-    # )
-
     quiz_text_and_question = (
         data_information
         + "\n" * 2
@@ -59,6 +55,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "number_questions": parameters["number_question_cancellation"],
         "list_questions": parameters["list_question_fare_rules_cancellation"],
         "list_question_charge": parameters["list_question_charge_cancellation"],
+        "task": "cancellation",
     }
 
     response_quiz = context.call_activity("ActivitiesExecuteQuiz", parameters_quiz)

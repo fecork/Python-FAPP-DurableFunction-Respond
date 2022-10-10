@@ -44,14 +44,10 @@ def orchestrator_function(
         passenger_type = handler_select_text.search_passenger_types(dict_penalty)
         list_passengers_type.append(passenger_type)
         list_passengers_type = list(set(list_passengers_type))
+        is_child = validate_child(passenger_type)
 
-    is_child = False
     passengers_type = tuple(list_passengers_type)
 
-    if "child" in list_passengers_type:
-        is_child = True
-    if "infant" in list_passengers_type:
-        is_child = True
     parameter_penalty_text = handler_select_text.remove_duplicate_passenger(
         parameter_penalty_text, list_passengers_type
     )
@@ -80,3 +76,18 @@ def orchestrator_function(
 
 
 main = df.Orchestrator.create(orchestrator_function)
+
+
+def validate_child(passenger_type: str) -> bool:
+    """
+    This function validate if the passenger type is child.
+    Args:
+        passenger_type (str): This is the passenger type.
+    Returns:
+        bool: This is a boolean.
+    """
+    if passenger_type.lower() == "child":
+        return True
+    if passenger_type.lower() == "infant":
+        return True
+    return False

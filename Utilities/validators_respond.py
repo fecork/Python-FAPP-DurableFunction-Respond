@@ -1,6 +1,8 @@
 import re
 import os
 import sys
+import logging
+from datetime import datetime
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
@@ -86,3 +88,34 @@ def validate_structure_json(dict_questions: dict) -> dict:
             }
 
     return dict_questions
+
+
+def validate_date(date: str) -> str:
+    """
+    This is a function for validate if the date is in the correct format.
+    Args: string with the date to validate.
+    Return: string with the date in the correct format.
+    """
+    try:
+        date_format_base = "%Y-%m-%dT%H%M%S"
+        date_format = "%d/%m/%Y, %H:%M:%S"
+
+        return datetime.strptime(date, date_format_base).strftime(date_format)
+    except ValueError:
+        logging.error(ValueError)
+        return date
+
+
+def validate_number(text):
+    """
+    This is a function for validate if the text is a number.
+    Args:
+        txt (str): This is a string with the text to validate.
+    Returns:
+        bool: This is a boolean with the result of the validation.
+    """
+    for words in text.split():
+        if words.isdigit():
+            return True
+        else:
+            return False

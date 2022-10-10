@@ -55,6 +55,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "number_questions": parameters["number_question_change"],
         "list_questions": parameters["list_question_fare_rules_change"],
         "list_question_charge": parameters["list_question_charge_change"],
+        "task": "change",
     }
 
     response_quiz = context.call_activity("ActivitiesExecuteQuiz", parameters_quiz)

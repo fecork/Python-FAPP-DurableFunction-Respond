@@ -15,6 +15,7 @@ sys.path.insert(0, dir_path)
 
 from Utilities.load_parameter import load_parameters
 from Utilities.clear_respond import format_text
+from Adapters import adapter_ls
 
 parameters = load_parameters()
 
@@ -42,5 +43,10 @@ def main(parameters: dict) -> dict:
         changes = content[0:index_cancellation]
         cancellations = content[index_cancellation:]
 
-    respond = {"CANCELLATION": cancellations, "CHANGE": changes}
-    return respond[paragraph]
+    dict_split_text = {"CANCELLATION": cancellations, "CHANGE": changes}
+    respond = dict_split_text[paragraph]
+
+    if len(respond) > 5000:
+        logging.warning("ActivitiesExtractParagraph: Text is too long, summarizing")
+        respond = adapter_ls.main(respond)
+    return respond

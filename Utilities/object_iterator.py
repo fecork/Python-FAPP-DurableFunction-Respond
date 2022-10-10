@@ -1,3 +1,4 @@
+import logging
 from Utilities import handler_select_text
 
 
@@ -15,6 +16,7 @@ def iterate_penalty_text(
         dict_response = iterate_categories(
             dict_penalty, parameter_information, is_child
         )
+
     return dict_response
 
 

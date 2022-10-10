@@ -7,7 +7,8 @@
 # - run pip install -r requirements.txt
 
 import logging
-from Utilities import dto_respond
+
+from Utilities.validators_respond import validate_date
 
 
 def main(listRespond: list) -> list:
@@ -27,15 +28,20 @@ def main(listRespond: list) -> list:
     text_category_sixteen = parameters_dict["text_category_sixteen"]
     text_category_nineteen = parameters_dict["text_category_nineteen"]
     dict_penalty = parameters_dict["dict_penalty"]
+    question_with_date = "question_5"
 
-    lista = questions[0]
+    question_list = questions[0]
+
+    question_list[question_with_date]["answer"] = validate_date(
+        question_list[question_with_date]["answer"]
+    )
 
     respuesta = {
-        "question_1": lista["question_1"],
-        "question_2": lista["question_2"],
-        "question_3": lista["question_3"],
-        "question_4": lista["question_4"],
-        "question_5": lista["question_5"],
+        "question_1": question_list["question_1"],
+        "question_2": question_list["question_2"],
+        "question_3": question_list["question_3"],
+        "question_4": question_list["question_4"],
+        "question_5": question_list["question_5"],
     }
 
     dict_response = {
@@ -54,42 +60,13 @@ def main(listRespond: list) -> list:
         list_free_text = [{"category": 16, "text": text_category_sixteen}]
     # dict_penalty.update({"freeText": list_free_text})
 
-    lista_respuesta = []
+    question_list_respuesta = []
     for value in respuesta.values():
-        lista_respuesta.append(value)
+        question_list_respuesta.append(value)
 
-    dict_response["modelRespond"] = lista_respuesta
+    dict_response["modelRespond"] = question_list_respuesta
     dict_response["freeText"] = list_free_text
     dict_response["fareBasis"] = dict_penalty["fareBasis"]
     dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
 
     return [dict_response]
-
-
-def validate_number(text):
-    """
-    This is a function for validate if the text is a number.
-    Args:
-        txt (str): This is a string with the text to validate.
-    Returns:
-        bool: This is a boolean with the result of the validation.
-    """
-    for words in text.split():
-        if words.isdigit():
-            return True
-        else:
-            return False
-
-
-def list_to_string(questions):
-    """
-    This is a function for convert a list to string.
-    Args:
-        list (list): This is a list with the text to convert.
-    Returns:
-        str: This is a string with the text converted.
-    """
-
-    questions["quote"] = "---".join(questions["quote"])
-    questions["answer"] = "---".join(questions["answer"])
-    return questions
