@@ -33,8 +33,11 @@ def ask_openai(text: str, task: str) -> dict:
     logging.warning("Executing ask_openai")
 
     loaded_parameters = load_parameters()
-    if task == "question":
+    if task == "cancellation":
         parameters = loaded_parameters["open_ai_parameters"]
+
+    if task == "change":
+        parameters = loaded_parameters["open_ai_parameters_change"]
 
     if task == "classification":
         parameters = loaded_parameters["open_ai_parameters_classification"]

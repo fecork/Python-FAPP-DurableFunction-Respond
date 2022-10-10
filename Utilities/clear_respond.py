@@ -2,6 +2,7 @@ import logging
 import sys
 import os
 import re
+from datetime import datetime
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
@@ -21,7 +22,7 @@ def clear_value_json(line: str, key: str) -> str:
     return:
         value of the key
     """
-    logging.info("clear_value_json")
+    # logging.info("clear_value_json")
     key_json = key.translate({ord(i): None for i in ":"})
 
     if "quote" in line:
@@ -42,7 +43,7 @@ def extract_number(sentence: str) -> list:
     return:
         list with the numbers
     """
-    logging.info("extract_number")
+    # logging.info("extract_number")
     list_number = []
     for text in sentence.split():
         try:
@@ -138,3 +139,17 @@ def format_denomination(text: str) -> str:
     text = text.replace(str("/"), " ")
     text = re.sub(r"[^a-zA-Z0-9\s\n;]", "", text)
     return text
+
+
+def list_to_string(questions):
+    """
+    This is a function for convert a list to string.
+    Args:
+        list (list): This is a list with the text to convert.
+    Returns:
+        str: This is a string with the text converted.
+    """
+
+    questions["quote"] = "---".join(questions["quote"])
+    questions["answer"] = "---".join(questions["answer"])
+    return questions

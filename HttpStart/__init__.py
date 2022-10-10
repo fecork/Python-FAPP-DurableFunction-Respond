@@ -9,6 +9,13 @@ import logging
 import json
 import azure.functions as func
 import azure.durable_functions as df
+import os
+import sys
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, dir_path)
+
+from Utilities.error_respond import validate_error
 
 
 async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
@@ -36,8 +43,12 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
         respond = await client.get_status(instance_id)
         logging.warning(f"Orchestration status: {respond.runtime_status.value}")
         if respond.runtime_status.value == "Failed":
+            cause = validate_error(respond)
+
             return func.HttpResponse(
-                f"Orchestration failed: {respond.custom_status}"
+                json.dumps({"Cause": cause, "Error": respond.output}),
+                mimetype="application/json",
+                status_code=500,
             )
 
     return func.HttpResponse(

@@ -16,8 +16,8 @@ question_fare_rules_cancellation: |
           -CHARGE: ___.
           -null
 
-          3. According to the ticket information, the departure date is?.
-          -
+          3. extract from text the departure date.
+          -  departureDate =
 
 structure_fare_rules_cancellation: |
 
