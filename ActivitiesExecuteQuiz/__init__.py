@@ -35,13 +35,21 @@ def main(parameters: dict) -> dict:
     logging.warning("Executing ActivitiesExtractParagraph")
     quiz_text_and_question = parameters["quiz_text_and_question"]
     list_question_charge = parameters["list_question_charge"]
-    gpt_quiz = adapter_gpt.ask_openai(quiz_text_and_question, "question")
+    task = parameters["task"]
+    gpt_quiz = adapter_gpt.ask_openai(quiz_text_and_question, task)
     gpt_quiz_text = gpt_quiz["text"]
+
     gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
 
-    return individual_paragraphs(
+    respond = individual_paragraphs(
         gpt_quiz_text,
         gpt_quiz_mean_probability,
         parameters,
         list_question_charge,
     )
+
+    logging.error("<<<<<<<<<<<<<<<<<<")
+    logging.warning("Respuesta de GPT")
+    logging.info(respond)
+    logging.error(">>>>>>>>>>>>>>>>>>")
+    return respond

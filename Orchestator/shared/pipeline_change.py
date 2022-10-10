@@ -26,12 +26,17 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     structure_questions = parameters["structure_fare_rules_change"]
     data_information = parameters_dict["data_information"]
 
-    parameters_dict["question_paragraph"] = parameters[
-        "question_paragraph_change"
-    ]
-    gpt_paragraph_text = yield context.call_activity(
-        "ActivitieExtractParagraph", parameters_dict
-    )
+    parameters_dict["question_paragraph"] = parameters["question_paragraph_change"]
+
+    parameters_dict["paragraph"] = "CHANGE"
+
+    try:
+        gpt_paragraph_text = yield context.call_activity(
+            "ActivitieExtractParagraphIndex", parameters_dict
+        )
+    except Exception as e:
+        logging.error("Error in ActivitieExtractParagraphIndex")
+        logging.error(e)
 
     quiz_text_and_question = (
         data_information
@@ -50,17 +55,14 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "number_questions": parameters["number_question_change"],
         "list_questions": parameters["list_question_fare_rules_change"],
         "list_question_charge": parameters["list_question_charge_change"],
+        "task": "change",
     }
 
-    response_quiz = context.call_activity(
-        "ActivitiesExecuteQuiz", parameters_quiz
-    )
+    response_quiz = context.call_activity("ActivitiesExecuteQuiz", parameters_quiz)
 
     outputs = yield context.task_all([response_quiz])
 
     data_respond = [outputs, parameters_dict]
 
-    respuesta = yield context.call_activity(
-        "ActivitiesSortAnswerChange", data_respond
-    )
+    respuesta = yield context.call_activity("ActivitiesSortAnswerChange", data_respond)
     return respuesta

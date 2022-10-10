@@ -8,7 +8,10 @@
 
 import logging
 from Utilities import dto_respond
-from datetime import datetime
+
+from Utilities.validators_respond import validate_date
+from Utilities.clear_respond import list_to_string
+from Utilities.calculate import overall_average
 
 
 def main(listRespond: list) -> list:
@@ -28,28 +31,31 @@ def main(listRespond: list) -> list:
     text_category_sixteen = parameters_dict["text_category_sixteen"]
     text_category_nineteen = parameters_dict["text_category_nineteen"]
     dict_penalty = parameters_dict["dict_penalty"]
-
-    lista = questions[0]
+    question_with_date = "question_3"
+    question_list = questions[0]
     answer_5 = questions[1]
-    # questions[2] = list_to_string(questions[2])
-    # convert string 2022-11-05T211500 to datetime
-    lista["question_3"]["answer"] = datetime.strptime(
-        lista["question_3"]["answer"], "%Y-%m-%dT%H%M%S"
-    ).strftime("%d/%m/%Y, %H:%M:%S")
+
+    question_list[question_with_date]["answer"] = validate_date(
+        question_list[question_with_date]["answer"]
+    )
+
     answer_5 = list_to_string(answer_5)
-    answer_4 = ver_booleans(lista)
+    answer_4 = check_booleans(question_list)
     respuesta = {
-        "question_1": lista["question_1"],
-        "question_2": lista["question_2"],
-        "question_3": lista["question_3"],
+        "question_1": question_list["question_1"],
+        "question_2": question_list["question_2"],
+        "question_3": question_list["question_3"],
         "question_4": answer_4,
         "question_5": answer_5,
     }
+
+    average = overall_average(respuesta)
 
     dict_response = {
         "fareBasis": "",
         "passengerTypes": "",
         "modelRespond": "",
+        "average": "",
         "freeText": "",
     }
 
@@ -60,31 +66,34 @@ def main(listRespond: list) -> list:
         ]
     else:
         list_free_text = [{"category": 16, "text": text_category_sixteen}]
-    # dict_penalty.update({"freeText": list_free_text})
 
-    lista_respuesta = []
+    question_list_respuesta = []
     for value in respuesta.values():
-        lista_respuesta.append(value)
+        question_list_respuesta.append(value)
 
-    dict_response["modelRespond"] = lista_respuesta
+    dict_response["modelRespond"] = question_list_respuesta
+    dict_response["average"] = average
     dict_response["freeText"] = list_free_text
     dict_response["fareBasis"] = dict_penalty["fareBasis"]
     dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
 
+    # sort dict_response by key
+    # dict_response = dict(sorted(dict_response.items(), key=lambda item: item[0]))
+
     return [dict_response]
 
 
-def ver_booleans(lista):
-    boolean_1 = lista["question_1"]["boolean"]
-    boolean_2 = lista["question_2"]["boolean"]
-    boolean_3 = lista["question_3"]["boolean"]
+def check_booleans(question_list: dict) -> dict:
+    boolean_1 = question_list["question_1"]["boolean"]
+    boolean_2 = question_list["question_2"]["boolean"]
+    boolean_3 = question_list["question_3"]["boolean"]
     validate = boolean_1 and boolean_2 and boolean_3
     if validate:
         print("Refundable")
 
     respond = dto_respond.Respond(
         question="4. Is refundable?",
-        answer="Refundable" if validate else "Non Refundable",
+        answer="Refundable" if validate else "Not Refundable",
         category=16,
         quote="",
         freeText=False,
@@ -96,32 +105,3 @@ def ver_booleans(lista):
     ).__dict__
 
     return respond
-
-
-def validate_number(text):
-    """
-    This is a function for validate if the text is a number.
-    Args:
-        txt (str): This is a string with the text to validate.
-    Returns:
-        bool: This is a boolean with the result of the validation.
-    """
-    for words in text.split():
-        if words.isdigit():
-            return True
-        else:
-            return False
-
-
-def list_to_string(questions):
-    """
-    This is a function for convert a list to string.
-    Args:
-        list (list): This is a list with the text to convert.
-    Returns:
-        str: This is a string with the text converted.
-    """
-
-    questions["quote"] = "---".join(questions["quote"])
-    questions["answer"] = "---".join(questions["answer"])
-    return questions
