@@ -11,6 +11,7 @@ from Utilities import dto_respond
 
 from Utilities.validators_respond import validate_date
 from Utilities.clear_respond import list_to_string
+from Utilities.calculate import overall_average
 
 
 def main(listRespond: list) -> list:
@@ -48,10 +49,13 @@ def main(listRespond: list) -> list:
         "question_5": answer_5,
     }
 
+    average = overall_average(respuesta)
+
     dict_response = {
         "fareBasis": "",
         "passengerTypes": "",
         "modelRespond": "",
+        "average": "",
         "freeText": "",
     }
 
@@ -68,9 +72,13 @@ def main(listRespond: list) -> list:
         question_list_respuesta.append(value)
 
     dict_response["modelRespond"] = question_list_respuesta
+    dict_response["average"] = average
     dict_response["freeText"] = list_free_text
     dict_response["fareBasis"] = dict_penalty["fareBasis"]
     dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
+
+    # sort dict_response by key
+    # dict_response = dict(sorted(dict_response.items(), key=lambda item: item[0]))
 
     return [dict_response]
 
