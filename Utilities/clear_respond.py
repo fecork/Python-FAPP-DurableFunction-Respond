@@ -65,6 +65,8 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
     logging.info("execute_clean_json")
     list_questions = dict_question["list_questions"].split(",")
     number_question = dict_question["number_questions"]
+    logging.info(list_questions)
+    logging.info(number_question)
     dict_response = Respond(
         question="",
         answer="",

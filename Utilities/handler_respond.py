@@ -43,36 +43,6 @@ def paragraph_segmentation(text: str) -> list:
     yield document[start:]
 
 
-def iterate_paragraphs(
-    dataset: dict, score: float, list_question_charge: list
-) -> pd.DataFrame:
-    """
-    function to iterate over the paragraphs in the dataset
-    in Kedro
-    Args:
-        dataset: dataset to iterate
-    return:
-        dataframe with the information of the paragraphs
-    """
-
-    dict_responses = {}
-    id_file = []
-
-    for partition_id, partition_load_func in dataset.items():
-        text = partition_load_func()
-        text = text.replace("{", "")
-        text = text.replace("}", "")
-        paragraph_detected = paragraph_segmentation(text)
-
-        list_probe = split_paragraph(paragraph_detected)
-        dict_questions = text_to_json(list_probe, score, list_question_charge)
-        dict_responses[partition_id] = dict_questions
-        id_file.append(partition_id)
-
-    respond = pd.DataFrame(dict_responses)
-    return respond
-
-
 def individual_paragraphs(
     text: str, score: float, dict_question: dict, list_question_charge: list
 ) -> Dict:
@@ -86,9 +56,9 @@ def individual_paragraphs(
 
     paragraph_detected = paragraph_segmentation(text)
 
-    list_probe = split_paragraph(paragraph_detected)
+    list_paragraph = split_paragraph(paragraph_detected)
     dict_questions = text_to_json(
-        list_probe, score, dict_question, list_question_charge
+        list_paragraph, score, dict_question, list_question_charge
     )
     return dict_questions
 
@@ -111,7 +81,7 @@ def split_paragraph(paragraph_detected: list) -> list:
 
 
 def text_to_json(
-    list_probe: list,
+    list_paragraph: list,
     score: float,
     dict_question: dict,
     list_question_charge: list,
@@ -119,21 +89,19 @@ def text_to_json(
     """
     function to transform the text in json
     Args:
-        list_probe: list of paragraphs
+        list_paragraph: list of paragraphs
     return:
         dictionary with the information of the paragraphs
     """
     dict_questions = {}
 
-    for paragraphs in list_probe:
+    for paragraphs in list_paragraph:
         text = paragraphs.split("\n")
         response_clean = execute_clean_json(score, text, dict_question)
         dict_questions[
             "question_" + str(response_clean["key_number"])
         ] = response_clean["dict_response"]
 
-    dict_questions = validate_charge_number(
-        dict_questions, list_question_charge
-    )
+    dict_questions = validate_charge_number(dict_questions, list_question_charge)
     dict_questions = validate_structure_json(dict_questions)
     return dict_questions

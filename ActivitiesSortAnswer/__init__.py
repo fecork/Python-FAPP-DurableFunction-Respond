@@ -7,6 +7,8 @@
 # - run pip install -r requirements.txt
 
 import logging
+
+from numpy import number
 from Utilities import dto_respond
 
 from Utilities.validators_respond import validate_date
@@ -41,12 +43,19 @@ def main(listRespond: list) -> list:
 
     answer_5 = list_to_string(answer_5)
     answer_4 = check_booleans(question_list)
+
+    question_list["question_4"]["numberQuestion"] = question_list["question_4"][
+        "numberQuestion"
+    ] = 6
+    answer_6 = question_list["question_4"]
+
     respuesta = {
         "question_1": question_list["question_1"],
         "question_2": question_list["question_2"],
         "question_3": question_list["question_3"],
         "question_4": answer_4,
         "question_5": answer_5,
+        "question_6": answer_6,
     }
 
     average = overall_average(respuesta)
