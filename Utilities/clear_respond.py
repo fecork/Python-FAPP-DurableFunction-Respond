@@ -62,7 +62,7 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
     return:
         dictionary with the information of the paragraphs
     """
-    logging.info("execute_clean_json")
+    # logging.info("execute_clean_json")
     list_questions = dict_question["list_questions"].split(",")
     number_question = dict_question["number_questions"]
     dict_response = Respond(
