@@ -96,13 +96,16 @@ def validate_date(date: str) -> str:
     Args: string with the date to validate.
     Return: string with the date in the correct format.
     """
+    date = date.replace("departureDate", "")
+    date = date.replace("=", "")
+    date = date.strip()
     try:
         date_format_base = "%Y-%m-%dT%H%M%S"
         date_format = "%d/%m/%Y, %H:%M:%S"
 
         return datetime.strptime(date, date_format_base).strftime(date_format)
-    except ValueError:
-        logging.error(ValueError)
+    except Exception as e:
+        logging.error(e)
         return date
 
 
@@ -114,6 +117,7 @@ def validate_number(text):
     Returns:
         bool: This is a boolean with the result of the validation.
     """
+
     for words in text.split():
         if words.isdigit():
             return True
