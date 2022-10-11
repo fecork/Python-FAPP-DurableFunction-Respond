@@ -7,7 +7,7 @@ class Respond:
         answer: str,
         category: int,
         quote: str,
-        freeText: bool,
+        freeText: str,
         numberQuestion: int,
         boolean: bool,
         meanProbability: float,

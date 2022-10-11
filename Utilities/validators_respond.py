@@ -33,7 +33,7 @@ def validate_boolean(text: str) -> bool:
 
 def validate_charge_number(dict_questions: dict, question_charge_list: list) -> dict:
     """
-    build a dictionary with the information about the charge number
+    build a dictionary with the information about the charge number, denomination and value
     Args:
         dict_questions: dictionary with the information of the questions
     return:
@@ -64,7 +64,7 @@ def validate_charge_number(dict_questions: dict, question_charge_list: list) -> 
 
 def validate_structure_json(dict_questions: dict) -> dict:
     """
-    build a dictionary with the information of the questions
+    build and sort a dictionary with the information of each question
     Args:
         dict_questions: dictionary with the information of the questions
     return:

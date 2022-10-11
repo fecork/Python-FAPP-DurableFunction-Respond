@@ -141,7 +141,7 @@ def format_denomination(text: str) -> str:
     return text
 
 
-def list_to_string(questions):
+def list_to_string(questions: dict) -> dict:
     """
     This is a function for convert a list to string.
     Args:
