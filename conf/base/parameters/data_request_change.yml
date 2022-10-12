@@ -27,8 +27,8 @@ question_fare_rules_change: |
           - No, is not permitted in case of no-show
           - None
 
-          5. extract from text the departure date.
-          - departureDate = 
+          5. according to ticket information, What is the departureDate?:
+          - 
   
 
 structure_fare_rules_change: |
