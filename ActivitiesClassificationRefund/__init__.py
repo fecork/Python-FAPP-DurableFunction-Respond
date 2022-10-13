@@ -41,7 +41,7 @@ def main(parametersCancellation: str) -> dict:
     gpt_text_classification = adapter_gpt.ask_openai(
         gpt_paragraph_tag, "classification"
     )
-    gpt_text_classification_text = gpt_text_classification["text"]
+    gpt_text_classification_text = gpt_text_classification["Text"]
     gpt_text_classification_text = gpt_text_classification_text.replace(
         "Class=", ""
     ).strip()

@@ -57,11 +57,11 @@ def main(listRespond: list) -> list:
 
     if is_child:
         list_free_text = [
-            {"category": 16, "text": text_category_sixteen},
-            {"category": 19, "text": text_category_nineteen},
+            {"Category": 16, "Text": text_category_sixteen},
+            {"Category": 19, "Text": text_category_nineteen},
         ]
     else:
-        list_free_text = [{"category": 16, "text": text_category_sixteen}]
+        list_free_text = [{"Category": 16, "Text": text_category_sixteen}]
     # dict_penalty.update({"freeText": list_free_text})
 
     question_list_respuesta = []

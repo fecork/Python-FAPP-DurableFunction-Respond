@@ -70,11 +70,11 @@ def main(listRespond: list) -> list:
 
     if is_child:
         list_free_text = [
-            {"category": 16, "text": text_category_sixteen},
-            {"category": 19, "text": text_category_nineteen},
+            {"Category": 16, "Text": text_category_sixteen},
+            {"Category": 19, "Text": text_category_nineteen},
         ]
     else:
-        list_free_text = [{"category": 16, "text": text_category_sixteen}]
+        list_free_text = [{"Category": 16, "Text": text_category_sixteen}]
 
     question_list_respuesta = []
     for value in respuesta.values():
@@ -85,9 +85,6 @@ def main(listRespond: list) -> list:
     dict_response["FreeText"] = list_free_text
     dict_response["FareBasis"] = dict_penalty["FareBasis"]
     dict_response["PassengerTypes"] = dict_penalty["passengerTypes"]
-
-    # sort dict_response by key
-    # dict_response = dict(sorted(dict_response.items(), key=lambda item: item[0]))
 
     return [dict_response]
 
