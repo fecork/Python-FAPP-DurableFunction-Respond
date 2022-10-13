@@ -21,9 +21,9 @@ from Utilities.error_respond import validate_error
 async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
     logging.info("Python HTTP trigger function processed a request.")
-    parameter_task = get_parameter(req, "task")
-    parameter_information = get_parameter(req, "information")
-    parameter_penalty_text = get_parameter(req, "penaltyText")
+    parameter_task = get_parameter(req, "Task")
+    parameter_information = get_parameter(req, "Information")
+    parameter_penalty_text = get_parameter(req, "PenaltyText")
     dict_parameters = {
         "task": parameter_task,
         "information": parameter_information,
