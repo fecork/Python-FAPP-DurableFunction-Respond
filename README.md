@@ -94,7 +94,7 @@ Por ejemplo:
 				"answer": "You can cancel at ANY TIME.",
 				"Category": 16,
 				"quote": "ANY TIME. TICKET IS NONREFUNDABLE.",
-				"numberQuestion": 1,
+				"NumberQuestion": 1,
 				"boolean": true,
 				"meanProbability": 97.75423896420118
 			},
@@ -103,18 +103,18 @@ Por ejemplo:
 				"answer": "The charge for cancel is the sum of the cancellation fees of all cancelled fare components.",
 				"Category": 16,
 				"quote": "WHEN COMBINING REFUNDABLE FARES WITH NON REFUNDABLE FARES PROVISIONS WILL APPLY AS FOLLOWS THE AMOUNT PAID ON THE REFUNDABLE FARE COMPONENT WILL BE REFUNDED UPON PAYMENT OF THE PENALTY AMOUNT IF APPLICABLE. THE AMOUNT PAID ON THE NON-REFUNDABLE FARE COMPONENT WILL NOT BE REFUNDED. WHEN COMBINING FARES CHARGE THE SUM OF THE CANCELLATION FEES OF ALL CANCELLED FARE COMPONENTS.",
-				"numberQuestion": 2,
+				"NumberQuestion": 2,
 				"boolean": true,
 				"meanProbability": 97.75423896420118,
-				"value": null,
-				"denomination": "The charge for cancel is the sum of the cancellation fees of all cancelled fare components."
+				"Value": null,
+				"Denomination": "The charge for cancel is the sum of the cancellation fees of all cancelled fare components."
 			},
 			{
 				"question": "\n\"3. What is the departure date?\"\n",
 				"answer": "The departure date is November 5th 2022 at 2115.",
 				"Category": 16,
 				"quote": "Ticket Information fareBasis = H13USR3APO/CH25 airLine = SQ departureDate = 2022-11-05T211500 route = origin JFK destination FRA ticketNumber 6185860002240 ticketIssuanceDate 2022-05-31T000000+0000 reservationDate 2022-05-05T211500 cancelationDate 2022-05-10T021500",
-				"numberQuestion": 3,
+				"NumberQuestion": 3,
 				"boolean": true,
 				"meanProbability": 97.75423896420118
 			},
@@ -123,7 +123,7 @@ Por ejemplo:
 				"answer": "NonRefundable",
 				"Category": 16,
 				"quote": "",
-				"numberQuestion": 4,
+				"NumberQuestion": 4,
 				"boolean": false,
 				"meanProbability": 82.63212880372367
 			},
@@ -139,7 +139,7 @@ Por ejemplo:
 					"OR - 1ST INFINFANT WITHOUT A SEAT PSGR UNDER 2 - CHARGE 10 PERCENT OF THE FARE.",
 					"OR - UNNUNACCOMPANIED CHILD PSGR 8-11 - CHARGE 100 PERCENT OF THE FARE."
 				],
-				"numberQuestion": 5,
+				"NumberQuestion": 5,
 				"boolean": true,
 				"meanProbability": 95.83486723862995
 			}
@@ -158,8 +158,8 @@ por ejemplo.
 		"quote": "CHARGE USD 200.00 FOR CANCEL.",
 		"boolean": true,
 		"question": "How much is the CHARGE FOR CANCEL?",
-		"value": 200.0,
-		"denomination": "USD"
+		"Value": 200.0,
+		"Denomination": "USD"
 	},
 ```
 

@@ -44,8 +44,8 @@ def main(listRespond: list) -> list:
     answer_5 = list_to_string(answer_5)
     answer_4 = check_booleans(question_list)
 
-    question_list["question_4"]["numberQuestion"] = question_list["question_4"][
-        "numberQuestion"
+    question_list["question_4"]["NumberQuestion"] = question_list["question_4"][
+        "NumberQuestion"
     ] = 6
     answer_6 = question_list["question_4"]
 

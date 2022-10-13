@@ -40,7 +40,7 @@ def validate_charge_number(dict_questions: dict, question_charge_list: list) -> 
         dictionary with the formated information of the questions
     """
 
-    list_denomination = loaded_parameters["denomination"].split("\n")
+    list_denomination = loaded_parameters["Denomination"].split("\n")
     for question_charge in question_charge_list:
         if question_charge in dict_questions:
             text = dict_questions[question_charge]["Answer"]
@@ -51,14 +51,14 @@ def validate_charge_number(dict_questions: dict, question_charge_list: list) -> 
 
             if len(number) > 0:
                 dict_questions[question_charge]["Boolean"] = True
-                dict_questions[question_charge]["value"] = number[0]
+                dict_questions[question_charge]["Value"] = number[0]
                 dict_questions[question_charge][
-                    "denomination"
+                    "Denomination"
                 ] = clear_respond.format_denomination(denomination).strip()
             if len(number) == 0:
                 dict_questions[question_charge]["Boolean"] = False
-                dict_questions[question_charge]["value"] = None
-                dict_questions[question_charge]["denomination"] = None
+                dict_questions[question_charge]["Value"] = None
+                dict_questions[question_charge]["Denomination"] = None
     return dict_questions
 
 
