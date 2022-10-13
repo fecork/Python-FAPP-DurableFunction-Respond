@@ -40,7 +40,7 @@ def validate_charge_number(dict_questions: dict, question_charge_list: list) -> 
         dictionary with the formated information of the questions
     """
 
-    list_denomination = loaded_parameters["Denomination"].split("\n")
+    list_denomination = loaded_parameters["denomination"].split("\n")
     for question_charge in question_charge_list:
         if question_charge in dict_questions:
             text = dict_questions[question_charge]["Answer"]
