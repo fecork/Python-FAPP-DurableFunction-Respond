@@ -42,7 +42,7 @@ def main(parametersCancellation: dict) -> dict:
         gpt_text_five = adapter_gpt.ask_openai(quiz_text_and_question_five, "list")
         list_quote = []
         list_answer = []
-        gpt_text_five_text = gpt_text_five["text"].split("\n")
+        gpt_text_five_text = gpt_text_five["Text"].split("\n")
         flag = False
         for text in gpt_text_five_text:
             text = text.replace("\n", "\\n")

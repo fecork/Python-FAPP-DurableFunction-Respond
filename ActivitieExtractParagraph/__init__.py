@@ -35,4 +35,4 @@ def main(parameters: dict) -> dict:
     formated_text = format_text(data_rules)
     paragraph_text_and_question = formated_text + "\n" * 2 + question_paragraph
     gpt_paragraph = adapter_gpt.ask_openai(paragraph_text_and_question, "question")
-    return gpt_paragraph["text"]
+    return gpt_paragraph["Text"]

@@ -77,14 +77,14 @@ def validate_structure_json(dict_questions: dict) -> dict:
         if "question_" + str(number) not in dict_questions:
             dict_questions["question_" + str(number)] = {
                 "Answer": "",
-                "category": "",
-                "quote": "",
-                "boolean": False,
-                "numberQuestion": number,
-                "question": list_questions[int(number) - 1],
-                "score": 0,
-                "value": None,
-                "denomination": None,
+                "Category": "",
+                "Quote": "",
+                "Boolean": False,
+                "NumberQuestion": number,
+                "Question": list_questions[int(number) - 1],
+                "Score": 0,
+                "Value": None,
+                "Denomination": None,
             }
 
     return dict_questions

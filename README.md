@@ -92,7 +92,7 @@ Por ejemplo:
    {
 				"question": "\"1. According to the rules at which time you can cancel\"",
 				"answer": "You can cancel at ANY TIME.",
-				"category": 16,
+				"Category": 16,
 				"quote": "ANY TIME. TICKET IS NONREFUNDABLE.",
 				"numberQuestion": 1,
 				"boolean": true,
@@ -101,7 +101,7 @@ Por ejemplo:
 			{
 				"question": "\n\"2. How much is the CHARGE FOR CANCEL?\"",
 				"answer": "The charge for cancel is the sum of the cancellation fees of all cancelled fare components.",
-				"category": 16,
+				"Category": 16,
 				"quote": "WHEN COMBINING REFUNDABLE FARES WITH NON REFUNDABLE FARES PROVISIONS WILL APPLY AS FOLLOWS THE AMOUNT PAID ON THE REFUNDABLE FARE COMPONENT WILL BE REFUNDED UPON PAYMENT OF THE PENALTY AMOUNT IF APPLICABLE. THE AMOUNT PAID ON THE NON-REFUNDABLE FARE COMPONENT WILL NOT BE REFUNDED. WHEN COMBINING FARES CHARGE THE SUM OF THE CANCELLATION FEES OF ALL CANCELLED FARE COMPONENTS.",
 				"numberQuestion": 2,
 				"boolean": true,
@@ -112,7 +112,7 @@ Por ejemplo:
 			{
 				"question": "\n\"3. What is the departure date?\"\n",
 				"answer": "The departure date is November 5th 2022 at 2115.",
-				"category": 16,
+				"Category": 16,
 				"quote": "Ticket Information fareBasis = H13USR3APO/CH25 airLine = SQ departureDate = 2022-11-05T211500 route = origin JFK destination FRA ticketNumber 6185860002240 ticketIssuanceDate 2022-05-31T000000+0000 reservationDate 2022-05-05T211500 cancelationDate 2022-05-10T021500",
 				"numberQuestion": 3,
 				"boolean": true,
@@ -121,7 +121,7 @@ Por ejemplo:
 			{
 				"question": "4. Is refundable?",
 				"answer": "NonRefundable",
-				"category": 16,
+				"Category": 16,
 				"quote": "",
 				"numberQuestion": 4,
 				"boolean": false,
@@ -132,7 +132,7 @@ Por ejemplo:
 				"answer": [
 					"100 percent of the fare for accompanied children 2-11 no discount for infants with a seat under 2 10 percent of the fare for first infants without a seat under 2 100 percent of the fare for unaccompanied children 8-11"
 				],
-				"category": 19,
+				"Category": 19,
 				"quote": [
 					"CNNACCOMPANIED CHILD PSGR 2-11 - CHARGE 100 PERCENT OF THE FARE.",
 					"OR - INSINFANT WITH A SEAT PSGR UNDER 2 - NO DISCOUNT.",
