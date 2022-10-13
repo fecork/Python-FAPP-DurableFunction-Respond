@@ -33,8 +33,8 @@ def main(listRespond: list) -> list:
 
     question_list = questions[0]
 
-    question_list[question_with_date]["answer"] = validate_date(
-        question_list[question_with_date]["answer"]
+    question_list[question_with_date]["Answer"] = validate_date(
+        question_list[question_with_date]["Answer"]
     )
 
     respuesta = {
@@ -48,11 +48,11 @@ def main(listRespond: list) -> list:
     average = overall_average(respuesta)
 
     dict_response = {
-        "fareBasis": "",
-        "passengerTypes": "",
-        "modelRespond": "",
-        "average": "",
-        "freeText": "",
+        "FareBasis": "",
+        "PassengerTypes": "",
+        "ModelRespond": "",
+        "Average": "",
+        "FreeText": "",
     }
 
     if is_child:
@@ -68,10 +68,10 @@ def main(listRespond: list) -> list:
     for value in respuesta.values():
         question_list_respuesta.append(value)
 
-    dict_response["modelRespond"] = question_list_respuesta
-    dict_response["average"] = average
-    dict_response["freeText"] = list_free_text
-    dict_response["fareBasis"] = dict_penalty["fareBasis"]
-    dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
+    dict_response["ModelRespond"] = question_list_respuesta
+    dict_response["Average"] = average
+    dict_response["FreeText"] = list_free_text
+    dict_response["FareBasis"] = dict_penalty["FareBasis"]
+    dict_response["PassengerTypes"] = dict_penalty["passengerTypes"]
 
     return [dict_response]

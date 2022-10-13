@@ -60,30 +60,30 @@ def main(parametersCancellation: dict) -> dict:
         list_answer = list(filter(None, list_answer))
 
         respond = Respond(
-            question="5. List all the charges shown in the text",
-            answer=list_answer,
-            category=19,
-            quote=list_quote,
-            freeText=True,
-            numberQuestion=5,
-            boolean=False if len(list_answer) == 0 else True,
-            meanProbability=gpt_text_five["meanProbability"],
-            value=None,
-            denomination=None,
+            Question="5. List all the charges shown in the text",
+            Answer=list_answer,
+            Category=19,
+            Quote=list_quote,
+            FreeText=True,
+            NumberQuestion=5,
+            Boolean=False if len(list_answer) == 0 else True,
+            MeanProbability=gpt_text_five["MeanProbability"],
+            Value=None,
+            Denomination=None,
         ).__dict__
 
         return respond
     else:
         respond = Respond(
-            question="5. List all the charges shown in the text",
-            answer=["passengerTypes is not child or infant"],
-            category=19,
-            quote="",
-            freeText=False,
-            numberQuestion=5,
-            boolean=False,
-            meanProbability=0,
-            value=None,
-            denomination=None,
+            Question="5. List all the charges shown in the text",
+            Answer=["passengerTypes is not child or infant"],
+            Category=19,
+            Quote="",
+            FreeText=False,
+            NumberQuestion=5,
+            Boolean=False,
+            MeanProbability=0,
+            Value=None,
+            Denomination=None,
         ).__dict__
         return respond

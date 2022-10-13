@@ -48,16 +48,16 @@ def main(parametersCancellation: str) -> dict:
 
     logging.warning("gpt_text_classification_text")
     respond = dto_respond.Respond(
-        question="4. Is refundable?",
-        answer=gpt_text_classification_text,
-        category=16,
-        quote="",
-        freeText=False,
-        numberQuestion=4,
-        boolean=True if gpt_text_classification_text == "Yes" else False,
-        meanProbability=gpt_text_classification["meanProbability"],
-        value=None,
-        denomination=None,
+        Question="4. Is refundable?",
+        Answer=gpt_text_classification_text,
+        Category=16,
+        Quote="",
+        FreeText=False,
+        NumberQuestion=4,
+        Boolean=True if gpt_text_classification_text == "Yes" else False,
+        MeanProbability=gpt_text_classification["MeanProbability"],
+        Value=None,
+        Denomination=None,
     ).__dict__
 
     return respond

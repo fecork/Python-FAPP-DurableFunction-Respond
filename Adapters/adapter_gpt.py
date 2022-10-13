@@ -63,7 +63,7 @@ def ask_openai(text: str, task: str) -> dict:
 
     return {
         "text": response.choices[0].text.lstrip(),
-        "meanProbability": response_mean_probability,
+        "MeanProbability": response_mean_probability,
     }
 
 
