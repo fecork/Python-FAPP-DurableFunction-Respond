@@ -5,12 +5,13 @@
 # - add azure-functions-durable to requirements.txt
 # - run pip install -r requirements.txt
 
-import logging
+
 import json
 import azure.functions as func
 import azure.durable_functions as df
 import os
 import sys
+import logging
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
