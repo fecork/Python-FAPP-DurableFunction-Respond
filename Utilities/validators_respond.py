@@ -97,6 +97,13 @@ def validate_date(date: str) -> str:
     Return: string with the date in the correct format.
     """
     date = date.replace("departureDate", "")
+    date = date.replace("departure Date", "")
+    date = date.replace("departure", "")
+    date = date.replace("date", "")
+    date = date.replace("Date", "")
+    date = date.replace("The", "")
+    date = date.replace("the", "")
+    date = date.replace("is", "")
     date = date.replace("=", "")
     date = date.strip()
     try:

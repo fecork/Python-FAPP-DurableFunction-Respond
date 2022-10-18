@@ -38,7 +38,7 @@ def main(listRespond: list) -> list:
     answer_5 = questions[1]
 
     question_list[question_with_date]["answer"] = validate_date(
-        question_list[question_with_date]["answer"]
+        question_list[question_with_date]["quote"]
     )
 
     answer_5 = list_to_string(answer_5)
