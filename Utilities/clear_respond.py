@@ -66,16 +66,16 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
     list_questions = dict_question["list_questions"].split(",")
     number_question = dict_question["number_questions"]
     dict_response = Respond(
-        Question="",
-        Answer="",
-        Category=16,
-        Quote="",
-        FreeText=True,
-        Boolean=False,
-        NumberQuestion=0,
-        MeanProbability=score,
-        Value=None,
-        Denomination=None,
+        question="",
+        answer="",
+        category=16,
+        quote="",
+        freeText=True,
+        boolean=False,
+        numberQuestion=0,
+        meanProbability=score,
+        value=None,
+        denomination=None,
     ).__dict__
     key_number = ""
 
@@ -83,7 +83,7 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
 
         value = clear_value_json(line, "answer")
         if value is not None:
-            dict_response["Answer"] = value
+            dict_response["answer"] = value
 
         value = clear_value_json(line, "number_question")
 
@@ -94,20 +94,20 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
             if int(value) < int(number_question) + 1:
                 key_number = int(value)
 
-                dict_response["Question"] = list_questions[key_number - 1]
-                dict_response["NumberQuestion"] = key_number
+                dict_response["question"] = list_questions[key_number - 1]
+                dict_response["numberQuestion"] = key_number
 
                 if key_number == 3:
-                    dict_response["FreeText"] = False
+                    dict_response["freeText"] = False
 
         value = clear_value_json(line, "quote")
         if value is not None:
-            dict_response["Quote"] = value
+            dict_response["quote"] = value
 
         value = clear_value_json(line, "boolean")
         if value is not None:
             value = validate_boolean(value)
-            dict_response["Boolean"] = value
+            dict_response["boolean"] = value
     return {"dict_response": dict_response, "key_number": key_number}
 
 
@@ -154,6 +154,6 @@ def list_to_string(questions: dict) -> dict:
         str: This is a string with the text converted.
     """
 
-    questions["Quote"] = "---".join(questions["Quote"])
-    questions["Answer"] = "---".join(questions["Answer"])
+    questions["quote"] = "---".join(questions["quote"])
+    questions["answer"] = "---".join(questions["answer"])
     return questions

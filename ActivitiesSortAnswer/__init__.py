@@ -37,15 +37,15 @@ def main(listRespond: list) -> list:
     question_list = questions[0]
     answer_5 = questions[1]
 
-    question_list[question_with_date]["Answer"] = validate_date(
-        question_list[question_with_date]["Answer"]
+    question_list[question_with_date]["answer"] = validate_date(
+        question_list[question_with_date]["answer"]
     )
 
     answer_5 = list_to_string(answer_5)
     answer_4 = check_booleans(question_list)
 
-    question_list["question_4"]["NumberQuestion"] = question_list["question_4"][
-        "NumberQuestion"
+    question_list["question_4"]["numberQuestion"] = question_list["question_4"][
+        "numberQuestion"
     ] = 6
     answer_6 = question_list["question_4"]
 
@@ -61,53 +61,56 @@ def main(listRespond: list) -> list:
     average = overall_average(respuesta)
 
     dict_response = {
-        "FareBasis": "",
-        "PassengerTypes": "",
-        "ModelRespond": "",
-        "Average": "",
-        "FreeText": "",
+        "fareBasis": "",
+        "passengerTypes": "",
+        "modelRespond": "",
+        "average": "",
+        "freeText": "",
     }
 
     if is_child:
         list_free_text = [
-            {"Category": 16, "Text": text_category_sixteen},
-            {"Category": 19, "Text": text_category_nineteen},
+            {"category": 16, "text": text_category_sixteen},
+            {"category": 19, "text": text_category_nineteen},
         ]
     else:
-        list_free_text = [{"Category": 16, "Text": text_category_sixteen}]
+        list_free_text = [{"category": 16, "text": text_category_sixteen}]
 
     question_list_respuesta = []
     for value in respuesta.values():
         question_list_respuesta.append(value)
 
-    dict_response["ModelRespond"] = question_list_respuesta
-    dict_response["Average"] = average
-    dict_response["FreeText"] = list_free_text
-    dict_response["FareBasis"] = dict_penalty["FareBasis"]
-    dict_response["PassengerTypes"] = dict_penalty["passengerTypes"]
+    dict_response["modelRespond"] = question_list_respuesta
+    dict_response["average"] = average
+    dict_response["freeText"] = list_free_text
+    dict_response["fareBasis"] = dict_penalty["fareBasis"]
+    dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
+
+    # sort dict_response by key
+    # dict_response = dict(sorted(dict_response.items(), key=lambda item: item[0]))
 
     return [dict_response]
 
 
 def check_booleans(question_list: dict) -> dict:
-    boolean_1 = question_list["question_1"]["Boolean"]
-    boolean_2 = question_list["question_2"]["Boolean"]
-    boolean_3 = question_list["question_3"]["Boolean"]
+    boolean_1 = question_list["question_1"]["boolean"]
+    boolean_2 = question_list["question_2"]["boolean"]
+    boolean_3 = question_list["question_3"]["boolean"]
     validate = boolean_1 and boolean_2 and boolean_3
     if validate:
         print("Refundable")
 
     respond = dto_respond.Respond(
-        Question="4. Is refundable?",
-        Answer="Refundable" if validate else "Not Refundable",
-        Category=16,
-        Quote="",
-        FreeText=False,
-        NumberQuestion=4,
-        Boolean=validate,
-        MeanProbability=0,
-        Value=None,
-        Denomination=None,
+        question="4. Is refundable?",
+        answer="Refundable" if validate else "Not Refundable",
+        category=16,
+        quote="",
+        freeText=False,
+        numberQuestion=4,
+        boolean=validate,
+        meanProbability=0,
+        value=None,
+        denomination=None,
     ).__dict__
 
     return respond

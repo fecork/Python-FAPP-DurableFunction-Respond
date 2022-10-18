@@ -43,22 +43,22 @@ def validate_charge_number(dict_questions: dict, question_charge_list: list) -> 
     list_denomination = loaded_parameters["denomination"].split("\n")
     for question_charge in question_charge_list:
         if question_charge in dict_questions:
-            text = dict_questions[question_charge]["Answer"]
+            text = dict_questions[question_charge]["answer"]
             number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
             # select text with the denomination in denomination list
             denomination = [value for value in list_denomination if value in text]
             denomination = denomination[0] if len(denomination) > 0 else text
 
             if len(number) > 0:
-                dict_questions[question_charge]["Boolean"] = True
-                dict_questions[question_charge]["Value"] = number[0]
+                dict_questions[question_charge]["boolean"] = True
+                dict_questions[question_charge]["value"] = number[0]
                 dict_questions[question_charge][
-                    "Denomination"
+                    "denomination"
                 ] = clear_respond.format_denomination(denomination).strip()
             if len(number) == 0:
-                dict_questions[question_charge]["Boolean"] = False
-                dict_questions[question_charge]["Value"] = None
-                dict_questions[question_charge]["Denomination"] = None
+                dict_questions[question_charge]["boolean"] = False
+                dict_questions[question_charge]["value"] = None
+                dict_questions[question_charge]["denomination"] = None
     return dict_questions
 
 
@@ -76,15 +76,15 @@ def validate_structure_json(dict_questions: dict) -> dict:
         number = number + 1
         if "question_" + str(number) not in dict_questions:
             dict_questions["question_" + str(number)] = {
-                "Answer": "",
-                "Category": "",
-                "Quote": "",
-                "Boolean": False,
-                "NumberQuestion": number,
-                "Question": list_questions[int(number) - 1],
-                "Score": 0,
-                "Value": None,
-                "Denomination": None,
+                "answer": "",
+                "category": "",
+                "quote": "",
+                "boolean": False,
+                "numberQuestion": number,
+                "question": list_questions[int(number) - 1],
+                "score": 0,
+                "value": None,
+                "denomination": None,
             }
 
     return dict_questions

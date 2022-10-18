@@ -5,12 +5,13 @@
 # - add azure-functions-durable to requirements.txt
 # - run pip install -r requirements.txt
 
-import logging
+
 import json
 import azure.functions as func
 import azure.durable_functions as df
 import os
 import sys
+import logging
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
@@ -21,12 +22,9 @@ from Utilities.error_respond import validate_error
 async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
     logging.info("Python HTTP trigger function processed a request.")
-    logging.error("<<<<<<<<<<<<<<<<<<<<<<<<")
-    logging.warning(req)
-    logging.error(">>>>>>>>>>>>>>>>>>>>>>>>")
-    parameter_task = get_parameter(req, "Task")
-    parameter_information = get_parameter(req, "Information")
-    parameter_penalty_text = get_parameter(req, "PenaltyText")
+    parameter_task = get_parameter(req, "task")
+    parameter_information = get_parameter(req, "information")
+    parameter_penalty_text = get_parameter(req, "penaltyText")
     dict_parameters = {
         "task": parameter_task,
         "information": parameter_information,

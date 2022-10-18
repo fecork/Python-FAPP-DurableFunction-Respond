@@ -35,7 +35,6 @@ def orchestrator_function(
         dict: This is a dictionary with the respond of the GPT
     """
     parameters = context.get_input()
-    parameters = validate_parameters(parameters)
     parameter_task = parameters["task"]
     parameter_information = parameters["information"]
     parameter_penalty_text = parameters["penaltyText"]
@@ -92,11 +91,3 @@ def validate_child(passenger_type: str) -> bool:
     if passenger_type.lower() == "infant":
         return True
     return False
-
-
-def validate_parameters(parameters: dict) -> dict:
-    for key, value in parameters.items():
-        if value == None:
-            raise KeyError(f"The parameter {key} is not valid.")
-        else:
-            return parameters

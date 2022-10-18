@@ -33,8 +33,8 @@ def main(listRespond: list) -> list:
 
     question_list = questions[0]
 
-    question_list[question_with_date]["Answer"] = validate_date(
-        question_list[question_with_date]["Answer"]
+    question_list[question_with_date]["answer"] = validate_date(
+        question_list[question_with_date]["answer"]
     )
 
     respuesta = {
@@ -48,30 +48,30 @@ def main(listRespond: list) -> list:
     average = overall_average(respuesta)
 
     dict_response = {
-        "FareBasis": "",
-        "PassengerTypes": "",
-        "ModelRespond": "",
-        "Average": "",
-        "FreeText": "",
+        "fareBasis": "",
+        "passengerTypes": "",
+        "modelRespond": "",
+        "average": "",
+        "freeText": "",
     }
 
     if is_child:
         list_free_text = [
-            {"Category": 16, "Text": text_category_sixteen},
-            {"Category": 19, "Text": text_category_nineteen},
+            {"category": 16, "text": text_category_sixteen},
+            {"category": 19, "text": text_category_nineteen},
         ]
     else:
-        list_free_text = [{"Category": 16, "Text": text_category_sixteen}]
+        list_free_text = [{"category": 16, "text": text_category_sixteen}]
     # dict_penalty.update({"freeText": list_free_text})
 
     question_list_respuesta = []
     for value in respuesta.values():
         question_list_respuesta.append(value)
 
-    dict_response["ModelRespond"] = question_list_respuesta
-    dict_response["Average"] = average
-    dict_response["FreeText"] = list_free_text
-    dict_response["FareBasis"] = dict_penalty["FareBasis"]
-    dict_response["PassengerTypes"] = dict_penalty["passengerTypes"]
+    dict_response["modelRespond"] = question_list_respuesta
+    dict_response["average"] = average
+    dict_response["freeText"] = list_free_text
+    dict_response["fareBasis"] = dict_penalty["fareBasis"]
+    dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
 
     return [dict_response]

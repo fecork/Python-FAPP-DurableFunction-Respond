@@ -3,24 +3,24 @@ class Respond:
 
     def __init__(
         self,
-        Question: str,
-        Answer: str,
-        Category: int,
-        Quote: str,
-        FreeText: str,
-        NumberQuestion: int,
-        Boolean: bool,
-        MeanProbability: float,
-        Value: float,
-        Denomination: str,
+        question: str,
+        answer: str,
+        category: int,
+        quote: str,
+        freeText: str,
+        numberQuestion: int,
+        boolean: bool,
+        meanProbability: float,
+        value: float,
+        denomination: str,
     ) -> None:
-        self.Question = Question
-        self.Answer = Answer
-        self.Category = Category
-        self.Quote = Quote
-        self.FreeText = FreeText
-        self.NumberQuestion = NumberQuestion
-        self.Boolean = Boolean
-        self.MeanProbability = MeanProbability
-        self.Value = Value
-        self.Denomination = Denomination
+        self.question = question
+        self.answer = answer
+        self.category = category
+        self.quote = quote
+        self.freeText = freeText
+        self.numberQuestion = numberQuestion
+        self.boolean = boolean
+        self.meanProbability = meanProbability
+        self.value = value
+        self.denomination = denomination

@@ -41,23 +41,23 @@ def main(parametersCancellation: str) -> dict:
     gpt_text_classification = adapter_gpt.ask_openai(
         gpt_paragraph_tag, "classification"
     )
-    gpt_text_classification_text = gpt_text_classification["Text"]
+    gpt_text_classification_text = gpt_text_classification["text"]
     gpt_text_classification_text = gpt_text_classification_text.replace(
         "Class=", ""
     ).strip()
 
     logging.warning("gpt_text_classification_text")
     respond = dto_respond.Respond(
-        Question="4. Is refundable?",
-        Answer=gpt_text_classification_text,
-        Category=16,
-        Quote="",
-        FreeText=False,
-        NumberQuestion=4,
-        Boolean=True if gpt_text_classification_text == "Yes" else False,
-        MeanProbability=gpt_text_classification["MeanProbability"],
-        Value=None,
-        Denomination=None,
+        question="4. Is refundable?",
+        answer=gpt_text_classification_text,
+        category=16,
+        quote="",
+        freeText=False,
+        numberQuestion=4,
+        boolean=True if gpt_text_classification_text == "Yes" else False,
+        meanProbability=gpt_text_classification["meanProbability"],
+        value=None,
+        denomination=None,
     ).__dict__
 
     return respond

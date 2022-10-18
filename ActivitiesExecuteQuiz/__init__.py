@@ -37,9 +37,9 @@ def main(parameters: dict) -> dict:
     list_question_charge = parameters["list_question_charge"]
     task = parameters["task"]
     gpt_quiz = adapter_gpt.ask_openai(quiz_text_and_question, task)
-    gpt_quiz_text = gpt_quiz["Text"]
+    gpt_quiz_text = gpt_quiz["text"]
 
-    gpt_quiz_mean_probability = gpt_quiz["MeanProbability"]
+    gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
 
     respond = individual_paragraphs(
         gpt_quiz_text,

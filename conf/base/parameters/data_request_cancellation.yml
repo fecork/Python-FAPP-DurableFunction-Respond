@@ -16,7 +16,7 @@ question_fare_rules_cancellation: |
           -CHARGE: ___.
           -null
 
-          3. according to ticket information, What is the departureDate?:
+          3. extract from text the departureDate.
           -  departureDate =
           
           4. How much is THE FEE FOR NO-SHOW. complete:

@@ -13,8 +13,8 @@ def overall_average(respuesta: dict) -> float:
     list_true_answers = []
 
     for key, value in respuesta.items():
-        if value["MeanProbability"] != 0:
-            list_true_answers.append(value["MeanProbability"])
+        if value["meanProbability"] != 0:
+            list_true_answers.append(value["meanProbability"])
     average = sum(list_true_answers) / len(list_true_answers)
 
     return average
