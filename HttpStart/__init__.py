@@ -46,7 +46,6 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
         while respond.runtime_status.value != "Completed":
             respond = await client.get_status(instance_id)
-            # logging.warning(f"Orchestration status: {respond.runtime_status.value}")
             if respond.runtime_status.value == "Failed":
                 cause = validate_error(respond)
 

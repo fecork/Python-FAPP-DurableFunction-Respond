@@ -37,9 +37,14 @@ def main(listRespond: list) -> list:
     question_list = questions[0]
     answer_5 = questions[1]
 
-    question_list[question_with_date]["answer"] = validate_date(
-        question_list[question_with_date]["quote"]
-    )
+    final_date = question_list[question_with_date]
+    date_formated = validate_date(final_date["answer"])
+    if date_formated is None:
+        date_formated = validate_date(final_date["quote"])
+        if date_formated is None:
+            date_formated = final_date["quote"]
+
+    question_list[question_with_date]["answer"] = date_formated
 
     answer_5 = list_to_string(answer_5)
     answer_6 = check_booleans(question_list)

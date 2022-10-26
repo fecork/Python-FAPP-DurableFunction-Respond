@@ -42,10 +42,7 @@ def main(parameters: dict) -> dict:
     gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
 
     respond = individual_paragraphs(
-        gpt_quiz_text,
-        gpt_quiz_mean_probability,
-        parameters,
-        list_question_charge,
+        gpt_quiz_text, gpt_quiz_mean_probability, parameters, list_question_charge, task
     )
 
     logging.error("<<<<<<<<<<<<<<<<<<")
