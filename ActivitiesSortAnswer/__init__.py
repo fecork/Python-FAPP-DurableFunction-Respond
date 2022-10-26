@@ -42,24 +42,17 @@ def main(listRespond: list) -> list:
     )
 
     answer_5 = list_to_string(answer_5)
-    answer_4 = check_booleans(question_list)
-
-    question_list["question_4"]["numberQuestion"] = question_list["question_4"][
-        "numberQuestion"
-    ] = 6
-    answer_6 = question_list["question_4"]
+    answer_6 = check_booleans(question_list)
 
     respuesta = {
         "question_1": question_list["question_1"],
         "question_2": question_list["question_2"],
         "question_3": question_list["question_3"],
-        "question_4": answer_4,
+        "question_4": question_list["question_4"],
         "question_5": answer_5,
         "question_6": answer_6,
     }
 
-    # logging.warning("_________________________")
-    # logging.error(respuesta)
     average = overall_average(respuesta)
 
     dict_response = {
@@ -103,12 +96,12 @@ def check_booleans(question_list: dict) -> dict:
         print("Refundable")
 
     respond = dto_respond.Respond(
-        question="4. Is refundable?",
+        question="6. Is refundable?",
         answer="Refundable" if validate else "Not Refundable",
         category=16,
         quote="",
         freeText=False,
-        numberQuestion=4,
+        numberQuestion=6,
         boolean=validate,
         meanProbability=0,
         value=None,

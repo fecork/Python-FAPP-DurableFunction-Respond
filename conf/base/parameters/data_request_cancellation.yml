@@ -32,7 +32,7 @@ list_question_fare_rules_cancellation: |
           "1. According to the rules at which time you can cancel",
           "2. How much is the CHARGE FOR CANCEL?",
           "3. What is the departure date?",
-          "6. How much is THE FEE FOR NO-SHOW."
+          "4. How much is THE FEE FOR NO-SHOW."
 
 number_question_cancellation: 4
 
