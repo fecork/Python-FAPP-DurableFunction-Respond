@@ -34,7 +34,7 @@ def main(listRespond: list) -> list:
     question_list = questions[0]
 
     question_list[question_with_date]["answer"] = validate_date(
-        question_list[question_with_date]["answer"]
+        question_list[question_with_date]["quote"]
     )
 
     respuesta = {
