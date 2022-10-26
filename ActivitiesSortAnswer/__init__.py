@@ -58,6 +58,8 @@ def main(listRespond: list) -> list:
         "question_6": answer_6,
     }
 
+    # logging.warning("_________________________")
+    # logging.error(respuesta)
     average = overall_average(respuesta)
 
     dict_response = {

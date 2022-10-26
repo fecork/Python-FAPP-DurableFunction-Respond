@@ -11,10 +11,12 @@ def overall_average(respuesta: dict) -> float:
     """
     logging.info("Executing overall_average")
     list_true_answers = []
+    try:
+        for key, value in respuesta.items():
+            if value["meanProbability"] != 0:
+                list_true_answers.append(value["meanProbability"])
+        average = sum(list_true_answers) / len(list_true_answers)
 
-    for key, value in respuesta.items():
-        if value["meanProbability"] != 0:
-            list_true_answers.append(value["meanProbability"])
-    average = sum(list_true_answers) / len(list_true_answers)
-
-    return average
+        return average
+    except Exception as e:
+        return 0

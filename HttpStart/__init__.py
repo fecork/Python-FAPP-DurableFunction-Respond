@@ -33,8 +33,9 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
             "information": parameter_information,
             "penaltyText": parameter_penalty_text,
         }
-        logging.warning("starter: " + starter)
-
+        fare_basis = str(parameter_penalty_text[0]["fareBasis"])
+        logging.warning("Starter")
+        logging.warning(fare_basis)
         client = df.DurableOrchestrationClient(starter)
 
         instance_id = await client.start_new("Orchestator", None, dict_parameters)
@@ -45,7 +46,7 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
         while respond.runtime_status.value != "Completed":
             respond = await client.get_status(instance_id)
-            logging.warning(f"Orchestration status: {respond.runtime_status.value}")
+            # logging.warning(f"Orchestration status: {respond.runtime_status.value}")
             if respond.runtime_status.value == "Failed":
                 cause = validate_error(respond)
 
@@ -54,7 +55,8 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
                     mimetype="application/json",
                     status_code=500,
                 )
-
+        logging.warning(f"Orchestration status: {respond.runtime_status.value}")
+        logging.warning("fareBasis: " + str(fare_basis))
         return func.HttpResponse(
             json.dumps(respond.output),
             mimetype="application/json",
@@ -102,13 +104,17 @@ def validate_req(req) -> bool:
     """
     parameter_task = get_parameter(req, "task")
     correct_task = validate_task(parameter_task)
+    logging.info("======================================")
     logging.warning("correct_task: " + str(correct_task))
     parameter_information = get_parameter(req, "information")
     parameter_penalty_text = get_parameter(req, "penaltyText")
+    fare_basis = str(parameter_penalty_text[0]["fareBasis"])
     correct_penalty = validate_text(parameter_penalty_text)
     logging.warning("correct_penalty: " + str(correct_penalty))
     correct_information = validate_text(parameter_information)
     logging.warning("correct_information: " + str(correct_information))
+    logging.warning("fareBasis: " + fare_basis)
+    logging.info("======================================")
     if correct_task and correct_penalty and correct_information:
         return True
     else:
