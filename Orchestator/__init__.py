@@ -64,15 +64,15 @@ def orchestrator_function(
     parameters_object["dict_penalty"]["passengerTypes"] = list(passengers_type)
     if parameter_task == "CANCELLATION":
 
-        gpt_response = pipeline_cancel.pipeline(context, parameters_object)
-
-        return gpt_response
-
-    if parameter_task == "CHANGE":
-
-        gpt_response = pipeline_change.pipeline(context, parameters_object)
-
-        return gpt_response
+        provisioning_tasks = []
+        # TODO: sigue agregar las dos respuestas al respond
+        for parameter in [parameters_object, parameters_object]:
+            gpt_response = context.call_sub_orchestrator(
+                "OrchestatorCancelation", parameter
+            )
+            provisioning_tasks.append(gpt_response)
+        respuesta = yield context.task_all(provisioning_tasks)
+        return respuesta
 
 
 main = df.Orchestrator.create(orchestrator_function)
@@ -91,3 +91,17 @@ def validate_child(passenger_type: str) -> bool:
     if passenger_type.lower() == "infant":
         return True
     return False
+
+
+def execute_pipeline(context, parameters_object):
+    provisioning_tasks = []
+    for parameter in parameters_object:
+        parameter_dict = {
+            "context": context,
+            "parameters": parameter,
+        }
+        gpt_response = context.call_sub_orchestrator(
+            "OrchestatorCancelation", parameter_dict
+        )
+        provisioning_tasks.append(gpt_response)
+    yield context.task_all(provisioning_tasks)
