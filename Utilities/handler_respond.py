@@ -3,8 +3,8 @@ import spacy
 import os
 import sys
 
-import pandas as pd
 from typing import Dict
+
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)

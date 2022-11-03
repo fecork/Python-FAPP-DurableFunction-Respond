@@ -2,6 +2,7 @@ import logging
 import sys
 import os
 import re
+
 from datetime import datetime
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -9,6 +10,7 @@ sys.path.insert(0, dir_path)
 from Utilities.dto_respond import Respond
 from validators_respond import validate_boolean
 from Utilities.load_parameter import load_parameters
+from Utilities import clear_respond
 
 loaded_parameters = load_parameters()
 
@@ -151,7 +153,29 @@ def list_to_string(questions: dict) -> dict:
     Returns:
         str: This is a string with the text converted.
     """
+    logging.info("list_to_string")
+    logging.info(questions["answer"])
+    quote = " ".join(questions["quote"])
+    answer = ", ".join(questions["answer"]).upper().replace("%", "PERCENT")
+    list_index = [m.start() for m in re.finditer("PERCENT", answer)]
+    logging.error("list_index: %s", list_index)
 
-    questions["quote"] = "---".join(questions["quote"])
-    questions["answer"] = "---".join(questions["answer"])
+    list_percents = []
+    for index in list_index:
+        list_percents.append(answer[index - 4 : index + 7])
+
+    if answer.count(",") < 1:
+        for index in list_index:
+            answer = answer[: index - 4] + "," + answer[index - 4 :]
+
+    logging.error("answer: %s", answer)
+    logging.info("list_percents: %s", list_percents)
+    percents = [float(s) for s in re.findall(r"-?\d+\.?\d*", str(list_percents))]
+    list_denomination = loaded_parameters["denomination"].split("\n")
+    denomination = [value for value in list_denomination if value in list_percents]
+    denomination = denomination[0] if len(denomination) > 0 else "PERCENT"
+    questions["quote"] = quote
+    questions["answer"] = answer.split(",")
+    questions["value"] = percents
+    questions["denomination"] = clear_respond.format_denomination(denomination).strip()
     return questions

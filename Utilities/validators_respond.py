@@ -43,7 +43,6 @@ def validate_charge_number(dict_questions: dict, question_charge_list: list) -> 
         if question_charge in dict_questions:
             text = dict_questions[question_charge]["answer"]
             number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
-            # select text with the denomination in denomination list
             denomination = [value for value in list_denomination if value in text]
             denomination = denomination[0] if len(denomination) > 0 else text
 

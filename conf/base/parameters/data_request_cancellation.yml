@@ -37,4 +37,4 @@ list_question_fare_rules_cancellation: |
 number_question_cancellation: 4
 
 #NOTA la pregunta de la question_fare_rules_cancellation
-list_question_charge_cancellation: [question_2, question_4]
+list_question_charge_cancellation: [question_2, question_4, question_5]
