@@ -37,36 +37,41 @@ def orchestrator_function(
     parameters = context.get_input()
     parameter_task = parameters["task"]
     parameter_information = parameters["information"]
-    parameter_penalty_text = parameters["penaltyText"]
+    list_parameter_penalty_text = parameters["penaltyText"]
 
     list_passengers_type = []
-    for dict_penalty in parameter_penalty_text:
+    for dict_penalty in list_parameter_penalty_text:
         passenger_type = handler_select_text.search_passenger_types(dict_penalty)
         list_passengers_type.append(passenger_type)
-        list_passengers_type = list(set(list_passengers_type))
+        # list_passengers_type = list(set(list_passengers_type))
+
         is_child = validate_child(passenger_type)
 
+    list_passengers_type = list(set(list_passengers_type))
     passengers_type = tuple(list_passengers_type)
 
-    parameter_penalty_text = handler_select_text.remove_duplicate_passenger(
-        parameter_penalty_text, list_passengers_type
+    list_parameter_penalty_text = handler_select_text.extract_passenger(
+        list_parameter_penalty_text, "adult"
     )
 
-    parameter_penalty_text = handler_select_text.extract_passenger(
-        parameter_penalty_text, "adult"
-    )
+    logging.error(f"parameter_penalty_text: {len(list_parameter_penalty_text)}")
 
-    parameters_object = object_iterator.iterate_penalty_text(
-        parameter_penalty_text, parameter_information, is_child
-    )
-
-    parameters_object["task"] = parameter_task
-    parameters_object["dict_penalty"]["passengerTypes"] = list(passengers_type)
+    list_farebasis = []
+    for parameter_penalty_text in list_parameter_penalty_text:
+        parameters_object = sort_object(
+            [parameter_penalty_text],
+            parameter_information,
+            is_child,
+            parameter_task,
+            passengers_type,
+        )
+        list_farebasis.append(parameters_object)
+    logging.error(f"list_farebasis: {list_farebasis}")
     if parameter_task == "CANCELLATION":
 
         provisioning_tasks = []
         # TODO: sigue agregar las dos respuestas al respond
-        for parameter in [parameters_object, parameters_object]:
+        for parameter in list_farebasis:
             gpt_response = context.call_sub_orchestrator(
                 "OrchestatorCancelation", parameter
             )
@@ -105,3 +110,19 @@ def execute_pipeline(context, parameters_object):
         )
         provisioning_tasks.append(gpt_response)
     yield context.task_all(provisioning_tasks)
+
+
+def sort_object(
+    parameter_penalty_text,
+    parameter_information,
+    is_child,
+    parameter_task,
+    passengers_type,
+):
+    parameters_object = object_iterator.iterate_penalty_text(
+        parameter_penalty_text, parameter_information, is_child
+    )
+
+    parameters_object["task"] = parameter_task
+    parameters_object["dict_penalty"]["passengerTypes"] = list(passengers_type)
+    return parameters_object

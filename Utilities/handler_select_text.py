@@ -1,5 +1,6 @@
 import sys
 import os
+import logging
 
 
 def search_passenger_types(dict_penalty: dict) -> list:
@@ -31,6 +32,27 @@ def remove_duplicate_passenger(penalty_text: list, list_passenger_type: list) ->
         if passenger_type[0] in list_passenger_type:
             list_passenger_type.pop(list_passenger_type.index(passenger_type[0]))
             list_clean.append(dict_penalty)
+    return list_clean
+
+
+def select_passenger(
+    penalty_text: list, list_passenger_type: list, type_passenger: str
+) -> list:
+    """
+    remove duplicate passenger types
+    Args:
+        penalty_text: list of jsons
+        list_passenger_type: list of passenger types
+    Returns:
+        list of jsons
+    """
+
+    list_clean = []
+    for dict_penalty in penalty_text:
+        passenger_type = dict_penalty["passengerTypes"]
+        if type_passenger in passenger_type:
+            list_clean.append(dict_penalty)
+    logging.info(list_clean)
     return list_clean
 
 
