@@ -8,11 +8,10 @@
 
 import logging
 
-from numpy import number
 from Utilities import dto_respond
 
 from Utilities.validators_respond import validate_date
-from Utilities.clear_respond import list_to_string
+from Utilities.clear_respond import list_to_string, dict_answer_to_list
 from Utilities.calculate import overall_average
 
 
@@ -59,6 +58,7 @@ def main(listRespond: list) -> list:
     }
 
     average = overall_average(respuesta)
+    dict_answer_to_list(respuesta)
 
     dict_response = {
         "fareBasis": "",
@@ -92,10 +92,10 @@ def main(listRespond: list) -> list:
     return [dict_response]
 
 
-def check_booleans(question_list: dict) -> dict:
-    boolean_1 = question_list["question_1"]["boolean"]
-    boolean_2 = question_list["question_2"]["boolean"]
-    boolean_3 = question_list["question_3"]["boolean"]
+def check_booleans(question_dic: dict) -> dict:
+    boolean_1 = question_dic["question_1"]["boolean"]
+    boolean_2 = question_dic["question_2"]["boolean"]
+    boolean_3 = question_dic["question_3"]["boolean"]
     validate = boolean_1 and boolean_2 and boolean_3
     if validate:
         print("Refundable")
@@ -109,7 +109,7 @@ def check_booleans(question_list: dict) -> dict:
         numberQuestion=6,
         boolean=validate,
         meanProbability=0,
-        value=None,
+        value=[],
         denomination=None,
     ).__dict__
 

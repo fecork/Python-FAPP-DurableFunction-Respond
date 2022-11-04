@@ -74,7 +74,7 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
         boolean=False,
         numberQuestion=0,
         meanProbability=score,
-        value=None,
+        value=[],
         denomination=None,
     ).__dict__
     key_number = ""
@@ -179,3 +179,23 @@ def list_to_string(questions: dict) -> dict:
     questions["value"] = percents
     questions["denomination"] = clear_respond.format_denomination(denomination).strip()
     return questions
+
+
+def dict_answer_to_list(question_dic: dict) -> dict:
+    """
+    This is a function for convert the answer in a list.
+    Args:
+        question_dic (dict): This is a dictionary with the answer.
+    Returns:
+        dict: This is a dictionary with the answer in a list.
+    """
+    logging.info("dict_answer_to_list")
+
+    for key, value in question_dic.items():
+        if isinstance(value, dict):
+            if isinstance(value["answer"], str):
+                question_dic[key]["answer"] = [value["answer"]]
+            if type(value["value"]) is not list:
+                question_dic[key]["value"] = [value["value"]]
+
+    logging.warning(question_dic)

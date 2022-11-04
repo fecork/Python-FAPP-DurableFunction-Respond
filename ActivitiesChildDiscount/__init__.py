@@ -76,7 +76,7 @@ def main(parametersCancellation: dict) -> dict:
     else:
         respond = Respond(
             question="5. List all the charges shown in the text",
-            answer=["passengerTypes is not child or infant"],
+            answer="",
             category=19,
             quote="",
             freeText=False,

@@ -54,7 +54,7 @@ def validate_charge_number(dict_questions: dict, question_charge_list: list) -> 
                 ] = clear_respond.format_denomination(denomination).strip()
             if len(number) == 0:
                 dict_questions[question_charge]["boolean"] = False
-                dict_questions[question_charge]["value"] = None
+                dict_questions[question_charge]["value"] = []
                 dict_questions[question_charge]["denomination"] = None
     return dict_questions
 
