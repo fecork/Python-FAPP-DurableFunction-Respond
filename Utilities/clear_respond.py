@@ -195,6 +195,8 @@ def dict_answer_to_list(question_dic: dict) -> dict:
         if isinstance(value, dict):
             if isinstance(value["answer"], str):
                 question_dic[key]["answer"] = [value["answer"]]
+            if value["answer"] == [""]:
+                question_dic[key]["answer"] = []
             if type(value["value"]) is not list:
                 question_dic[key]["value"] = [value["value"]]
 
