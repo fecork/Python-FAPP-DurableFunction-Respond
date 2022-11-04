@@ -15,6 +15,7 @@ sys.path.insert(0, dir_path)
 
 from Utilities.load_parameter import load_parameters
 from Utilities.dto_respond import Respond
+from Utilities import build_response
 from Adapters import adapter_gpt
 
 
@@ -58,32 +59,48 @@ def main(parametersCancellation: dict) -> dict:
 
         list_quote = list(filter(None, list_quote))
         list_answer = list(filter(None, list_answer))
+        # NOTE
+        # respond = Respond(
+        #     question="5. List all the charges shown in the text",
+        #     answer=list_answer,
+        #     category=19,
+        #     quote=list_quote,
+        #     freeText=True,
+        #     numberQuestion=5,
+        #     boolean=False if len(list_answer) == 0 else True,
+        #     meanProbability=gpt_text_five["meanProbability"],
+        #     value=None,
+        #     denomination=None,
+        # ).__dict__
 
-        respond = Respond(
-            question="5. List all the charges shown in the text",
-            answer=list_answer,
-            category=19,
-            quote=list_quote,
-            freeText=True,
-            numberQuestion=5,
-            boolean=False if len(list_answer) == 0 else True,
-            meanProbability=gpt_text_five["meanProbability"],
-            value=None,
-            denomination=None,
-        ).__dict__
+        respond = build_response.edit_response(
+            question_i="5. List all the charges shown in the text",
+            answer_i=list_answer,
+            category_i=19,
+            quote_i=list_quote,
+            freeText_i=True,
+            numberQuestion_i=5,
+            boolean_i=False if len(list_answer) == 0 else True,
+            meanProbability_i=gpt_text_five["meanProbability"],
+        )
 
         return respond
     else:
-        respond = Respond(
-            question="5. List all the charges shown in the text",
-            answer="",
-            category=19,
-            quote="",
-            freeText=False,
-            numberQuestion=5,
-            boolean=False,
-            meanProbability=0,
-            value=None,
-            denomination=None,
-        ).__dict__
+        # respond = Respond(
+        #     question="5. List all the charges shown in the text",
+        #     answer="",
+        #     category=19,
+        #     quote="",
+        #     freeText=False,
+        #     numberQuestion=5,
+        #     boolean=False,
+        #     meanProbability=0,
+        #     value=None,
+        #     denomination=None,
+        # ).__dict__
+        respond = build_response.edit_response(
+            question_i="5. List all the charges shown in the text",
+            category_i=19,
+            numberQuestion_i=5,
+        )
         return respond
