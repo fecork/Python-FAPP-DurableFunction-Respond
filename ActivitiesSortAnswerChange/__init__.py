@@ -9,7 +9,6 @@
 import logging
 
 from Utilities.validators_respond import validate_date
-from Utilities.clear_respond import dict_answer_to_list
 from Utilities.calculate import overall_average
 
 
@@ -52,7 +51,7 @@ def main(listRespond: list) -> list:
     }
 
     average = overall_average(respuesta)
-    dict_answer_to_list(respuesta)
+    # dict_answer_to_list(respuesta)
 
     dict_response = {
         "fareBasis": "",

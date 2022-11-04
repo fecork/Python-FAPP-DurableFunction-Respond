@@ -23,21 +23,21 @@ def edit_response(
 
     respond = dto_respond.Respond(
         question="",
-        answer=[],
+        answer="",
         category=0,
         quote="",
         freeText=False,
         numberQuestion=0,
         boolean=False,
         meanProbability=0,
-        value=[],
+        value="",
         denomination=None,
     ).__dict__
 
     if question_i is not None:
         respond["question"] = question_i
     if answer_i is not None:
-        respond["answer"] = [answer_i]
+        respond["answer"] = answer_i
     if category_i is not None:
         respond["category"] = category_i
     if quote_i is not None:
@@ -51,7 +51,7 @@ def edit_response(
     if meanProbability_i is not None:
         respond["meanProbability"] = meanProbability_i
     if value_i is not None:
-        respond["value"] = [value_i]
+        respond["value"] = value_i
     if denomination_i is not None:
         respond["denomination"] = denomination_i
 

@@ -1,17 +1,15 @@
 question_fare_rules_nineteen: |
-          List all the PERCENTS content in the text with their causes, for instance
-          ACCOMPANIED, INFANT WITH A SEAT, UNACCOMPANIE, etc.
+          What is the percentage for a 1 year old passenger with a seat?
+          -
+
 
 structure_fare_rules_nineteen: |
   
-          choose the best option and answer with the list structure separate by commas answer and quote,
-          for instance:
-            
-          Answer: "[your answer charge with cause, your answer charge with cause, your answer charge with cause]"
-          Quote: "[TEXT EXTRACTION, TEXT EXTRACTION, TEXT EXTRACTION]"
+          choose the best option and answer with the structure:
+        
+            "answer":"your answer",
+            "quote":"THE TEXT EXCERPT",
+          
+          from quote value, add a very short text from which you extract the answer
 
-          from quote value, add the text from which you extract the answer
-
-          SOLUTION 
-
-          Answer: 
+          "answer":

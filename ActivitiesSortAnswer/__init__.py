@@ -11,7 +11,6 @@ import logging
 from Utilities import dto_respond
 
 from Utilities.validators_respond import validate_date
-from Utilities.clear_respond import list_to_string, dict_answer_to_list
 from Utilities.calculate import overall_average
 from Utilities import build_response
 
@@ -46,7 +45,6 @@ def main(listRespond: list) -> list:
 
     question_list[question_with_date]["answer"] = date_formated
 
-    answer_5 = list_to_string(answer_5)
     answer_6 = check_booleans(question_list)
 
     respuesta = {
@@ -59,7 +57,6 @@ def main(listRespond: list) -> list:
     }
 
     average = overall_average(respuesta)
-    dict_answer_to_list(respuesta)
 
     dict_response = {
         "fareBasis": "",
@@ -87,9 +84,6 @@ def main(listRespond: list) -> list:
     dict_response["fareBasis"] = dict_penalty["fareBasis"]
     dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
 
-    # sort dict_response by key
-    # dict_response = dict(sorted(dict_response.items(), key=lambda item: item[0]))
-
     return [dict_response]
 
 
@@ -99,21 +93,7 @@ def check_booleans(question_dic: dict) -> dict:
     boolean_3 = question_dic["question_3"]["boolean"]
     validate = boolean_1 and boolean_2 and boolean_3
     if validate:
-        print("Refundable")
-
-    # NOTE: se centraliza respuestas
-    # respond = dto_respond.Respond(
-    #     question="6. Is refundable?",
-    #     answer="Refundable" if validate else "Not Refundable",
-    #     category=16,
-    #     quote="",
-    #     freeText=False,
-    #     numberQuestion=6,
-    #     boolean=validate,
-    #     meanProbability=0,
-    #     value=[],
-    #     denomination=None,
-    # ).__dict__
+        logging.warning("Refundable")
 
     respond = build_response.edit_response(
         question_i="6. Is refundable?",
