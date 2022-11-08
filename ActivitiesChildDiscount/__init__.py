@@ -10,6 +10,7 @@ import logging
 import os
 import sys
 import re
+import json
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
@@ -34,9 +35,14 @@ def main(parametersCancellation: dict) -> dict:
     logging.warning("Executing ActivitiesChildDiscount")
     parameters = load_parameters()
     is_child = parametersCancellation["is_child"]
+    information = parametersCancellation["data_information"]
     text_category_nineteen = parametersCancellation["text_category_nineteen"]
     if is_child:
         question_fare_rules_nineteen = parameters["question_fare_rules_nineteen"]
+        question_fare_rules_nineteen = replace_data(
+            question_fare_rules_nineteen, information
+        )
+
         structure_fare_rules_nineteen = parameters["structure_fare_rules_nineteen"]
         quiz_text_and_question_five = (
             text_category_nineteen
@@ -50,7 +56,11 @@ def main(parametersCancellation: dict) -> dict:
 
         data = validate_data(gpt_text_five_text)
         respond = build_response.edit_response(
-            question_i="5. List all the charges shown in the text",
+            question_i="5. "
+            + question_fare_rules_nineteen.replace(
+                '(NOTE: if there is no information in the text respond, "There is no information about it")',
+                " ",
+            ),
             answer_i=data["answer"],
             category_i=19,
             quote_i=data["quote"],
@@ -105,3 +115,29 @@ def validate_data(gpt_text_five_text: str) -> dict:
         "value": percents[0] if len(percents) > 0 else "",
         "denomination": clear_respond.format_denomination(denomination).strip(),
     }
+
+
+def replace_data(question_fare_rules_nineteen: str, data: dict) -> str:
+    """
+    This is a function for replace data to put in text
+    Args:
+        str (str): This is a string with the text to convert.
+        data (dict): This is a dictionary with the data to replace.
+    Returns:
+        str: This is a string with the text converted.
+
+    """
+    age = str(data["age"])
+    seat = data["seat"]
+
+    if seat is True:
+        seat = "with a seat"
+    else:
+        seat = "without a seat"
+
+    question_fare_rules_nineteen = question_fare_rules_nineteen.replace("#{AGE}#", age)
+    question_fare_rules_nineteen = question_fare_rules_nineteen.replace(
+        "#{SEAT}#", seat
+    )
+
+    return question_fare_rules_nineteen

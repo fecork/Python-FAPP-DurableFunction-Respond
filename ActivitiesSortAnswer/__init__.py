@@ -8,8 +8,6 @@
 
 import logging
 
-from Utilities import dto_respond
-
 from Utilities.validators_respond import validate_date
 from Utilities.calculate import overall_average
 from Utilities import build_response
@@ -32,28 +30,20 @@ def main(listRespond: list) -> list:
     text_category_sixteen = parameters_dict["text_category_sixteen"]
     text_category_nineteen = parameters_dict["text_category_nineteen"]
     dict_penalty = parameters_dict["dict_penalty"]
-    question_with_date = "question_3"
     question_list = questions[0]
-    answer_5 = questions[1]
+    percent_child = questions[1]
+    departure_date = parameters_dict["data_information"]["departureDate"]
 
-    final_date = question_list[question_with_date]
-    date_formated = validate_date(final_date["answer"])
-    if date_formated is None:
-        date_formated = validate_date(final_date["quote"])
-        if date_formated is None:
-            date_formated = final_date["quote"]
-
-    question_list[question_with_date]["answer"] = date_formated
-
-    answer_6 = check_booleans(question_list)
+    is_refundable = check_booleans(question_list)
+    departure_date_response = build_date_response(departure_date)
 
     respuesta = {
         "question_1": question_list["question_1"],
         "question_2": question_list["question_2"],
         "question_3": question_list["question_3"],
-        "question_4": question_list["question_4"],
-        "question_5": answer_5,
-        "question_6": answer_6,
+        "question_4": departure_date_response,
+        "question_5": percent_child,
+        "question_6": is_refundable,
     }
 
     average = overall_average(respuesta)
@@ -90,8 +80,8 @@ def main(listRespond: list) -> list:
 def check_booleans(question_dic: dict) -> dict:
     boolean_1 = question_dic["question_1"]["boolean"]
     boolean_2 = question_dic["question_2"]["boolean"]
-    boolean_3 = question_dic["question_3"]["boolean"]
-    validate = boolean_1 and boolean_2 and boolean_3
+
+    validate = boolean_1 and boolean_2
     if validate:
         logging.warning("Refundable")
 
@@ -103,4 +93,18 @@ def check_booleans(question_dic: dict) -> dict:
         boolean_i=validate,
     )
 
+    return respond
+
+
+def build_date_response(departure_date: str):
+
+    date_formated = validate_date(departure_date)
+
+    respond = build_response.edit_response(
+        question_i="4. Departure date?",
+        answer_i=date_formated,
+        quote_i=departure_date,
+        numberQuestion_i=4,
+        boolean_i=True,
+    )
     return respond

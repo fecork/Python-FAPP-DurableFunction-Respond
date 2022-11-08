@@ -1,5 +1,5 @@
 question_fare_rules_nineteen: |
-          What is the percentage for a 1 year old passenger with a seat?
+          What is the PERCENTAGE for a #{AGE}# year old passenger #{SEAT}#?
           -
 
 

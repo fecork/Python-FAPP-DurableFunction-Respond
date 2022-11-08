@@ -30,7 +30,6 @@ def main(parameters: dict) -> dict:
     logging.warning("Executing ActivitiesExtractParagraph")
     content = format_text(parameters["text_category_sixteen"])
     paragraph = parameters["paragraph"]
-
     index_change = content.index("CHANGE")
     index_cancellation = content.index("CANCELLATION")
 

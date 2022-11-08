@@ -1,4 +1,3 @@
-import re
 import os
 import sys
 import logging
@@ -72,7 +71,7 @@ def validate_date(date: dict) -> str:
     Args: string with the date to validate.
     Return: string with the date in the correct format.
     """
-    date_format_base = "%Y-%m-%dT%H%M%S"
+    date_format_base = "%Y-%m-%dT%H:%M:%S"
     date_format = "%d/%m/%Y, %H:%M:%S"
     response = None
     try:
