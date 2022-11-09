@@ -10,6 +10,7 @@ import logging
 
 from Utilities.validators_respond import validate_date
 from Utilities.calculate import overall_average
+from Utilities import build_response
 
 
 def main(listRespond: list) -> list:
@@ -29,28 +30,22 @@ def main(listRespond: list) -> list:
     text_category_sixteen = parameters_dict["text_category_sixteen"]
     text_category_nineteen = parameters_dict["text_category_nineteen"]
     dict_penalty = parameters_dict["dict_penalty"]
-    question_with_date = "question_5"
 
     question_list = questions[0]
 
-    final_date = question_list[question_with_date]
-    date_formated = validate_date(final_date["answer"])
-    if date_formated is None:
-        date_formated = validate_date(final_date["quote"])
-        if date_formated is None:
-            date_formated = final_date["quote"]
-
-    question_list[question_with_date]["answer"] = date_formated
+    departure_date = parameters_dict["data_information"]["departureDate"]
+    departure_date_response = build_date_response(departure_date)
 
     respuesta = {
         "question_1": question_list["question_1"],
         "question_2": question_list["question_2"],
         "question_3": question_list["question_3"],
         "question_4": question_list["question_4"],
-        "question_5": question_list["question_5"],
+        "question_5": departure_date_response,
     }
 
     average = overall_average(respuesta)
+    # dict_answer_to_list(respuesta)
 
     dict_response = {
         "fareBasis": "",
@@ -80,3 +75,17 @@ def main(listRespond: list) -> list:
     dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
 
     return [dict_response]
+
+
+def build_date_response(departure_date: str):
+
+    date_formated = validate_date(departure_date)
+
+    respond = build_response.edit_response(
+        question_i="5. Departure date?",
+        answer_i=date_formated,
+        quote_i=departure_date,
+        numberQuestion_i=5,
+        boolean_i=True,
+    )
+    return respond

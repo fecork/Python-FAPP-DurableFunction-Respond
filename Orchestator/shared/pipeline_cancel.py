@@ -24,7 +24,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_fare_rules = parameters["question_fare_rules_cancellation"]
     structure_fare_rules = parameters["structure_fare_rules"]
     structure_questions = parameters["structure_fare_rules_cancellation"]
-    data_information = parameters_dict["data_information"]
+
     parameters_dict["question_paragraph"] = parameters[
         "question_paragraph_cancellation"
     ]
@@ -39,9 +39,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         logging.error(e)
 
     quiz_text_and_question = (
-        data_information
-        + "\n" * 2
-        + gpt_paragraph_text
+        gpt_paragraph_text
         + "\n" * 2
         + question_fare_rules
         + "\n" * 2
