@@ -1,0 +1,45 @@
+question_paragraph_change_manual_group_one: |
+          extract verbatim the paragraph that corresponds just to changes:
+
+          CHANGES
+
+question_fare_rules_change_manual_group_one: |
+
+          According to the above rules, answer the next questions:
+
+          1. According to MINIMUM STAY, are there minimum stay requirements? which ones?
+          - 
+          2. According to MAXIMUM STAY, are there maximum stay requirements? which ones?
+          - 
+
+question_fare_rules_change_manual_group_two: |
+
+          According to the above rules, answer the next questions:
+
+          1. According to STOPOVERS, are stopovers permitted at intermediate points? just answer YES or NO
+          - 
+          2. According to BLACKOUT DATES, are there any dates or blackout restrictions? list which ones
+          - 
+
+structure_fare_rules_change_manual_group_one: |
+
+          SOLUTION QUESTIONS 1 to 2:
+            
+structure_fare_rules_change_manual_group_two: |
+
+          SOLUTION QUESTIONS 1 to 2:
+
+list_question_fare_rules_change_manual_group_one: |
+          "1. are there minimum stay requirements?",
+          "2. are there maximum stay requirements?.",
+
+
+list_question_fare_rules_change_manual_group_two: |
+          "1. are stopovers permitted at intermediate points?",
+          "2. are there any dates or blackout restrictions?.",
+
+number_question_change_manual_group_one: 2
+number_question_change_manual_group_two: 2
+
+list_question_charge_change_manual_group_one: []
+list_question_charge_change_manual_group_two: [question_1]

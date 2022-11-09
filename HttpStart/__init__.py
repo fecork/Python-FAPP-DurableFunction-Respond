@@ -122,7 +122,7 @@ def validate_req(req) -> bool:
 
 def validate_task(parameter_task: str):
     # validate if task is CANCELLATION or CHANGE
-    if parameter_task not in ["CANCELLATION", "CHANGE"]:
+    if parameter_task not in ["CANCELLATION", "CHANGE", "MANUALCHANGE"]:
         return False
     else:
         return True

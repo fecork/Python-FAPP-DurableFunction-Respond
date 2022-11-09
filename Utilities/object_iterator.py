@@ -33,10 +33,14 @@ def iterate_categories_in_penalties(
     result_categories = handler_select_text.extract_categories(dict_penalty)
     text_category_sixteen = result_categories["16"]
     text_category_nineteen = result_categories["19"]
+    text_category_six = result_categories["6"]
+    text_category_seven = result_categories["7"]
 
     dict_parameters = {
         "text_category_sixteen": text_category_sixteen,
         "text_category_nineteen": text_category_nineteen,
+        "text_category_six": text_category_six,
+        "text_category_seven": text_category_seven,
         "data_information": parameter_information,
         "is_child": is_child,
         "dict_penalty": dict_penalty,
