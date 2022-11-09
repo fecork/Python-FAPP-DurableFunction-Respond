@@ -1,6 +1,7 @@
 from typing import Dict
 from kedro.config import ConfigLoader, MissingConfigException
 
+
 def load_parameters() -> Dict:
     """
     Funtion for load parameters from /parameters.
@@ -14,19 +15,3 @@ def load_parameters() -> Dict:
         parameters = {}
 
     return parameters
-
-
-def load_credentials() -> Dict:
-    """
-    This is a function for  search the credentials.
-    in credential.yml.
-    """
-
-    conf_loader = ConfigLoader(conf_source="conf", env="local")
-
-    try:
-        credentials = conf_loader.get("credentials*", "credentials*/**")
-    except MissingConfigException:
-        credentials = {}
-
-    return credentials

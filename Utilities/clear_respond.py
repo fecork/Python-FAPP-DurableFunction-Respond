@@ -43,7 +43,6 @@ def extract_number(sentence: str) -> list:
     return:
         list with the numbers
     """
-    # logging.info("extract_number")
     list_number = []
     for text in sentence.split():
         try:
@@ -62,7 +61,6 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
     return:
         dictionary with the information of the paragraphs
     """
-    logging.info("execute_clean_json")
     list_questions = dict_question["list_questions"].split(",")
     number_question = dict_question["number_questions"]
     dict_response = Respond(
@@ -118,11 +116,15 @@ def format_text(text: str) -> str:
         text: String Raw data.
     Returns:
         Preprocessed data text, without stranger character.
+
+    add activate value to test text format from front end
     """
-    logging.info("format_text")
-    text = text.replace(str("\\n"), "\n")
-    text = text.replace(str("/"), " ")
-    text = re.sub(r"[^a-zA-Z0-9\s\n.,;]", "", text)
+    activate = False
+    if activate:
+        logging.info("format_text ACTIVATE")
+        text = text.replace(str("\\n"), "\n")
+        text = text.replace(str("/"), " ")
+        text = re.sub(r"[^a-zA-Z0-9\s\n.,;]", "", text)
     return text
 
 
@@ -141,7 +143,7 @@ def format_denomination(text: str) -> str:
     return text
 
 
-def list_to_string(questions):
+def list_to_string(questions: dict) -> dict:
     """
     This is a function for convert a list to string.
     Args:

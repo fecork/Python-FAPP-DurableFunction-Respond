@@ -5,7 +5,7 @@ question_paragraph_change: |
 
 question_fare_rules_change: |
 
-          according to the above rules,answer:
+          according to the above rules,answer the five questions:
 
           1. according to the rules at which time you can make changes?. Choose one:
           - ANY TIME
@@ -27,13 +27,13 @@ question_fare_rules_change: |
           - No, is not permitted in case of no-show
           - None
 
-          5. extract from text the departure date.
-          - departureDate = 
+          5. extract verbatim the departure Date:
+          - departureDate =
   
 
 structure_fare_rules_change: |
 
-          SOLUTION QUESTIONS 1-5:
+          SOLUTION QUESTIONS 1 to 5:
 
 list_question_fare_rules_change: |
           "1. According to the rules at which time you can make changes?",

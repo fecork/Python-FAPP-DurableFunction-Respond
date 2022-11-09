@@ -7,6 +7,8 @@
 # - run pip install -r requirements.txt
 
 import logging
+
+from numpy import number
 from Utilities import dto_respond
 
 from Utilities.validators_respond import validate_date
@@ -35,18 +37,25 @@ def main(listRespond: list) -> list:
     question_list = questions[0]
     answer_5 = questions[1]
 
-    question_list[question_with_date]["answer"] = validate_date(
-        question_list[question_with_date]["answer"]
-    )
+    final_date = question_list[question_with_date]
+    date_formated = validate_date(final_date["answer"])
+    if date_formated is None:
+        date_formated = validate_date(final_date["quote"])
+        if date_formated is None:
+            date_formated = final_date["quote"]
+
+    question_list[question_with_date]["answer"] = date_formated
 
     answer_5 = list_to_string(answer_5)
-    answer_4 = check_booleans(question_list)
+    answer_6 = check_booleans(question_list)
+
     respuesta = {
         "question_1": question_list["question_1"],
         "question_2": question_list["question_2"],
         "question_3": question_list["question_3"],
-        "question_4": answer_4,
+        "question_4": question_list["question_4"],
         "question_5": answer_5,
+        "question_6": answer_6,
     }
 
     average = overall_average(respuesta)
@@ -92,12 +101,12 @@ def check_booleans(question_list: dict) -> dict:
         print("Refundable")
 
     respond = dto_respond.Respond(
-        question="4. Is refundable?",
+        question="6. Is refundable?",
         answer="Refundable" if validate else "Not Refundable",
         category=16,
         quote="",
         freeText=False,
-        numberQuestion=4,
+        numberQuestion=6,
         boolean=validate,
         meanProbability=0,
         value=None,

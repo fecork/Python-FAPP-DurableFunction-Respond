@@ -33,9 +33,14 @@ def main(listRespond: list) -> list:
 
     question_list = questions[0]
 
-    question_list[question_with_date]["answer"] = validate_date(
-        question_list[question_with_date]["answer"]
-    )
+    final_date = question_list[question_with_date]
+    date_formated = validate_date(final_date["answer"])
+    if date_formated is None:
+        date_formated = validate_date(final_date["quote"])
+        if date_formated is None:
+            date_formated = final_date["quote"]
+
+    question_list[question_with_date]["answer"] = date_formated
 
     respuesta = {
         "question_1": question_list["question_1"],

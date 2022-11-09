@@ -13,14 +13,14 @@ def iterate_penalty_text(
         list of gpt responses
     """
     for dict_penalty in penalty_text:
-        dict_response = iterate_categories(
+        dict_response = iterate_categories_in_penalties(
             dict_penalty, parameter_information, is_child
         )
 
     return dict_response
 
 
-def iterate_categories(
+def iterate_categories_in_penalties(
     dict_penalty: dict, parameter_information: str, is_child: bool
 ) -> dict:
     """
