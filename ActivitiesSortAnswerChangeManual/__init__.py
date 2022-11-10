@@ -24,16 +24,44 @@ def main(listRespond: list) -> list:
     parameters_dict = listRespond[1]
     questions = listRespond[0]
 
-    is_child = parameters_dict["is_child"]
+    text_category_two = parameters_dict["text_category_two"]
+    text_category_three = parameters_dict["text_category_three"]
     text_category_six = parameters_dict["text_category_six"]
     text_category_seven = parameters_dict["text_category_seven"]
+    text_category_eight = parameters_dict["text_category_eight"]
+    text_category_eleven = parameters_dict["text_category_eleven"]
+    text_category_twelve = parameters_dict["text_category_twelve"]
+
     dict_penalty = parameters_dict["dict_penalty"]
 
-    question_list = questions[0]
+    question_list_group_1 = questions[0]
+    question_list_group_2 = questions[1]
+    question_list_group_3 = questions[2]
+
+    question_list_group_1["question_1"]["numberQuestion"] = 1
+    question_list_group_1["question_2"]["numberQuestion"] = 2
+    question_list_group_2["question_1"]["numberQuestion"] = 3
+    question_list_group_2["question_2"]["numberQuestion"] = 4
+    question_list_group_3["question_1"]["numberQuestion"] = 5
+    question_list_group_3["question_2"]["numberQuestion"] = 6
+    question_list_group_3["question_3"]["numberQuestion"] = 7
+
+    question_list_group_1["question_1"]["category"] = 6
+    question_list_group_1["question_2"]["category"] = 7
+    question_list_group_2["question_1"]["category"] = 8
+    question_list_group_2["question_2"]["category"] = 11
+    question_list_group_3["question_1"]["category"] = 2
+    question_list_group_3["question_2"]["category"] = 3
+    question_list_group_3["question_3"]["category"] = 12
 
     respuesta = {
-        "question_1": question_list["question_1"],
-        "question_2": question_list["question_2"],
+        "question_1": question_list_group_1["question_1"],
+        "question_2": question_list_group_1["question_2"],
+        "question_3": question_list_group_2["question_1"],
+        "question_4": question_list_group_2["question_2"],
+        "question_5": question_list_group_3["question_1"],
+        "question_6": question_list_group_3["question_2"],
+        "question_7": question_list_group_3["question_3"],
     }
 
     average = overall_average(respuesta)
@@ -46,14 +74,15 @@ def main(listRespond: list) -> list:
         "freeText": "",
     }
 
-    if is_child:
-        list_free_text = [
-            {"category": 6, "text": text_category_six},
-            {"category": 7, "text": text_category_seven},
-        ]
-    else:
-        list_free_text = [{"category": 6, "text": text_category_six}]
-    # dict_penalty.update({"freeText": list_free_text})
+    list_free_text = [
+        {"category": 2, "text": text_category_two},
+        {"category": 3, "text": text_category_three},
+        {"category": 6, "text": text_category_six},
+        {"category": 7, "text": text_category_seven},
+        {"category": 8, "text": text_category_eight},
+        {"category": 11, "text": text_category_eleven},
+        {"category": 12, "text": text_category_twelve},
+    ]
 
     question_list_respuesta = []
     for value in respuesta.values():

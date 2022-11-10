@@ -45,6 +45,24 @@ def validate_structure_json(dict_questions: dict, task: str) -> dict:
     if "change" in task.lower():
         list_questions = loaded_parameters["list_question_fare_rules_change"].split(",")
         number_questions = loaded_parameters["number_question_change"]
+    if "manual_group_one" in task.lower():
+        list_questions = loaded_parameters[
+            "list_question_fare_rules_change_manual_group_one"
+        ].split(",")
+        number_questions = loaded_parameters["number_question_change_manual_group_one"]
+        # add group two and three
+    if "manual_group_two" in task.lower():
+        list_questions = loaded_parameters[
+            "list_question_fare_rules_change_manual_group_two"
+        ].split(",")
+        number_questions = loaded_parameters["number_question_change_manual_group_two"]
+    if "manual_group_three" in task.lower():
+        list_questions = loaded_parameters[
+            "list_question_fare_rules_change_manual_group_three"
+        ].split(",")
+        number_questions = loaded_parameters[
+            "number_question_change_manual_group_three"
+        ]
 
     list_numbers = range(number_questions)
     for number in list_numbers:
