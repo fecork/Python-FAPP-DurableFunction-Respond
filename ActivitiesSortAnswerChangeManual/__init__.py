@@ -44,7 +44,6 @@ def main(listRespond: list) -> list:
     question_list_group_2["question_2"]["numberQuestion"] = 4
     question_list_group_3["question_1"]["numberQuestion"] = 5
     question_list_group_3["question_2"]["numberQuestion"] = 6
-    question_list_group_3["question_3"]["numberQuestion"] = 7
 
     question_list_group_1["question_1"]["category"] = 6
     question_list_group_1["question_2"]["category"] = 7
@@ -52,8 +51,8 @@ def main(listRespond: list) -> list:
     question_list_group_2["question_2"]["category"] = 11
     question_list_group_3["question_1"]["category"] = 2
     question_list_group_3["question_2"]["category"] = 3
-    question_list_group_3["question_3"]["category"] = 12
 
+    # TODO: agregar categoria 4 y 12 tal cual
     respuesta = {
         "question_1": question_list_group_1["question_1"],
         "question_2": question_list_group_1["question_2"],
@@ -61,7 +60,6 @@ def main(listRespond: list) -> list:
         "question_4": question_list_group_2["question_2"],
         "question_5": question_list_group_3["question_1"],
         "question_6": question_list_group_3["question_2"],
-        "question_7": question_list_group_3["question_3"],
     }
 
     average = overall_average(respuesta)

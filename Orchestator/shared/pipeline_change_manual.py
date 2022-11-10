@@ -148,11 +148,6 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
         ]
         text_category_two = parameters_dict["text_category_two"]
         text_category_three = parameters_dict["text_category_three"]
-        text_category_twelve = parameters_dict["text_category_twelve"]
-
-        if len(text_category_twelve) > 5000:
-            logging.warning("ActivitiesExtractParagraph: Text is too long, summarizing")
-            text_category_twelve = adapter_ls.main(text_category_twelve)
         parameters_dict["question_paragraph"] = parameters[
             "question_paragraph_change_manual_group_one"
         ]
@@ -165,10 +160,6 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
             + "SEASONALITY "
             + "\n"
             + text_category_three
-            + "\n"
-            + "SURCHARGES "
-            + "\n"
-            + text_category_twelve
             + "\n"
         )
 

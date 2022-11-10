@@ -30,7 +30,7 @@ def edit_response(
         numberQuestion=0,
         boolean=False,
         meanProbability=0,
-        value="",
+        value=None,
         denomination=None,
     ).__dict__
 

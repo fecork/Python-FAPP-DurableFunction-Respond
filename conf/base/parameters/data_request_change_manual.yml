@@ -29,7 +29,7 @@ question_fare_rules_change_manual_group_three: |
           - 
           2. According to SEASONALITY, are there any season restrictions? list which ones
           - 
-          3. According to SURCHARGES, do surcharges apply? list which ones
+          3. According to SURCHARGES, What surcharges apply?
           -
 
 
@@ -44,7 +44,7 @@ structure_fare_rules_change_manual_group_two: |
 
 structure_fare_rules_change_manual_group_three: |
 
-          SOLUTION QUESTIONS 1 to 3:
+          SOLUTION QUESTIONS 1 to 2:
 
 list_question_fare_rules_change_manual_group_one: |
           "1. are there minimum stay requirements?",
@@ -58,12 +58,11 @@ list_question_fare_rules_change_manual_group_two: |
 list_question_fare_rules_change_manual_group_three: |
           "5. are there any restrictions on days or times?",
           "6. are there any season restrictions?.",
-          "7. do surcharges apply?. summarize it",
 
 number_question_change_manual_group_one: 2
 number_question_change_manual_group_two: 2
-number_question_change_manual_group_three: 3
+number_question_change_manual_group_three: 2
 
 list_question_charge_change_manual_group_one: []
 list_question_charge_change_manual_group_two: [question_1]
-list_question_charge_change_manual_group_three: [question_3]
+list_question_charge_change_manual_group_three: []
