@@ -35,7 +35,7 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
         "boolean": False,
         "numberQuestion": 0,
         "meanProbability": score,
-        "value": [],
+        "value": 0,
         "denomination": None,
     }
 
