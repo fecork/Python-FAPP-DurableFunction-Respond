@@ -19,6 +19,10 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
 from Utilities.error_respond import validate_error
+from Utilities.load_parameter import load_parameters
+
+
+parameters = load_parameters()
 
 
 async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
@@ -159,7 +163,23 @@ def validate_token(token: str) -> bool:
     try:
         logging.warning("validate_token")
         token = token.replace("Bearer ", "")
-        jwk = json.loads(os.environ["JWK"])
+        jwk = {
+            "keys": [
+                {
+                    "kty": parameters["kty"],
+                    "use": parameters["use"],
+                    "kid": parameters["kid"],
+                    "x5t": parameters["x5t"],
+                    "e": parameters["e"],
+                    "n": parameters["parameter_n"],
+                    "x5c": [
+                        parameters["x5c"],
+                    ],
+                    "alg": parameters["alg"],
+                }
+            ]
+        }
+        jwk = json.dumps(jwk)
         logging.warning("jwk: " + str(jwk))
         claims = jwt.decode(token, jwk)
         claims.validate()
