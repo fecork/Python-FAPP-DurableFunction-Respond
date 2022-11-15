@@ -179,7 +179,6 @@ def validate_token(token: str) -> bool:
                 }
             ]
         }
-        jwk = json.dumps(jwk)
         logging.warning("jwk: " + str(jwk))
         claims = jwt.decode(token, jwk)
         claims.validate()
