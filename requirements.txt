@@ -12,3 +12,4 @@ spacy==3.4.0
 spacy-legacy==3.0.9
 spacy-loggers==1.0.3
 azure-ai-textanalytics==5.2.0b4
+Authlib==1.1.0

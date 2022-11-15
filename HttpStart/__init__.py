@@ -13,6 +13,8 @@ import os
 import sys
 import logging
 
+from authlib.jose import jwt
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
@@ -24,6 +26,12 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
     logging.info("Python HTTP trigger function processed a request.")
 
     correct_req = validate_req(req)
+    jwt = req.headers.get("Authorization")
+    logging.warning("jwt: " + jwt)
+    is_token = validate_token(jwt)
+    if is_token != True:
+        return func.HttpResponse(status_code=401, mimetype="application/json")
+
     if correct_req:
         parameter_task = get_parameter(req, "task")
         parameter_information = get_parameter(req, "information")
@@ -136,3 +144,27 @@ def validate_text(parameter_text: str):
         return False
     else:
         return True
+
+
+# TODO: agregar funcion para validar el json de token
+def validate_token(token: str) -> bool:
+    """
+    this function validate the token
+    Args:
+        token: token
+    Returns:
+        bool
+    """
+
+    try:
+        logging.warning("validate_token")
+        token = token.replace("Bearer ", "")
+        jwk = json.loads(os.environ["JWK"])
+        logging.warning("jwk: " + str(jwk))
+        claims = jwt.decode(token, jwk)
+        claims.validate()
+        logging.info("token validated")
+        return True
+    except:
+        logging.error("token not validated")
+        return False
