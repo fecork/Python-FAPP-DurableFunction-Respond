@@ -3,17 +3,16 @@ import spacy
 import os
 import sys
 
-import pandas as pd
 from typing import Dict
+
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 from validators_respond import (
-    validate_charge_number,
     validate_structure_json,
 )
 from Utilities.load_parameter import load_parameters
-from Utilities.clear_respond import execute_clean_json
+from Utilities.sort_response import execute_clean_json
 
 nlp = spacy.load("en_core_web_sm")
 loaded_parameters = load_parameters()
@@ -57,9 +56,7 @@ def individual_paragraphs(
     paragraph_detected = paragraph_segmentation(text)
 
     list_paragraph = split_paragraph(paragraph_detected)
-    dict_questions = text_to_json(
-        list_paragraph, score, dict_question, list_question_charge, task
-    )
+    dict_questions = text_to_json(list_paragraph, score, dict_question, task)
     return dict_questions
 
 
@@ -84,7 +81,6 @@ def text_to_json(
     list_paragraph: list,
     score: float,
     dict_question: dict,
-    list_question_charge: list,
     task: str,
 ) -> dict:
     """
@@ -103,6 +99,5 @@ def text_to_json(
             "question_" + str(response_clean["key_number"])
         ] = response_clean["dict_response"]
 
-    dict_questions = validate_charge_number(dict_questions, list_question_charge)
     dict_questions = validate_structure_json(dict_questions, task)
     return dict_questions
