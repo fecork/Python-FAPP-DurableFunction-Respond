@@ -38,6 +38,8 @@ def ask_openai(text: str, task: str) -> dict:
 
     if task == "change":
         parameters = loaded_parameters["open_ai_parameters_change"]
+    if "manual" in task:
+        parameters = loaded_parameters["open_ai_parameters_change_manual"]
 
     if task == "classification":
         parameters = loaded_parameters["open_ai_parameters_classification"]

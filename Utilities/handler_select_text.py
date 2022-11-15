@@ -43,8 +43,16 @@ def extract_categories(dict_penalty: dict) -> dict:
         dict of categories
     """
 
+    thereis_two = False
+    thereis_three = False
+    thereis_six = False
+    thereis_seven = False
+    thereis_eight = False
+    thereis_eleven = False
+    thereis_twelve = False
     thereis_sixteen = False
     thereis_nineteen = False
+
     categorias = dict_penalty["categories"]
     for dict_category in categorias:
         code = dict_category["code"]
@@ -54,9 +62,51 @@ def extract_categories(dict_penalty: dict) -> dict:
         if code == "19" and thereis_nineteen == False:
             text_category_nineteen = dict_category["freeText"]
             thereis_nineteen = True
-        if thereis_sixteen and thereis_nineteen:
+        if code == "6" and thereis_six == False:
+            text_category_six = dict_category["freeText"]
+            thereis_six = True
+        if code == "7" and thereis_seven == False:
+            text_category_seven = dict_category["freeText"]
+            thereis_seven = True
+        if code == "8" and thereis_eight == False:
+            text_category_eight = dict_category["freeText"]
+            thereis_eight = True
+        if code == "11" and thereis_eleven == False:
+            text_category_eleven = dict_category["freeText"]
+            thereis_eleven = True
+        if code == "2" and thereis_two == False:
+            text_category_two = dict_category["freeText"]
+            thereis_two = True
+        if code == "3" and thereis_three == False:
+            text_category_three = dict_category["freeText"]
+            thereis_three = True
+        if code == "12" and thereis_twelve == False:
+            text_category_twelve = dict_category["freeText"]
+            thereis_twelve = True
+
+        if (
+            thereis_sixteen
+            and thereis_nineteen
+            and thereis_six
+            and thereis_seven
+            and thereis_eight
+            and thereis_two
+            and thereis_three
+            and thereis_eleven
+            and thereis_twelve
+        ):
             break
-    return {"16": text_category_sixteen, "19": text_category_nineteen}
+    return {
+        "2": text_category_two,
+        "3": text_category_three,
+        "6": text_category_six,
+        "7": text_category_seven,
+        "8": text_category_eight,
+        "11": text_category_eleven,
+        "12": text_category_twelve,
+        "16": text_category_sixteen,
+        "19": text_category_nineteen,
+    }
 
 
 def extract_passenger(penalty_text: dict, type_passenger: str) -> list:
