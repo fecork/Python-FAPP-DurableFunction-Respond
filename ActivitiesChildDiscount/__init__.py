@@ -46,10 +46,16 @@ def main(parametersCancellation: dict) -> dict:
         structure_fare_rules_nineteen = parameters["structure_fare_rules_nineteen"]
         quiz_text_and_question_five = (
             text_category_nineteen
+            + "\n" * 2
             + question_fare_rules_nineteen
             + "\n" * 2
             + structure_fare_rules_nineteen
         )
+
+        logging.error("<<<<<<<<<<<<<<<<")
+        logging.warning(quiz_text_and_question_five)
+        logging.error(">>>>>>>>>>>>>>>>")
+
         gpt_text_five = adapter_gpt.ask_openai(quiz_text_and_question_five, "list")
         list_answer = []
         gpt_text_five_text = gpt_text_five["text"]
@@ -127,17 +133,25 @@ def replace_data(question_fare_rules_nineteen: str, data: dict) -> str:
         str: This is a string with the text converted.
 
     """
-    age = str(data["age"])
-    seat = data["seat"]
+    passengerChild = data["passengerChild"]
+    logging.warning("passengerChild")
+    logging.warning(passengerChild)
+    list_questions = []
+    for child in passengerChild:
+        logging.warning("child")
+        logging.warning(child)
+        age = str(child["age"])
+        seat = child["seat"]
 
-    if seat is True:
-        seat = "with a seat"
-    else:
-        seat = "without a seat"
+        if seat is True:
+            seat = "with a seat"
+        else:
+            seat = "without a seat"
 
-    question_fare_rules_nineteen = question_fare_rules_nineteen.replace("#{AGE}#", age)
-    question_fare_rules_nineteen = question_fare_rules_nineteen.replace(
-        "#{SEAT}#", seat
-    )
+        text_question = question_fare_rules_nineteen.replace("#{AGE}#", age)
+        text_question = text_question.replace("#{SEAT}#", seat)
+        list_questions.append(text_question)
+
+    question_fare_rules_nineteen = " and ".join(list_questions)
 
     return question_fare_rules_nineteen
