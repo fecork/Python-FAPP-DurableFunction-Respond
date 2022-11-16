@@ -1,5 +1,6 @@
 import sys
 import os
+import logging
 
 
 def search_passenger_types(dict_penalty: dict) -> list:
@@ -52,6 +53,16 @@ def extract_categories(dict_penalty: dict) -> dict:
     thereis_twelve = False
     thereis_sixteen = False
     thereis_nineteen = False
+
+    text_category_two = ""
+    text_category_three = ""
+    text_category_six = ""
+    text_category_seven = ""
+    text_category_eight = ""
+    text_category_eleven = ""
+    text_category_twelve = ""
+    text_category_sixteen = ""
+    text_category_nineteen = ""
 
     categorias = dict_penalty["categories"]
     for dict_category in categorias:

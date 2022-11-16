@@ -57,6 +57,8 @@ def orchestrator_function(
         parameter_penalty_text, "adult"
     )
 
+    logging.warning(parameter_penalty_text)
+    logging.warning(parameter_information)
     parameters_object = object_iterator.iterate_penalty_text(
         parameter_penalty_text, parameter_information, is_child
     )
