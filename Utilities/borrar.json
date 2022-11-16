@@ -1,0 +1,15 @@
+{
+    "information": {
+        "DepartureDate": "2023-01-05T06:00:00",
+        "passengerChild": [
+            {
+                "Age": 8,
+                "Seat": false
+            },
+            {
+                "Age": 2,
+                "Seat": true
+            }
+        ]
+    }
+}
