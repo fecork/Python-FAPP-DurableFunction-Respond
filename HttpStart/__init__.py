@@ -27,60 +27,68 @@ parameters = load_parameters()
 
 async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
-    logging.info("Python HTTP trigger function processed a request.")
+    try:
 
-    correct_req = validate_req(req)
-    jwt = req.headers.get("Authorization")
-    logging.warning("jwt: " + jwt)
-    is_token = validate_token(jwt)
-    if is_token != True:
-        return func.HttpResponse(status_code=401, mimetype="application/json")
+        logging.info("Python HTTP trigger function processed a request.")
 
-    if correct_req:
-        parameter_task = get_parameter(req, "task")
-        parameter_information = get_parameter(req, "information")
-        parameter_penalty_text = get_parameter(req, "penaltyText")
-        dict_parameters = {
-            "task": parameter_task,
-            "information": parameter_information,
-            "penaltyText": parameter_penalty_text,
-        }
-        fare_basis = str(parameter_penalty_text[0]["fareBasis"])
-        logging.warning("Starter")
-        logging.warning(fare_basis)
-        client = df.DurableOrchestrationClient(starter)
+        correct_req = validate_req(req)
+        jwt = req.headers.get("Authorization")
+        is_token = validate_token(jwt)
+        if is_token != True:
+            return func.HttpResponse(status_code=401, mimetype="application/json")
 
-        instance_id = await client.start_new("Orchestator", None, dict_parameters)
+        if correct_req:
+            parameter_task = get_parameter(req, "task")
+            parameter_information = get_parameter(req, "information")
+            parameter_penalty_text = get_parameter(req, "penaltyText")
+            dict_parameters = {
+                "task": parameter_task,
+                "information": parameter_information,
+                "penaltyText": parameter_penalty_text,
+            }
+            fare_basis = str(parameter_penalty_text[0]["fareBasis"])
+            logging.warning("Starter")
+            logging.warning(fare_basis)
+            client = df.DurableOrchestrationClient(starter)
 
-        logging.info(f"Started orchestration with ID = '{instance_id}'.")
+            instance_id = await client.start_new("Orchestator", None, dict_parameters)
 
-        respond = await client.get_status(instance_id)
+            logging.info(f"Started orchestration with ID = '{instance_id}'.")
 
-        while respond.runtime_status.value != "Completed":
             respond = await client.get_status(instance_id)
-            if respond.runtime_status.value == "Failed":
-                cause = validate_error(respond)
 
-                return func.HttpResponse(
-                    json.dumps({"cause": cause, "error": respond.output}),
-                    mimetype="application/json",
-                    status_code=500,
-                )
-        logging.warning(f"Orchestration status: {respond.runtime_status.value}")
-        logging.warning("fareBasis: " + str(fare_basis))
+            while respond.runtime_status.value != "Completed":
+                respond = await client.get_status(instance_id)
+                if respond.runtime_status.value == "Failed":
+                    cause = validate_error(respond)
+
+                    return func.HttpResponse(
+                        json.dumps({"cause": cause, "error": respond.output}),
+                        mimetype="application/json",
+                        status_code=500,
+                    )
+            logging.warning(f"Orchestration status: {respond.runtime_status.value}")
+            logging.warning("fareBasis: " + str(fare_basis))
+            return func.HttpResponse(
+                json.dumps(respond.output),
+                mimetype="application/json",
+                status_code=200,
+            )
+        else:
+            return func.HttpResponse(
+                json.dumps(
+                    {
+                        "cause": "There is a Error in the Json, review that task should be CANCELLATION or CHANGE, or penaltyText and information is not empty",
+                        "error": "Bad Request",
+                    }
+                ),
+                mimetype="application/json",
+                status_code=500,
+            )
+    except Exception as e:
+        logging.error(e)
         return func.HttpResponse(
-            json.dumps(respond.output),
-            mimetype="application/json",
-            status_code=200,
-        )
-    else:
-        return func.HttpResponse(
-            json.dumps(
-                {
-                    "cause": "There is a Error in the Json, review that task should be CANCELLATION or CHANGE, or penaltyText and information is not empty",
-                    "error": "Bad Request",
-                }
-            ),
+            json.dumps({"cause": str(e), "error": "Internal Server Error"}),
             mimetype="application/json",
             status_code=500,
         )
@@ -160,30 +168,30 @@ def validate_token(token: str) -> bool:
         bool
     """
 
-    try:
-        logging.warning("validate_token")
-        token = token.replace("Bearer ", "")
-        jwk = {
-            "keys": [
-                {
-                    "kty": parameters["kty"],
-                    "use": parameters["use"],
-                    "kid": parameters["kid"],
-                    "x5t": parameters["x5t"],
-                    "e": parameters["e"],
-                    "n": parameters["parameter_n"],
-                    "x5c": [
-                        parameters["x5c"],
-                    ],
-                    "alg": parameters["alg"],
-                }
-            ]
-        }
-        logging.warning("jwk: " + str(jwk))
-        claims = jwt.decode(token, jwk)
-        claims.validate()
-        logging.info("token validated")
-        return True
-    except:
-        logging.error("token not validated")
-        return False
+    # try:
+    logging.warning("validate_token")
+    token = token.replace("Bearer ", "")
+    jwk = {
+        "keys": [
+            {
+                "kty": parameters["kty"],
+                "use": parameters["use"],
+                "kid": parameters["kid"],
+                "x5t": parameters["x5t"],
+                "e": parameters["e"],
+                "n": parameters["parameter_n"],
+                "x5c": [
+                    parameters["x5c"],
+                ],
+                "alg": parameters["alg"],
+            }
+        ]
+    }
+    logging.warning("jwk: " + str(jwk))
+    claims = jwt.decode(token, jwk)
+    claims.validate()
+    logging.info("token validated")
+    return True
+    # except:
+    #     logging.error("token not validated")
+    #     return False
