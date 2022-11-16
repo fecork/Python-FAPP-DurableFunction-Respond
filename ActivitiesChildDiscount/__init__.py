@@ -52,10 +52,6 @@ def main(parametersCancellation: dict) -> dict:
             + structure_fare_rules_nineteen
         )
 
-        logging.error("<<<<<<<<<<<<<<<<")
-        logging.warning(quiz_text_and_question_five)
-        logging.error(">>>>>>>>>>>>>>>>")
-
         gpt_text_five = adapter_gpt.ask_openai(quiz_text_and_question_five, "list")
         list_answer = []
         gpt_text_five_text = gpt_text_five["text"]
@@ -134,12 +130,10 @@ def replace_data(question_fare_rules_nineteen: str, data: dict) -> str:
 
     """
     passengerChild = data["passengerChild"]
-    logging.warning("passengerChild")
-    logging.warning(passengerChild)
+
     list_questions = []
     for child in passengerChild:
-        logging.warning("child")
-        logging.warning(child)
+
         age = str(child["age"])
         seat = child["seat"]
 
