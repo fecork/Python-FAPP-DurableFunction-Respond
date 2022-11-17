@@ -22,7 +22,7 @@ def main(listRespond: list) -> list:
         list: This is a list with the respond of the GPT sorted.
     """
 
-    logging.warning("Executing ActivitiesSortAnswer")
+    logging.warning("Executing ActivitiesSortAnswerCancellation")
     parameters_dict = listRespond[1]
     questions = listRespond[0]
 

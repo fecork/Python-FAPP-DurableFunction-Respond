@@ -106,16 +106,24 @@ def validate_data(gpt_text_five_text: str) -> dict:
     for index in list_index:
         list_percents.append(answer[index - 4 : index + 7])
 
-    percents = [float(s) for s in re.findall(r"-?\d+\.?\d*", str(list_percents))]
     list_denomination = loaded_parameters["denomination"].split("\n")
-    denomination = [value for value in list_denomination if value in list_percents]
-    denomination = denomination[0] if len(denomination) > 0 else "PERCENT"
+
+    list_answer = quote[0].split("##")
+    percents = [float(s) for s in re.findall(r"-?\d+\.?\d*", str(quote[0]))]
+    logging.warning("ooooooooooooooooooo")
+    logging.error(quote[0])
+    denomination = [
+        value
+        for value in list_denomination
+        for answer in list_answer
+        if value in answer
+    ]
 
     return {
         "quote": quote[1] if len(quote) > 1 else "",
-        "answer": quote[0] if len(quote) > 1 else answer,
-        "value": percents[0] if len(percents) > 0 else "",
-        "denomination": clear_respond.format_denomination(denomination).strip(),
+        "answer": list_answer,
+        "value": percents,
+        "denomination": denomination,
     }
 
 
