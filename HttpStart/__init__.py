@@ -141,7 +141,6 @@ def validate_req(req) -> bool:
 
 
 def validate_task(parameter_task: str):
-    # validate if task is CANCELLATION or CHANGE
     if parameter_task not in ["CANCELLATION", "CHANGE", "MANUALCHANGE"]:
         return False
     else:
@@ -149,7 +148,6 @@ def validate_task(parameter_task: str):
 
 
 def validate_text(parameter_text: str):
-    # validate if text is not empty
     if parameter_text is None:
         return False
     elif parameter_text == "":
@@ -158,7 +156,6 @@ def validate_text(parameter_text: str):
         return True
 
 
-# TODO: agregar funcion para validar el json de token
 def validate_token(token: str) -> bool:
     """
     this function validate the token
