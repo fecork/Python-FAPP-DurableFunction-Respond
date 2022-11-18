@@ -54,7 +54,7 @@ def edit_response(
         respond["value"] = [value_i] if type(value_i) is not list else value_i
     if denomination_i is not None and denomination_i != "":
         respond["denomination"] = (
-            denomination_i if type(denomination_i) is not list else denomination_i
+            [denomination_i] if type(denomination_i) is not list else denomination_i
         )
 
     return respond
