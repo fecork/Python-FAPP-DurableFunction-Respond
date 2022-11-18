@@ -66,5 +66,5 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
 
     data_respond = [outputs, parameters_dict]
 
-    respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
+    respuesta = yield context.call_activity("ActivitiesSortAnswerCancellation", data_respond)
     return respuesta
