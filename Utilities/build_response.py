@@ -36,7 +36,7 @@ def edit_response(
 
     if question_i is not None:
         respond["question"] = question_i
-    if answer_i is not None:
+    if answer_i is not None and answer_i != "":
         respond["answer"] = [answer_i] if type(answer_i) is not list else answer_i
     if category_i is not None:
         respond["category"] = category_i
@@ -50,9 +50,9 @@ def edit_response(
         respond["boolean"] = boolean_i
     if meanProbability_i is not None:
         respond["meanProbability"] = meanProbability_i
-    if value_i is not None:
+    if value_i is not None and value_i != "":
         respond["value"] = [value_i] if type(value_i) is not list else value_i
-    if denomination_i is not None:
+    if denomination_i is not None and denomination_i != "":
         respond["denomination"] = (
             denomination_i if type(denomination_i) is not list else denomination_i
         )

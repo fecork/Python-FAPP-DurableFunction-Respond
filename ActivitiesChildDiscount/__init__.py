@@ -110,8 +110,7 @@ def validate_data(gpt_text_five_text: str) -> dict:
 
     list_answer = quote[0].split("##")
     percents = [float(s) for s in re.findall(r"-?\d+\.?\d*", str(quote[0]))]
-    logging.warning("ooooooooooooooooooo")
-    logging.error(quote[0])
+
     denomination = [
         value
         for value in list_denomination
