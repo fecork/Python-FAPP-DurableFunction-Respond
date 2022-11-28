@@ -1,4 +1,4 @@
-# API para consultar GPT usando Durable Function
+# API para consultar GPT usando Durable Function para extraer información de las Fare Rules de TP Travel
 
 _La API recibe un Json con el texto a ser analizado y retorna la respuesta del modelo GPT, de OPENAI_
 
@@ -46,7 +46,7 @@ Recibe el objeto Json
 ```json
     {
         "task": str,
-		"information": str,
+		"information": [objects],
 		"penaltyText": [objects]
 
     }
@@ -54,11 +54,43 @@ Recibe el objeto Json
 
 donde:
 
-- Task: string con la tarea a ejecutar: CANCELLATION, CHANGE, etc
-- Information: string de la información del ticket: fareBasis, origin, date departure, etc
-- Rules: string de la clase con las reglas correspondiente, por ejemplo para cancelación es la clase 16.
+- Task: string con la tarea a ejecutar: CANCELLATION, CHANGE, MANUALCHANGE
+
+```json
+ "task": "CANCELLATION"
+```
+
+CANCELLATION: para esta tarea, el modelo revisará la categoría 16, en caso de existir un menor de edad, la categoría 16 y 19
+
+CHANGE: para esta tarea, el modelo revisará la categoría 16.
+
+MANUALCHANGE: para cambios manuales, el modelo revisará la categoría 2, 3, 4, 6, 7, 8, 10, 11.
+
+FUEL SURCHARGES: para combustible, el modelo revisará la categoría 12
+
+- Information: string de la información del ticket: fareBasis, origin, date departure, información de menor de edad, etc
 
 por ejemplo
+
+```json
+    "information": {
+        "departureDate": "2023-01-05T06:00:00",
+        "passengerChild": [
+            {
+                "age": 8,
+                "seat": true,
+				"isAccompanied": true
+            },
+            {
+                "age": 2,
+                "seat": false,
+				"isAccompanied": false
+            }
+        ]
+    },
+```
+
+- Rules: string de la clase con las reglas correspondiente, se reciben las 33 categorias, por ejemplo para cancelación es la clase 16 y 19
 
 ```json
 "penaltyText":[
@@ -86,66 +118,41 @@ el modelo GPT responderá:
 - category: para indicar de que categoría extrajo la respuesta
 - meanProbability: indica la probabilidad media de generación de cada token en la respuesta
 
+```json
+  			{
+				"question": str,
+				"answer": [str],
+				"category": int,
+				"quote": str,
+				"freeText": boolean,
+				"numberQuestion": int,
+				"boolean": boolean,
+				"meanProbability":float,
+				"value": [float],
+				"denomination": [str]
+			},
+```
+
 Por ejemplo:
 
 ```json
-   {
-				"question": "\"1. According to the rules at which time you can cancel\"",
-				"answer": "You can cancel at ANY TIME.",
-				"Category": 16,
-				"quote": "ANY TIME. TICKET IS NONREFUNDABLE.",
-				"NumberQuestion": 1,
-				"boolean": true,
-				"meanProbability": 97.75423896420118
-			},
-			{
-				"question": "\n\"2. How much is the CHARGE FOR CANCEL?\"",
-				"answer": "The charge for cancel is the sum of the cancellation fees of all cancelled fare components.",
-				"Category": 16,
-				"quote": "WHEN COMBINING REFUNDABLE FARES WITH NON REFUNDABLE FARES PROVISIONS WILL APPLY AS FOLLOWS THE AMOUNT PAID ON THE REFUNDABLE FARE COMPONENT WILL BE REFUNDED UPON PAYMENT OF THE PENALTY AMOUNT IF APPLICABLE. THE AMOUNT PAID ON THE NON-REFUNDABLE FARE COMPONENT WILL NOT BE REFUNDED. WHEN COMBINING FARES CHARGE THE SUM OF THE CANCELLATION FEES OF ALL CANCELLED FARE COMPONENTS.",
-				"NumberQuestion": 2,
-				"boolean": true,
-				"meanProbability": 97.75423896420118,
-				"Value": null,
-				"Denomination": "The charge for cancel is the sum of the cancellation fees of all cancelled fare components."
-			},
-			{
-				"question": "\n\"3. What is the departure date?\"\n",
-				"answer": "The departure date is November 5th 2022 at 2115.",
-				"Category": 16,
-				"quote": "Ticket Information fareBasis = H13USR3APO/CH25 airLine = SQ departureDate = 2022-11-05T211500 route = origin JFK destination FRA ticketNumber 6185860002240 ticketIssuanceDate 2022-05-31T000000+0000 reservationDate 2022-05-05T211500 cancelationDate 2022-05-10T021500",
-				"NumberQuestion": 3,
-				"boolean": true,
-				"meanProbability": 97.75423896420118
-			},
-			{
-				"question": "4. Is refundable?",
-				"answer": "NonRefundable",
-				"Category": 16,
-				"quote": "",
-				"NumberQuestion": 4,
-				"boolean": false,
-				"meanProbability": 82.63212880372367
-			},
-			{
-				"question": "5. List all the charges shown in the text",
+  {
+				"question": "\n\"3. How much is THE FEE FOR NO-SHOW.\"\n",
 				"answer": [
-					"100 percent of the fare for accompanied children 2-11 no discount for infants with a seat under 2 10 percent of the fare for first infants without a seat under 2 100 percent of the fare for unaccompanied children 8-11"
+					"FEE ___ FOR NO SHOW"
 				],
-				"Category": 19,
-				"quote": [
-					"CNNACCOMPANIED CHILD PSGR 2-11 - CHARGE 100 PERCENT OF THE FARE.",
-					"OR - INSINFANT WITH A SEAT PSGR UNDER 2 - NO DISCOUNT.",
-					"OR - 1ST INFINFANT WITHOUT A SEAT PSGR UNDER 2 - CHARGE 10 PERCENT OF THE FARE.",
-					"OR - UNNUNACCOMPANIED CHILD PSGR 8-11 - CHARGE 100 PERCENT OF THE FARE."
-				],
-				"NumberQuestion": 5,
-				"boolean": true,
-				"meanProbability": 95.83486723862995
-			}
+				"category": 16,
+				"quote": "TICKET IS NON-REFUNDABLE IN CASE OF CANCEL/REFUND.",
+				"freeText": true,
+				"numberQuestion": 3,
+				"boolean": false,
+				"meanProbability": 98.45931417035175,
+				"value": [],
+				"denomination": []
+			},
 ```
 
-para la question_3 se entrega además:
+para las preguntas, en donde se extrae valores de moneda, como por ejemplo la question_3 se entrega además:
 
 - value: valor flotante con el cargo encontrado
 - denomination: moneda o denominación del cargo: USD, JPY, GBP
@@ -154,14 +161,19 @@ por ejemplo.
 
 ```json
 	"question_3": {
-		"answer": "USD 200.00",
+		"answer": ["USD 200.00"],
 		"quote": "CHARGE USD 200.00 FOR CANCEL.",
 		"boolean": true,
 		"question": "How much is the CHARGE FOR CANCEL?",
-		"Value": 200.0,
-		"Denomination": "USD"
+		"Value": [200.0],
+		"Denomination": ["USD"]
 	},
 ```
+
+## Tener en cuenta
+
+- el tiempo de respuesta depende de la cantidad de texto, las categorias que más suelen demorar son la 12, 16 y 19
+- GPT puede procesar solamente 4000 tokens, aproxímadamente unas 3000 palabras
 
 ## Despliegue 📦
 

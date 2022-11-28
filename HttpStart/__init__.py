@@ -33,10 +33,12 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
         correct_req = validate_req(req)
         jwt = req.headers.get("Authorization")
-        # is_token = validate_token(jwt)
+        is_token = validate_token(jwt)
         is_token = True
         if is_token != True:
-            return func.HttpResponse(status_code=401, mimetype="application/json")
+            return func.HttpResponse(
+                status_code=401, mimetype="application/json"
+            )
 
         if correct_req:
             parameter_task = get_parameter(req, "task")
@@ -52,7 +54,9 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
             logging.warning(fare_basis)
             client = df.DurableOrchestrationClient(starter)
 
-            instance_id = await client.start_new("Orchestator", None, dict_parameters)
+            instance_id = await client.start_new(
+                "Orchestator", None, dict_parameters
+            )
 
             logging.info(f"Started orchestration with ID = '{instance_id}'.")
 
@@ -68,7 +72,9 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
                         mimetype="application/json",
                         status_code=500,
                     )
-            logging.warning(f"Orchestration status: {respond.runtime_status.value}")
+            logging.warning(
+                f"Orchestration status: {respond.runtime_status.value}"
+            )
             logging.warning("fareBasis: " + str(fare_basis))
             return func.HttpResponse(
                 json.dumps(respond.output),
@@ -79,7 +85,11 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
             return func.HttpResponse(
                 json.dumps(
                     {
-                        "cause": "There is a Error in the Json, review that task should be CANCELLATION or CHANGE, or penaltyText and information is not empty",
+                        "cause": (
+                            "There is a Error in the Json, review that task"
+                            " should be CANCELLATION or CHANGE, or penaltyText"
+                            " and information is not empty"
+                        ),
                         "error": "Bad Request",
                     }
                 ),

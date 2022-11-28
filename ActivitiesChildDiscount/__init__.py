@@ -26,12 +26,14 @@ loaded_parameters = load_parameters()
 
 def main(parametersCancellation: dict) -> dict:
 
-    """This is a function for extract child discount of the text
+    """
+    This is a function for extract child discount of the text
     Args:
         parametersCancellation (dict): This is a dictionary with text and task.
     Returns:
         dict: This is a dictionary with text and mean probability.
     """
+    
     logging.warning("Executing ActivitiesChildDiscount")
     parameters = load_parameters()
     is_child = parametersCancellation["is_child"]
@@ -51,10 +53,17 @@ def main(parametersCancellation: dict) -> dict:
             + "\n" * 2
             + structure_fare_rules_nineteen
         )
+        
+   
 
         gpt_text_five = adapter_gpt.ask_openai(quiz_text_and_question_five, "list")
         list_answer = []
         gpt_text_five_text = gpt_text_five["text"]
+        
+        logging.error("!!!!!!!!!!!!!!!!")
+        logging.info('Respuesta GPT Porcentaje')
+        logging.warning(gpt_text_five_text)
+        logging.error("!!!!!!!!!!!!!!!!")
 
         data = validate_data(gpt_text_five_text)
         respond = build_response.edit_response(
@@ -143,14 +152,21 @@ def replace_data(question_fare_rules_nineteen: str, data: dict) -> str:
 
         age = str(child["age"])
         seat = child["seat"]
+        accompanied = child["isAccompanied"]
 
         if seat is True:
             seat = "with a seat"
         else:
             seat = "without a seat"
+            
+        if accompanied is True:
+            accompanied = "and accompanied"
+        else:
+            accompanied = ""
 
         text_question = question_fare_rules_nineteen.replace("#{AGE}#", age)
         text_question = text_question.replace("#{SEAT}#", seat)
+        text_question = text_question.replace("#{ACCOMPANIED}#", accompanied)
         list_questions.append(text_question)
 
     question_fare_rules_nineteen = " and ".join(list_questions)
