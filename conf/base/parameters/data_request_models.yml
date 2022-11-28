@@ -1,5 +1,5 @@
 open_ai_parameters:
-  model: text-davinci-002
+  model: text-davinci-003
   prompt: Choose the best option according to the text
   temperature: 0.7
   max_tokens: 1500
@@ -8,7 +8,7 @@ open_ai_parameters:
   presence_penalty: 0
 
 open_ai_parameters_change:
-  model: text-davinci-002
+  model: text-davinci-003
   prompt: Choose the best option according to the text
   temperature: 0.7
   max_tokens: 2000
@@ -17,7 +17,7 @@ open_ai_parameters_change:
   presence_penalty: 0
 
 open_ai_parameters_change_manual:
-  model: text-davinci-002
+  model: text-davinci-003
   prompt: Choose the best option according to the text
   temperature: 0.7
   max_tokens: 500
@@ -26,7 +26,7 @@ open_ai_parameters_change_manual:
   presence_penalty: 0
 
 open_ai_parameters_classification:
-  model: text-davinci-002
+  model: text-davinci-003
   prompt: Classify the following text in refund or nonrefund
   temperature: 0.7
   max_tokens: 100
@@ -35,7 +35,7 @@ open_ai_parameters_classification:
   presence_penalty: 0
 
 open_ai_parameters_list:
-  model: text-davinci-002
+  model: text-davinci-003
   prompt:  Choose the best option according to the text
   temperature: 0.5
   max_tokens: 500
