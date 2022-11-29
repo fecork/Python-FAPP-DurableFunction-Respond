@@ -18,7 +18,6 @@ lib/
 lib64/
 parts/
 sdist/
-data/
 var/
 wheels/
 pip-wheel-metadata/
@@ -134,3 +133,14 @@ __blobstorage__
 __queuestorage__
 __azurite_db*__.json
 .python_packages
+
+#ignore all local configuration
+conf/local/**
+!conf/local/.gitkeep
+
+# ignore potentially sensitive credentials files
+conf/**/*credentials*
+
+# ignore everything in the following folders
+data/**
+logs/**

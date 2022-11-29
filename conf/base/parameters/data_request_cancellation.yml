@@ -1,0 +1,36 @@
+question_paragraph_cancellation: |
+          extract verbatim the paragraph that corresponds just to cancellations:
+
+          CANCELLATIONS
+
+question_fare_rules_cancellation: |
+
+          according to the above rules, answer
+
+          1. According to the rules at which time you can cancel?. Choose one.
+          -ANY TIME.
+          -BEFORE DEPARTURE.
+          -None
+
+          2. How much is the CHARGE FOR CANCEL? Complete, in there is not charge respond null.
+          -CHARGE: ___.
+          -null
+          
+          3. How much is THE FEE FOR NO-SHOW. complete:
+          - FEE: __ FOR NO SHOW
+          - None.
+
+structure_fare_rules_cancellation: |
+
+          SOLUTION QUESTIONS 1-3:
+
+#NOTE: Siempre agregar la coma, al final de la pregunta
+list_question_fare_rules_cancellation: |
+          "1. According to the rules at which time you can cancel",
+          "2. How much is the CHARGE FOR CANCEL?",
+          "3. How much is THE FEE FOR NO-SHOW."
+
+number_question_cancellation: 3
+
+#NOTA la pregunta de la question_fare_rules_cancellation
+list_question_charge_cancellation: [question_2, question_3, question_5]

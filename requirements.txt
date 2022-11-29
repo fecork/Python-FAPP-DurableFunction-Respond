@@ -3,6 +3,7 @@
 # Manually managing azure-functions-worker may cause unexpected issues
 
 azure-functions
+azure-functions-durable
 kedro==0.18.1
 openai
 setuptools
@@ -10,3 +11,5 @@ en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_
 spacy==3.4.0
 spacy-legacy==3.0.9
 spacy-loggers==1.0.3
+azure-ai-textanalytics==5.2.0b4
+Authlib==1.1.0
