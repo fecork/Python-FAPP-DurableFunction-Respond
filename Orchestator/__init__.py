@@ -6,6 +6,7 @@
 # - add azure-functions-durable to requirements.txt
 # - run pip install -r requirements.txt
 
+
 import logging
 import os
 import sys
@@ -15,12 +16,13 @@ import azure.durable_functions as df
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from shared import pipeline_cancel
-from shared import pipeline_change
-from shared import pipeline_change_manual
-from Utilities import object_iterator
-from Utilities import handler_select_text
 from Utilities.load_parameter import load_parameters
+from Utilities import handler_select_text
+from Utilities import object_iterator
+from shared import pipeline_change_manual
+from shared import pipeline_change
+from shared import pipeline_cancel
+from shared import pipeline_fuel_surcharge
 
 parameters = load_parameters()
 
@@ -42,7 +44,8 @@ def orchestrator_function(
 
     list_passengers_type = []
     for dict_penalty in parameter_penalty_text:
-        passenger_type = handler_select_text.search_passenger_types(dict_penalty)
+        passenger_type = handler_select_text.search_passenger_types(
+            dict_penalty)
         list_passengers_type.append(passenger_type)
         list_passengers_type = list(set(list_passengers_type))
         is_child = validate_child(passenger_type)
@@ -76,7 +79,15 @@ def orchestrator_function(
 
     if parameter_task == "MANUALCHANGE":
 
-        gpt_response = pipeline_change_manual.pipeline(context, parameters_object)
+        gpt_response = pipeline_change_manual.pipeline(
+            context, parameters_object)
+
+        return gpt_response
+
+    if parameter_task == "FUELSURCHARGE":
+
+        gpt_response = pipeline_fuel_surcharge.pipeline(
+            context, parameters_object)
 
         return gpt_response
 

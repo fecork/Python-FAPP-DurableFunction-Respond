@@ -6,6 +6,8 @@
 # - run pip install -r requirements.txt
 
 
+from Utilities.load_parameter import load_parameters
+from Utilities.error_respond import validate_error
 import json
 import azure.functions as func
 import azure.durable_functions as df
@@ -17,9 +19,6 @@ from authlib.jose import jwt
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-
-from Utilities.error_respond import validate_error
-from Utilities.load_parameter import load_parameters
 
 
 parameters = load_parameters()
@@ -152,7 +151,7 @@ def validate_req(req) -> bool:
 
 
 def validate_task(parameter_task: str):
-    if parameter_task not in ["CANCELLATION", "CHANGE", "MANUALCHANGE"]:
+    if parameter_task not in ["CANCELLATION", "CHANGE", "MANUALCHANGE", "FUELSURCHARGE"]:
         return False
     else:
         return True
