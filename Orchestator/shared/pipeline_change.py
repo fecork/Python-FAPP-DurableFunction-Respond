@@ -1,3 +1,4 @@
+from Utilities.load_parameter import load_parameters
 import azure.durable_functions as df
 import logging
 import os
@@ -6,7 +7,6 @@ import sys
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from Utilities.load_parameter import load_parameters
 
 parameters = load_parameters()
 
@@ -28,6 +28,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     parameters_dict["question_paragraph"] = parameters["question_paragraph_change"]
 
     parameters_dict["paragraph"] = "CHANGE"
+    parameters_dict["task"] = "CHANGE"
 
     try:
         gpt_paragraph_text = yield context.call_activity(
@@ -55,7 +56,8 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "task": "change",
     }
 
-    response_quiz = context.call_activity("ActivitiesExecuteQuiz", parameters_quiz)
+    response_quiz = context.call_activity(
+        "ActivitiesExecuteQuiz", parameters_quiz)
 
     outputs = yield context.task_all([response_quiz])
 

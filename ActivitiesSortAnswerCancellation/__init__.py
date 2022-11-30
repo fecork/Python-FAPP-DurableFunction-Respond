@@ -35,8 +35,13 @@ def main(listRespond: list) -> list:
     departure_date = parameters_dict["data_information"]["departureDate"]
 
     is_refundable = check_booleans(question_list)
+    for key, value in question_list.items():
+        value["category"] = 16
+        
     departure_date_response = build_date_response(departure_date)
 
+    
+        
     respuesta = {
         "question_1": question_list["question_1"],
         "question_2": question_list["question_2"],

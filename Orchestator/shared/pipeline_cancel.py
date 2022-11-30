@@ -1,3 +1,4 @@
+from Utilities.load_parameter import load_parameters
 import azure.durable_functions as df
 import logging
 import os
@@ -6,7 +7,6 @@ import sys
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from Utilities.load_parameter import load_parameters
 
 parameters = load_parameters()
 
@@ -29,6 +29,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "question_paragraph_cancellation"
     ]
     parameters_dict["paragraph"] = "CANCELLATION"
+    parameters_dict["task"] = "CANCELLATION"
 
     try:
         gpt_paragraph_text = yield context.call_activity(
@@ -56,7 +57,8 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "task": "cancellation",
     }
 
-    response_quiz = context.call_activity("ActivitiesExecuteQuiz", parameters_quiz)
+    response_quiz = context.call_activity(
+        "ActivitiesExecuteQuiz", parameters_quiz)
 
     response_child_discount = context.call_activity(
         "ActivitiesChildDiscount", parameters_dict

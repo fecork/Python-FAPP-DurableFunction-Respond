@@ -25,24 +25,25 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     structure_fare_rules = parameters["structure_fare_rules"]
     structure_questions = parameters["structure_fare_rules_fuel_surcharge"]
 
-    parameters_dict["question_paragraph"] = parameters["question_paragraph_fuel_surcharge"]
+    # parameters_dict["question_paragraph"] = parameters["question_paragraph_fuel_surcharge"]
 
     parameters_dict["paragraph"] = "CHANGE"
+    parameters_dict["task"] = "FUELSURCHARGE"
 
-    # try:
-    #     gpt_paragraph_text = yield context.call_activity(
-    #         "ActivitieExtractParagraphIndex", parameters_dict
-    #     )
-    # except Exception as e:
-    #     logging.error("Error in ActivitieExtractParagraphIndex")
-    #     logging.error(e)
+    try:
+        gpt_paragraph_text = yield context.call_activity(
+            "ActivitieExtractParagraphIndex", parameters_dict
+        )
+    except Exception as e:
+        logging.error("Error in ActivitieExtractParagraphIndex")
+        logging.error(e)
 
-    text_category_twelve = parameters_dict["text_category_twelve"]
+    # text_category_twelve = parameters_dict["text_category_twelve"]
 
     quiz_text_and_question = (
         'SURCHARGES'
         + "\n"*2
-        + text_category_twelve
+        + gpt_paragraph_text['FUELSURCHARGE']
         + "\n" * 2
         + question_fare_rules
         + "\n" * 2
@@ -50,6 +51,8 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         + "\n" * 2
         + structure_questions
     )
+    
+    logging.warning(quiz_text_and_question)
 
     parameters_quiz = {
         "quiz_text_and_question": quiz_text_and_question,
@@ -66,5 +69,5 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
 
     data_respond = [outputs, parameters_dict]
 
-    respuesta = yield context.call_activity("ActivitiesSortAnswerChange", data_respond)
+    respuesta = yield context.call_activity("ActivitiesSortAnswerFuel", data_respond)
     return respuesta
