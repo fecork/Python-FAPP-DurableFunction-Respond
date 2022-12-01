@@ -3,11 +3,11 @@ import requests
 import json
 import openai
 import logging
-
+import numpy as np
 from Utilities.load_parameter import load_parameters
 
 
-def login_openai() -> Dict:
+def login_openai() -> dict:
     """
     This is a function for  login to openai.
     """
@@ -46,17 +46,10 @@ def ask_openai(text: str, task: str) -> dict:
     if task == "list":
         parameters = loaded_parameters["open_ai_parameters_list"]
 
-    # NOTE:
-    # deployment_id = "REPLACE_WITH_YOUR_DEPLOYMENT_NAME"  # This will correspond to the custom name you chose for your deployment when you deployed a model.
-
-    # Send a completion call to generate an answer
-    # print("Sending a test completion job")
-    # start_phrase = "Write a tagline for an ice cream shop. "
 
     prompt = parameters["prompt"]
     prompt = f"{prompt}:\n\n{text}"
     response = openai.Completion.create(
-        # engine=deployment_id
         engine=parameters["model"],
         prompt=prompt,
         temperature=parameters["temperature"],
@@ -66,8 +59,6 @@ def ask_openai(text: str, task: str) -> dict:
         presence_penalty=parameters["presence_penalty"],
         logprobs=1,
     )
-    # text = response["choices"][0]["text"].replace("\n", "").replace(" .", ".").strip()
-    # print(start_phrase + text)
 
     response_mean_probability = mean_probability(response)
 
