@@ -6,6 +6,7 @@
 # - add azure-functions-durable to requirements.txt
 # - run pip install -r requirements.txt
 
+
 import logging
 import os
 import sys
@@ -15,17 +16,14 @@ import json
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from Utilities.load_parameter import load_parameters
-from Utilities import clear_respond
+from Adapters import adapter_azure_gpt as adapter
 from Utilities import build_response
-from Adapters import adapter_gpt
 from Utilities.load_parameter import load_parameters
 
 loaded_parameters = load_parameters()
 
 
 def main(parametersCancellation: dict) -> dict:
-
     """
     This is a function for extract child discount of the text
     Args:
@@ -33,7 +31,7 @@ def main(parametersCancellation: dict) -> dict:
     Returns:
         dict: This is a dictionary with text and mean probability.
     """
-    
+
     logging.warning("Executing ActivitiesChildDiscount")
     parameters = load_parameters()
     is_child = parametersCancellation["is_child"]
@@ -53,13 +51,12 @@ def main(parametersCancellation: dict) -> dict:
             + "\n" * 2
             + structure_fare_rules_nineteen
         )
-        
-   
 
-        gpt_text_five = adapter_gpt.ask_openai(quiz_text_and_question_five, "list")
+        gpt_text_five = adapter.ask_openai(
+            quiz_text_and_question_five, "list")
         list_answer = []
         gpt_text_five_text = gpt_text_five["text"]
-        
+
         logging.error("!!!!!!!!!!!!!!!!")
         logging.info('Respuesta GPT Porcentaje')
         logging.warning(gpt_text_five_text)
@@ -113,7 +110,7 @@ def validate_data(gpt_text_five_text: str) -> dict:
 
     list_percents = []
     for index in list_index:
-        list_percents.append(answer[index - 4 : index + 7])
+        list_percents.append(answer[index - 4: index + 7])
 
     list_denomination = loaded_parameters["denomination"].split("\n")
 
@@ -158,7 +155,7 @@ def replace_data(question_fare_rules_nineteen: str, data: dict) -> str:
             seat = "with a seat"
         else:
             seat = "without a seat"
-            
+
         if accompanied is True:
             accompanied = "and accompanied"
         else:
