@@ -14,11 +14,10 @@ def login_openai() -> Dict:
     logging.warning("Executing login_openai")
     try:
 
-        openai.api_key = "REPLACE_WITH_YOUR_API_KEY_HERE"
-        # your endpoint should look like the following https://YOUR_RESOURCE_NAME.openai.azure.com/
-        openai.api_base = "REPLACE_WITH_YOUR_ENDPOINT_HERE"
-        openai.api_type = "azure"
-        openai.api_version = "2022-06-01-preview"  # this may change in the future
+        openai.api_key = os.environ["AZOPENAIKEY"]
+        openai.api_base = os.environ["AZOPENAIENDPOINT"]
+        openai.api_type = os.environ["AZOPENAITYPE"]
+        openai.api_version = os.environ["AZOPENAIVERSION"]
 
     except Exception as e:
         print("No credentials for openai")
