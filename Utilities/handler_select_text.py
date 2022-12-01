@@ -131,6 +131,7 @@ def extract_passenger(penalty_text: dict, type_passenger: str) -> list:
     list_clean = []
     for dict_penalty in penalty_text:
         passenger_type = dict_penalty["passengerTypes"]
+        passenger_type.sort()
         if passenger_type[0].lower() == type_passenger:
             list_clean.append(dict_penalty)
     return list_clean

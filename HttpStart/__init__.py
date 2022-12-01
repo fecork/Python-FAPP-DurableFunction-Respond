@@ -6,6 +6,8 @@
 # - run pip install -r requirements.txt
 
 
+from Utilities.load_parameter import load_parameters
+from Utilities.error_respond import validate_error
 import json
 import azure.functions as func
 import azure.durable_functions as df
@@ -17,9 +19,6 @@ from authlib.jose import jwt
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-
-from Utilities.error_respond import validate_error
-from Utilities.load_parameter import load_parameters
 
 
 parameters = load_parameters()
@@ -34,7 +33,7 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
         correct_req = validate_req(req)
         jwt = req.headers.get("Authorization")
         is_token = validate_token(jwt)
-        is_token = True
+        # is_token = True
         if is_token != True:
             return func.HttpResponse(
                 status_code=401, mimetype="application/json"

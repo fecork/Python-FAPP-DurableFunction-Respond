@@ -12,6 +12,7 @@ def iterate_penalty_text(
     Returns:
         list of gpt responses
     """
+
     for dict_penalty in penalty_text:
         dict_response = iterate_categories_in_penalties(
             dict_penalty, parameter_information, is_child
@@ -30,6 +31,7 @@ def iterate_categories_in_penalties(
     Returns:
         dict penalty
     """
+
     result_categories = handler_select_text.extract_categories(dict_penalty)
 
     text_category_two = result_categories["2"]
