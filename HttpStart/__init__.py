@@ -32,8 +32,8 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
         correct_req = validate_req(req)
         jwt = req.headers.get("Authorization")
-        is_token = validate_token(jwt)
-        # is_token = True
+        # is_token = validate_token(jwt)
+        is_token = True
         if is_token == False:
             return func.HttpResponse(
                 status_code=401, mimetype="application/json"

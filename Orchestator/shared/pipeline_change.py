@@ -56,8 +56,12 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     }
 
     response_quiz = context.call_activity("ActivitiesExecuteQuiz", parameters_quiz)
+    
+    response_child_discount = context.call_activity(
+        "ActivitiesChildDiscount", parameters_dict
+    )
 
-    outputs = yield context.task_all([response_quiz])
+    outputs = yield context.task_all([response_quiz, response_child_discount])
 
     data_respond = [outputs, parameters_dict]
 
