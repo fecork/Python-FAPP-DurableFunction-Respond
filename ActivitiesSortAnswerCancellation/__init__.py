@@ -14,14 +14,6 @@ from Utilities import build_response
 
 
 def main(listRespond: list) -> list:
-    """
-    This is a function for sort the respond of the GPT in a JSON.
-    Args:
-        listRespond (list): This is a list with the respond of the GPT.
-    Returns:
-        list: This is a list with the respond of the GPT sorted.
-    """
-
     logging.warning("Executing ActivitiesSortAnswerCancellation")
     parameters_dict = listRespond[1]
     questions = listRespond[0]
@@ -72,7 +64,7 @@ def main(listRespond: list) -> list:
     dict_response["average"] = average
     dict_response["freeText"] = list_free_text
     dict_response["fareBasis"] = dict_penalty["fareBasis"]
-    dict_response["passengerTypes"] = dict_penalty["passengerTypes"]
+    dict_response["passengerTypes"] = dict_penalty["listPassengers"]
 
     return [dict_response]
 
@@ -80,17 +72,13 @@ def main(listRespond: list) -> list:
 def check_booleans(question_dic: dict) -> dict:
     boolean_1 = question_dic["question_1"]["boolean"]
     boolean_2 = question_dic["question_2"]["boolean"]
-    
     is_anytime = True if "ANY TIME" in question_dic["question_1"]["answer"][0].upper() else False
-    
-
-    # validate = boolean_1 and boolean_2
     validate = boolean_2 and is_anytime
     if validate:
         logging.warning("Refundable")
 
     respond = build_response.edit_response(
-        question_i="6. Is refundable?",
+        question_i="Is refundable?",
         answer_i="Refundable" if validate else "Not Refundable",
         category_i=16,
         numberQuestion_i=6,
@@ -105,7 +93,7 @@ def build_date_response(departure_date: str):
     date_formated = validate_date(departure_date)
 
     respond = build_response.edit_response(
-        question_i="4. Departure date?",
+        question_i="Departure date?",
         answer_i=date_formated,
         quote_i=departure_date,
         numberQuestion_i=4,

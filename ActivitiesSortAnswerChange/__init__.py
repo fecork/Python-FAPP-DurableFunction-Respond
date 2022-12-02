@@ -14,14 +14,10 @@ from Utilities import build_response
 
 
 def main(listRespond: list) -> list:
-    """
-    This is a function for sort the respond of the GPT in a JSON.
-    Args:
-        listRespond (list): This is a list with the respond of the GPT.
-    Returns:
-        list: This is a list with the respond of the GPT sorted.
-    """
 
+    # NOTE: Este flujo es igual al de cancelaciones
+    # revisar para evitar duplicidad de código
+    
     logging.warning("Executing ActivitiesSortAnswerChange")
     parameters_dict = listRespond[1]
     questions = listRespond[0]
@@ -32,6 +28,7 @@ def main(listRespond: list) -> list:
     dict_penalty = parameters_dict["dict_penalty"]
 
     question_list = questions[0]
+    percent_child = questions[1]
 
     departure_date = parameters_dict["data_information"]["departureDate"]
     departure_date_response = build_date_response(departure_date)
@@ -42,6 +39,7 @@ def main(listRespond: list) -> list:
         "question_3": question_list["question_3"],
         "question_4": question_list["question_4"],
         "question_5": departure_date_response,
+        "question_6": percent_child,
     }
 
     average = overall_average(respuesta)
@@ -82,7 +80,7 @@ def build_date_response(departure_date: str):
     date_formated = validate_date(departure_date)
 
     respond = build_response.edit_response(
-        question_i="5. Departure date?",
+        question_i="Departure date?",
         answer_i=date_formated,
         quote_i=departure_date,
         numberQuestion_i=5,

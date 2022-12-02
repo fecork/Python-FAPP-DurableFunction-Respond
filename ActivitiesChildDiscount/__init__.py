@@ -24,13 +24,6 @@ loaded_parameters = load_parameters()
 
 
 def main(parametersCancellation: dict) -> dict:
-    """
-    This is a function for extract child discount of the text
-    Args:
-        parametersCancellation (dict): This is a dictionary with text and task.
-    Returns:
-        dict: This is a dictionary with text and mean probability.
-    """
 
     logging.warning("Executing ActivitiesChildDiscount")
     parameters = load_parameters()
@@ -64,12 +57,12 @@ def main(parametersCancellation: dict) -> dict:
 
         data = validate_data(gpt_text_five_text)
         respond = build_response.edit_response(
-            question_i="5. "
-            + question_fare_rules_nineteen.replace(
+            question_i= question_fare_rules_nineteen.replace(
                 '(NOTE: if there is no information in the text respond, "There is no information about it")',
                 " ",
             ),
-            answer_i=data["answer"],
+            # answer_i=data["answer"],
+            answer_i=data["quote"],
             category_i=19,
             quote_i=data["quote"],
             freeText_i=True,
@@ -84,7 +77,7 @@ def main(parametersCancellation: dict) -> dict:
     else:
 
         respond = build_response.edit_response(
-            question_i="5. List all the charges shown in the text",
+            question_i="List all the charges shown in the text",
             category_i=19,
             numberQuestion_i=5,
         )

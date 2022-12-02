@@ -26,9 +26,9 @@ structure_fare_rules_cancellation: |
 
 #NOTE: Siempre agregar la coma, al final de la pregunta
 list_question_fare_rules_cancellation: |
-          "1. According to the rules at which time you can cancel",
-          "2. How much is the CHARGE FOR CANCEL?",
-          "3. How much is THE FEE FOR NO-SHOW."
+          ccording to the rules at which time you can cancel,
+          How much is the CHARGE FOR CANCEL?,
+          How much is THE FEE FOR NO-SHOW.
 
 number_question_cancellation: 3
 
