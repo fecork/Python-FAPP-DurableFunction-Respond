@@ -44,14 +44,13 @@ def orchestrator_function(
 
         passenger_type = handler_select_text.search_key(dict_penalty, 'passengerTypes')
        
-        # NOTE mejorar el c[odigo]
         for passenger in passenger_type:
             list_passengers.append(passenger)
             list_passengers_type.append(passenger)
             is_child = validate_child(passenger)
+            if is_child:
+                break
        
-            
-        
         farebasis = handler_select_text.search_key(dict_penalty, 'fareBasis')
         list_farebasis.append(farebasis)
         list_passengers_type = list(set(list_passengers_type))
@@ -101,8 +100,9 @@ main = df.Orchestrator.create(orchestrator_function)
 
 
 def validate_child(passenger_type: str) -> bool:
-    if passenger_type.lower() == "child":
+    
+    if "child" in passenger_type.lower():
         return True
-    if passenger_type.lower() == "infant":
+    if "infant" in passenger_type.lower():
         return True
     return False

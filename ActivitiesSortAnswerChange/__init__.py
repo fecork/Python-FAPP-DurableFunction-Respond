@@ -40,8 +40,8 @@ def main(listRespond: list) -> list:
         "question_2": question_list["question_2"],
         "question_3": question_list["question_3"],
         "question_4": question_list["question_4"],
-        "question_5": departure_date_response,
-        "question_6": percent_child,
+        "question_5": percent_child,
+        "question_6": departure_date_response,
     }
 
     average = overall_average(respuesta)
@@ -85,7 +85,7 @@ def build_date_response(departure_date: str):
         question_i="Departure date?",
         answer_i=date_formated,
         quote_i=departure_date,
-        numberQuestion_i=5,
+        numberQuestion_i=6,
         boolean_i=True,
     )
     return respond
