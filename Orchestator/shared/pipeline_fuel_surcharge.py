@@ -20,14 +20,15 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     Returns:
         parameters_dict: This is a dictionary with the respond of the GPT
     """
-    task = parameters_dict["task"].lower()
-    question_fare_rules = parameters["question_fare_rules_{0}".format(task)]
+
+    question_fare_rules = parameters["question_fare_rules_fuel_surcharge"]
     structure_fare_rules = parameters["structure_fare_rules"]
-    structure_questions = parameters["structure_fare_rules_{0}".format(task)]
+    structure_questions = parameters["structure_fare_rules_fuel_surcharge"]
 
-    parameters_dict["question_paragraph"] = parameters["question_paragraph_{0}".format(task)]
+    # parameters_dict["question_paragraph"] = parameters["question_paragraph_fuel_surcharge"]
 
-    parameters_dict["paragraph"] = parameters_dict["task"]
+    # parameters_dict["paragraph"] = "CHANGE"
+    parameters_dict["task"] = "FUELSURCHARGE"
 
     try:
         gpt_paragraph_text = yield context.call_activity(
@@ -37,8 +38,12 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         logging.error("Error in ActivitieExtractParagraphIndex")
         logging.error(e)
 
+    # text_category_twelve = parameters_dict["text_category_twelve"]
+
     quiz_text_and_question = (
-        gpt_paragraph_text
+        'SURCHARGES'
+        + "\n"*2
+        + gpt_paragraph_text['FUELSURCHARGE']
         + "\n" * 2
         + question_fare_rules
         + "\n" * 2
@@ -46,24 +51,23 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         + "\n" * 2
         + structure_questions
     )
+    
+    logging.warning(quiz_text_and_question)
 
     parameters_quiz = {
         "quiz_text_and_question": quiz_text_and_question,
-        "number_questions": parameters["number_question_{0}".format(task)],
-        "list_questions": parameters["list_question_fare_rules_{0}".format(task)],
-        "list_question_charge": parameters["list_question_charge_{0}".format(task)],
-        "task": "{0}".format(task),
+        "number_questions": parameters["number_question_fuel_surcharge"],
+        "list_questions": parameters["list_question_fare_rules_fuel_surcharge"],
+        "list_question_charge": parameters["list_question_charge_fuel_surcharge"],
+        "task": "change",
     }
 
-    response_quiz = context.call_activity("ActivitiesExecuteQuiz", parameters_quiz)
-    
-    response_child_discount = context.call_activity(
-        "ActivitiesChildDiscount", parameters_dict
-    )
+    response_quiz = context.call_activity(
+        "ActivitiesExecuteQuiz", parameters_quiz)
 
-    outputs = yield context.task_all([response_quiz, response_child_discount])
+    outputs = yield context.task_all([response_quiz])
 
     data_respond = [outputs, parameters_dict]
 
-    respuesta = yield context.call_activity("ActivitiesSortAnswer{0}".format(task.capitalize()), data_respond)
+    respuesta = yield context.call_activity("ActivitiesSortAnswerFuel", data_respond)
     return respuesta

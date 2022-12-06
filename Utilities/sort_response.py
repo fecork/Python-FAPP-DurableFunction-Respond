@@ -29,7 +29,7 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
     dict_response = {
         "question": "",
         "answer": "",
-        "category": 16,
+        "category": 0,
         "quote": "",
         "freeText": True,
         "boolean": False,
@@ -74,7 +74,6 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
         other_response = build_response.edit_response(
             question_i=dict_response["question"],
             answer_i=dict_response["answer"],
-            category_i=16,
             quote_i=dict_response["quote"],
             freeText_i=True,
             numberQuestion_i=dict_response["numberQuestion"],

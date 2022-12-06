@@ -1,0 +1,20 @@
+question_fare_rules_fuel_surcharge: |
+
+          according to the above rules,answer the next questions:
+
+          1. What is the origin of the flight?
+          -
+          2. According to FUEL SURCHARGE, what fuel surcharge does apply from that origin?
+          -
+
+structure_fare_rules_fuel_surcharge: |
+
+          SOLUTION QUESTIONS 1 to 2:
+
+list_question_fare_rules_fuel_surcharge: |
+          "1. What is the origin of the flight?",
+          "2. According to FUEL SURCHARGE, what fuel surcharge does apply from that origin?",
+  
+number_question_fuel_surcharge: 2
+
+list_question_charge_fuel_surcharge: [question_2]
