@@ -7,6 +7,8 @@
 # - run pip install -r requirements.txt
 
 
+
+
 import logging
 import os
 import sys
@@ -30,28 +32,33 @@ parameters = load_parameters()
 def orchestrator_function(
     context: df.DurableOrchestrationContext,
 ) -> dict:
-    """
-    This is the main orchestrator function.
-    Args:
-        context (DurableOrchestrationContext): The context object for the
-    Returns:
-        dict: This is a dictionary with the respond of the GPT
-    """
+
     parameters = context.get_input()
     parameter_task = parameters["task"]
     parameter_information = parameters["information"]
     parameter_penalty_text = parameters["penaltyText"]
 
     list_passengers_type = []
+    list_passengers = []
+    list_farebasis = []
     for dict_penalty in parameter_penalty_text:
-        passenger_type = handler_select_text.search_passenger_types(
-            dict_penalty)
-        list_passengers_type.append(passenger_type)
+
+        passenger_type = handler_select_text.search_key(dict_penalty, 'passengerTypes')
+       
+        # NOTE mejorar el c[odigo]
+        for passenger in passenger_type:
+            list_passengers.append(passenger)
+            list_passengers_type.append(passenger)
+            is_child = validate_child(passenger)
+       
+            
+        
+        farebasis = handler_select_text.search_key(dict_penalty, 'fareBasis')
+        list_farebasis.append(farebasis)
         list_passengers_type = list(set(list_passengers_type))
-        is_child = validate_child(passenger_type)
+
 
     passengers_type = tuple(list_passengers_type)
-
     parameter_penalty_text = handler_select_text.remove_duplicate_passenger(
         parameter_penalty_text, list_passengers_type
     )
@@ -65,16 +72,15 @@ def orchestrator_function(
 
     parameters_object["task"] = parameter_task
     parameters_object["dict_penalty"]["passengerTypes"] = list(passengers_type)
+    parameters_object["dict_penalty"]["fareBasis"] = list_farebasis
+    parameters_object["dict_penalty"]["listPassengers"] = list_passengers
+    
     if parameter_task == "CANCELLATION":
-
-        gpt_response = pipeline_cancel.pipeline(context, parameters_object)
-
+        gpt_response = pipeline_change.pipeline(context, parameters_object)
         return gpt_response
 
     if parameter_task == "CHANGE":
-
         gpt_response = pipeline_change.pipeline(context, parameters_object)
-
         return gpt_response
 
     if parameter_task == "MANUALCHANGE":
@@ -96,13 +102,6 @@ main = df.Orchestrator.create(orchestrator_function)
 
 
 def validate_child(passenger_type: str) -> bool:
-    """
-    This function validate if the passenger type is child.
-    Args:
-        passenger_type (str): This is the passenger type.
-    Returns:
-        bool: This is a boolean.
-    """
     if passenger_type.lower() == "child":
         return True
     if passenger_type.lower() == "infant":

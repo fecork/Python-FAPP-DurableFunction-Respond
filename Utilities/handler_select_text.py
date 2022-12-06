@@ -2,19 +2,18 @@ import sys
 import os
 import logging
 
-
-def search_passenger_types(dict_penalty: dict) -> list:
+        
+def search_key(dict_penalty: dict, key_i: str) -> list:
     """
-    search passenger types in a json, like adult, child, infant
+    search farebasis in a json
     Args:
         dict_penalty: json
     Returns:
-        list of passenger types
+        list of farebasis
     """
     for key, value in dict_penalty.items():
-        if key == "passengerTypes":
-            return value[0]
-
+        if key == key_i:
+            return value
 
 def remove_duplicate_passenger(penalty_text: list, list_passenger_type: list) -> list:
     """
@@ -36,13 +35,6 @@ def remove_duplicate_passenger(penalty_text: list, list_passenger_type: list) ->
 
 
 def extract_categories(dict_penalty: dict) -> dict:
-    """
-    extract categories from dict_penalty json and return a dict with categories
-    Args:
-        dict_penalty: json
-    Returns:
-        dict of categories
-    """
 
     thereis_two = False
     thereis_three = False
@@ -131,6 +123,7 @@ def extract_passenger(penalty_text: dict, type_passenger: str) -> list:
     list_clean = []
     for dict_penalty in penalty_text:
         passenger_type = dict_penalty["passengerTypes"]
+        passenger_type.sort()
         if passenger_type[0].lower() == type_passenger:
             list_clean.append(dict_penalty)
     return list_clean

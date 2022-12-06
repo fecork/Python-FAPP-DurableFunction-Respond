@@ -15,7 +15,7 @@ sys.path.insert(0, dir_path)
 
 
 from Utilities.handler_respond import individual_paragraphs
-from Adapters import adapter_gpt
+from Adapters import adapter_azure_gpt as adapter
 
 
 from Utilities.load_parameter import load_parameters
@@ -36,7 +36,7 @@ def main(parameters: dict) -> dict:
     quiz_text_and_question = parameters["quiz_text_and_question"]
     list_question_charge = parameters["list_question_charge"]
     task = parameters["task"]
-    gpt_quiz = adapter_gpt.ask_openai(quiz_text_and_question, task)
+    gpt_quiz = adapter.ask_openai(quiz_text_and_question, task)
     gpt_quiz_text = gpt_quiz["text"]
 
     gpt_quiz_mean_probability = gpt_quiz["meanProbability"]

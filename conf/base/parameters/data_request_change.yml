@@ -36,11 +36,11 @@ structure_fare_rules_change: |
           SOLUTION QUESTIONS 1 to 5:
 
 list_question_fare_rules_change: |
-          "1. According to the rules at which time you can make changes?",
-          "2. How much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION?",
-          "3. How much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW.",
-          "4. Changes is permitted in case of no-show?",
-          "5. According to the ticket information the departure date is?"
+          According to the rules at which time you can make changes?,
+          How much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION?,
+          How much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW.,
+          Changes is permitted in case of no-show?,
+          According to the ticket information the departure date is?
 
 number_question_change: 5
 

@@ -47,17 +47,17 @@ structure_fare_rules_change_manual_group_three: |
           SOLUTION QUESTIONS 1 to 2:
 
 list_question_fare_rules_change_manual_group_one: |
-          "1. are there minimum stay requirements?",
-          "2. are there maximum stay requirements?.",
+          are there minimum stay requirements?,
+          are there maximum stay requirements?.,
 
 
 list_question_fare_rules_change_manual_group_two: |
-          "3. are stopovers permitted at intermediate points?",
-          "4. are there any dates or blackout restrictions?.",
+          are stopovers permitted at intermediate points?,
+          are there any dates or blackout restrictions?.,
 
 list_question_fare_rules_change_manual_group_three: |
-          "5. are there any restrictions on days or times?",
-          "6. are there any season restrictions?.",
+          are there any restrictions on days or times?,
+          are there any season restrictions?.,
 
 number_question_change_manual_group_one: 2
 number_question_change_manual_group_two: 2

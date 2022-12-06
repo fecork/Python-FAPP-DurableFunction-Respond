@@ -34,7 +34,7 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
         jwt = req.headers.get("Authorization")
         # is_token = validate_token(jwt)
         is_token = True
-        if is_token != True:
+        if is_token == False:
             return func.HttpResponse(
                 status_code=401, mimetype="application/json"
             )
@@ -176,26 +176,29 @@ def validate_token(token: str) -> bool:
     """
     if token is None:
         return False
-
-    logging.warning("validate_token")
-    token = token.replace("Bearer ", "")
-    jwk = {
-        "keys": [
-            {
-                "kty": parameters["kty"],
-                "use": parameters["use"],
-                "kid": parameters["kid"],
-                "x5t": parameters["x5t"],
-                "e": parameters["e"],
-                "n": parameters["parameter_n"],
-                "x5c": [
-                    parameters["x5c"],
-                ],
-                "alg": parameters["alg"],
-            }
-        ]
-    }
-    claims = jwt.decode(token, jwk)
-    claims.validate()
-    logging.info("token validated")
-    return True
+    try:
+        logging.warning("validate_token")
+        token = token.replace("Bearer ", "")
+        jwk = {
+            "keys": [
+                {
+                    "kty": parameters["kty"],
+                    "use": parameters["use"],
+                    "kid": parameters["kid"],
+                    "x5t": parameters["x5t"],
+                    "e": parameters["e"],
+                    "n": parameters["parameter_n"],
+                    "x5c": [
+                        parameters["x5c"],
+                    ],
+                    "alg": parameters["alg"],
+                }
+            ]
+        }
+        claims = jwt.decode(token, jwk)
+        claims.validate()
+        logging.info("token validated")
+        return True
+    except Exception as e:
+        logging.error(e)
+        return False
