@@ -23,7 +23,6 @@ from Utilities import handler_select_text
 from Utilities import object_iterator
 from shared import pipeline_change_manual
 from shared import pipeline_change
-from shared import pipeline_cancel
 from shared import pipeline_fuel_surcharge
 
 parameters = load_parameters()

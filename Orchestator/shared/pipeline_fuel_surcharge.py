@@ -25,9 +25,6 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     structure_fare_rules = parameters["structure_fare_rules"]
     structure_questions = parameters["structure_fare_rules_fuel_surcharge"]
 
-    # parameters_dict["question_paragraph"] = parameters["question_paragraph_fuel_surcharge"]
-
-    # parameters_dict["paragraph"] = "CHANGE"
     parameters_dict["task"] = "FUELSURCHARGE"
 
     try:
@@ -37,8 +34,6 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     except Exception as e:
         logging.error("Error in ActivitieExtractParagraphIndex")
         logging.error(e)
-
-    # text_category_twelve = parameters_dict["text_category_twelve"]
 
     quiz_text_and_question = (
         'SURCHARGES'
