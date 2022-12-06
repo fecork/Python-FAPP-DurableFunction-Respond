@@ -4,7 +4,7 @@ question_fare_rules_fuel_surcharge: |
 
           1. What is the origin of the flight?
           -
-          2. According to SURCHARGES, what fuel surcharge does apply from that origin?
+          2. According to FUEL SURCHARGE, what fuel surcharge does apply from that origin?
           -
 
 structure_fare_rules_fuel_surcharge: |
@@ -13,7 +13,7 @@ structure_fare_rules_fuel_surcharge: |
 
 list_question_fare_rules_fuel_surcharge: |
           "1. What is the origin of the flight?",
-          "2. According to SURCHARGES, what fuel surcharge does apply from that origin?",
+          "2. According to FUEL SURCHARGE, what fuel surcharge does apply from that origin?",
   
 number_question_fuel_surcharge: 2
 

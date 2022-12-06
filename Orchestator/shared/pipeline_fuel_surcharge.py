@@ -27,7 +27,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
 
     # parameters_dict["question_paragraph"] = parameters["question_paragraph_fuel_surcharge"]
 
-    parameters_dict["paragraph"] = "CHANGE"
+    # parameters_dict["paragraph"] = "CHANGE"
     parameters_dict["task"] = "FUELSURCHARGE"
 
     try:
