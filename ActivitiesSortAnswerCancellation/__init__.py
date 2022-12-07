@@ -77,7 +77,7 @@ def main(listRespond: list) -> list:
 def check_booleans(question_dic: dict) -> dict:
     boolean_1 = question_dic["question_1"]["boolean"]
     boolean_2 = question_dic["question_2"]["boolean"]
-    is_anytime = True if "ANY TIME" in question_dic["question_1"]["answer"][0].upper() else False
+    is_anytime = True if "ANY" in question_dic["question_1"]["quote"][0].upper() else False
     validate = boolean_2 and is_anytime
     if validate:
         logging.warning("Refundable")
