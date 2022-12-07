@@ -8,12 +8,15 @@
 
 from Utilities.load_parameter import load_parameters
 from Utilities.error_respond import validate_error
+from Adapters.adapter_auth import get_jwk
+
 import json
 import azure.functions as func
 import azure.durable_functions as df
 import os
 import sys
 import logging
+
 
 from authlib.jose import jwt
 
@@ -178,23 +181,8 @@ def validate_token(token: str) -> bool:
         return False
     try:
         logging.warning("validate_token")
+        jwk = get_jwk()
         token = token.replace("Bearer ", "")
-        jwk = {
-            "keys": [
-                {
-                    "kty": parameters["kty"],
-                    "use": parameters["use"],
-                    "kid": parameters["kid"],
-                    "x5t": parameters["x5t"],
-                    "e": parameters["e"],
-                    "n": parameters["parameter_n"],
-                    "x5c": [
-                        parameters["x5c"],
-                    ],
-                    "alg": parameters["alg"],
-                }
-            ]
-        }
         claims = jwt.decode(token, jwk)
         claims.validate()
         logging.info("token validated")
