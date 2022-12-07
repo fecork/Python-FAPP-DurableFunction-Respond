@@ -27,13 +27,13 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
     list_questions = dict_question["list_questions"].split(",")
     number_question = dict_question["number_questions"]
     dict_response = {
+        "numberQuestion": 0,
         "question": "",
         "answer": "",
         "category": 0,
         "quote": "",
         "freeText": True,
         "boolean": False,
-        "numberQuestion": 0,
         "meanProbability": score,
         "value": 0,
         "denomination": None,

@@ -69,11 +69,11 @@ def validate_structure_json(dict_questions: dict, task: str) -> dict:
         number = number + 1
         if "question_" + str(number) not in dict_questions:
             dict_questions["question_" + str(number)] = {
+                "numberQuestion": number,
                 "answer": [],
                 "category": "",
                 "quote": "",
                 "boolean": False,
-                "numberQuestion": number,
                 "question": list_questions[int(number) - 1],
                 "score": 0,
                 "value": [],
