@@ -30,8 +30,8 @@ def main(parameters: dict) -> dict:
         parametersCancellation (dict): This is a dictionary with text and task.
     Returns:
         dict: This is a dictionary with text and mean probability.
-
     """
+    
     logging.warning("Executing ActivitiesExtractParagraph")
     quiz_text_and_question = parameters["quiz_text_and_question"]
     list_question_charge = parameters["list_question_charge"]
@@ -45,8 +45,8 @@ def main(parameters: dict) -> dict:
         gpt_quiz_text, gpt_quiz_mean_probability, parameters, list_question_charge, task
     )
 
-    logging.error("<<<<<<<<<<<<<<<<<<")
+    logging.warning("<<<<<<<<<<<<<<<<<<")
     logging.warning("Respuesta de GPT")
     logging.info(respond)
-    logging.error(">>>>>>>>>>>>>>>>>>")
+    logging.warning(">>>>>>>>>>>>>>>>>>")
     return respond

@@ -50,10 +50,10 @@ def main(parametersCancellation: dict) -> dict:
         list_answer = []
         gpt_text_five_text = gpt_text_five["text"]
 
-        logging.error("!!!!!!!!!!!!!!!!")
+        logging.info("!!!!!!!!!!!!!!!!")
         logging.info('Respuesta GPT Porcentaje')
         logging.warning(gpt_text_five_text)
-        logging.error("!!!!!!!!!!!!!!!!")
+        logging.info("!!!!!!!!!!!!!!!!")
 
         data = validate_data(gpt_text_five_text)
         respond = build_response.edit_response(

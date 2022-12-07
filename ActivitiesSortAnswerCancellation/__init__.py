@@ -75,11 +75,14 @@ def main(listRespond: list) -> list:
 
 
 def check_booleans(question_dic: dict) -> dict:
-    boolean_1 = question_dic["question_1"]["boolean"]
+    # boolean_1 = question_dic["question_1"]["boolean"]
     boolean_2 = question_dic["question_2"]["boolean"]
     # is_anytime = True if "ANY" in question_dic["question_1"]["quote"][0].upper()
-    # text_to_validate = question_dic["question_1"]["quote"][0].upper()
-    if 'ANY' in text_to_validate or 'BEFORE' in text_to_validate:
+    is_anytime = False
+    text_to_validate = question_dic["question_1"]["quote"][0].upper()
+    if 'ANY' in text_to_validate:
+        is_anytime = True
+    if 'BEFORE' in text_to_validate:
         is_anytime = True
     
     validate = boolean_2 and is_anytime
