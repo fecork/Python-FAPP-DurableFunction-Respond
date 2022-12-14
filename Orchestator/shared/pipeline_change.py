@@ -1,4 +1,7 @@
 from Utilities.load_parameter import load_parameters
+from Utilities.validators_respond import validate_date
+from Utilities import build_response
+
 import azure.durable_functions as df
 import logging
 import os
@@ -62,8 +65,99 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     )
 
     outputs = yield context.task_all([response_quiz, response_child_discount])
+    question_list = outputs[0]
+    percent_child = outputs[1]
+    
+    text_category_sixteen = parameters_dict["text_category_six"]
+    text_category_nineteen = parameters_dict["text_category_nineteen"]
+    is_child = parameters_dict["is_child"]
+    
+    set_category(question_list, 16) 
+    departure_date = parameters_dict["data_information"]["departureDate"]
+    departure_date_response = build_date_response(departure_date, task)
+    
+    if is_child:
+        list_free_text = [
+            {"category": 16, "text": text_category_sixteen},
+            {"category": 19, "text": text_category_nineteen}]
+    else:
+        list_free_text = [{"category": 16, "text": text_category_sixteen}]
+  
+    model_respond = set_model_respond(
+        question_list, percent_child, departure_date_response, task)
+    
+    data_respond = {
+        "outputs": outputs, 
+        "parameters_dict": parameters_dict, 
+        "list_free_text": list_free_text,
+        "model_respond": model_respond
+        }
 
-    data_respond = [outputs, parameters_dict]
-
-    respuesta = yield context.call_activity("ActivitiesSortAnswer{0}".format(task.capitalize()), data_respond)
+    respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
     return respuesta
+
+
+def build_date_response(departure_date: str, task: str):
+    
+    date_formated = validate_date(departure_date)
+
+    respond = build_response.edit_response(
+        question_i="Departure date?",
+        answer_i=date_formated,
+        quote_i=departure_date,
+        numberQuestion_i=6 if task == "change" else 4,
+        boolean_i=True,
+    )
+    return respond
+
+
+def set_category(question_list: dict, category: int):
+    for key, value in question_list.items():
+        value["category"] = category
+
+
+def check_booleans(question_dic: dict) -> dict:
+    # boolean_1 = question_dic["question_1"]["boolean"]
+    boolean_2 = question_dic["question_2"]["boolean"]
+    # is_anytime = True if "ANY" in question_dic["question_1"]["quote"][0].upper()
+    is_anytime = False
+    text_to_validate = question_dic["question_1"]["quote"][0].upper()
+    if 'ANY' in text_to_validate:
+        is_anytime = True
+    if 'BEFORE' in text_to_validate:
+        is_anytime = True
+
+    validate = boolean_2 and is_anytime
+    if validate:
+        logging.warning("Refundable")
+
+    respond = build_response.edit_response(
+        question_i="Is refundable?",
+        answer_i="Refundable" if validate else "Not Refundable",
+        category_i=16,
+        numberQuestion_i=6,
+        boolean_i=validate,)
+    return respond
+
+
+def set_model_respond(question_list, percent_child, departure_date_response, task):
+    if 'change' in task:
+        model_respond = [
+            question_list["question_1"],
+            question_list["question_2"],
+            question_list["question_3"],
+            question_list["question_4"],
+            percent_child,
+            departure_date_response
+        ]
+    if 'cancel' in task:
+        is_refundable = check_booleans(question_list)
+        model_respond = [
+            question_list["question_1"],
+            question_list["question_2"],
+            question_list["question_3"],
+            departure_date_response,
+            percent_child,
+            is_refundable
+        ]
+    return model_respond

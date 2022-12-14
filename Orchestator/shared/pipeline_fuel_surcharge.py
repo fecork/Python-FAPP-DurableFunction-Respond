@@ -61,8 +61,25 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "ActivitiesExecuteQuiz", parameters_quiz)
 
     outputs = yield context.task_all([response_quiz])
+    question_list = outputs[0]
+    set_category(question_list, 12)
+    list_free_text = [{
+        "category": 12,
+        "text": parameters_dict["text_category_twelve"]
+    }]
+    
+    model_respond = [question_list["question_1"], question_list["question_2"]]
+    data_respond = {
+        "outputs": outputs,
+        "parameters_dict": parameters_dict,
+        "list_free_text": list_free_text,
+        "model_respond": model_respond
+    }
+    respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
 
-    data_respond = [outputs, parameters_dict]
-
-    respuesta = yield context.call_activity("ActivitiesSortAnswerFuel", data_respond)
     return respuesta
+
+
+def set_category(question_list: dict, category: int):
+    for key, value in question_list.items():
+        value["category"] = category
