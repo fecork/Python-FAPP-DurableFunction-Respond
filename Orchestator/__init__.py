@@ -24,6 +24,7 @@ from Utilities import object_iterator
 from shared import pipeline_change_manual
 from shared import pipeline_change
 from shared import pipeline_fuel_surcharge
+from Orchestator.shared import pipeline_departure_date
 
 parameters = load_parameters()
 
@@ -95,6 +96,12 @@ def orchestrator_function(
 
         return gpt_response
 
+    if parameter_task == "DEPARTUREDATE":
+
+        gpt_response = pipeline_departure_date.pipeline(
+            context, parameters_object)
+
+        return gpt_response
 
 main = df.Orchestrator.create(orchestrator_function)
 

@@ -1,0 +1,24 @@
+question_fare_rules_departure_date: |
+
+          according to the above rules,answer the next questions:
+
+          1. What is the departure date of the flight?
+          -
+
+          2. According to the departure date of the flight, is there any surcharge added to the applicable fare? Choose one.
+          -Yes.
+          -No.
+          -None.
+
+
+structure_fare_rules_departure_date: |
+
+          SOLUTION QUESTIONS 1 to 2:
+
+list_question_fare_rules_departure_date: |
+          "1. What is the departure date of the flight?",
+          "2. According to the departure date of the flight, is there any surcharge added to the applicable fare?",
+  
+number_question_departure_date: 2
+
+list_question_charge_departure_date: []
