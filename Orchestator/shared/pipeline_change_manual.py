@@ -11,7 +11,7 @@ from Adapters import adapter_ls
 
 parameters = load_parameters()
 
-
+#TODO: mejorar este c[odigo, est[a muy largo]]
 def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     """
     This is the main pipeline function. Execute in parallel the activities
@@ -40,12 +40,57 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     outputs = yield context.task_all(
         [response_quiz_group_one, response_quiz_group_two, response_quiz_group_three]
     )
+    question_list_group_1 = outputs[0]
+    question_list_group_2 = outputs[1]
+    question_list_group_3 = outputs[2]
+    
+    text_category_two = parameters_dict["text_category_two"]
+    text_category_three = parameters_dict["text_category_three"]
+    text_category_six = parameters_dict["text_category_six"]
+    text_category_seven = parameters_dict["text_category_seven"]
+    text_category_eight = parameters_dict["text_category_eight"]
+    text_category_eleven = parameters_dict["text_category_eleven"]
+    text_category_twelve = parameters_dict["text_category_twelve"]
+    
+    question_list_group_1["question_1"]["category"] = 6
+    question_list_group_1["question_2"]["category"] = 7
+    question_list_group_2["question_1"]["category"] = 8
+    question_list_group_2["question_2"]["category"] = 11
+    question_list_group_3["question_1"]["category"] = 2
+    question_list_group_3["question_2"]["category"] = 3
+    
+    question_list_group_1["question_1"]["numberQuestion"] = 1
+    question_list_group_1["question_2"]["numberQuestion"] = 2
+    question_list_group_2["question_1"]["numberQuestion"] = 3
+    question_list_group_2["question_2"]["numberQuestion"] = 4
+    question_list_group_3["question_1"]["numberQuestion"] = 5
+    question_list_group_3["question_2"]["numberQuestion"] = 6
+    
+    list_free_text = [
+        {"category": 2, "text": text_category_two},
+        {"category": 3, "text": text_category_three},
+        {"category": 6, "text": text_category_six},
+        {"category": 7, "text": text_category_seven},
+        {"category": 8, "text": text_category_eight},
+        {"category": 11, "text": text_category_eleven},
+        {"category": 12, "text": text_category_twelve},
+    ]
+    
+    model_respond = [question_list_group_1["question_1"],
+                     question_list_group_1["question_2"],
+                     question_list_group_2["question_1"],
+                     question_list_group_2["question_2"],
+                     question_list_group_3["question_1"],
+                     question_list_group_3["question_2"]]
+    
+    data_respond = {
+        "outputs": outputs,
+        "parameters_dict": parameters_dict,
+        "list_free_text": list_free_text,
+        "model_respond": model_respond
+    }
 
-    data_respond = [outputs, parameters_dict]
-
-    respuesta = yield context.call_activity(
-        "ActivitiesSortAnswerChangeManual", data_respond
-    )
+    respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
     return respuesta
 
 
