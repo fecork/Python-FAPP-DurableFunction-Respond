@@ -54,7 +54,7 @@ Recibe el objeto Json
 
 donde:
 
-- Task: string con la tarea a ejecutar: CANCELLATION, CHANGE, MANUALCHANGE
+- Task: string con la tarea a ejecutar: CANCELLATION, CHANGE, AVAILABILITY
 
 ```json
  "task": "CANCELLATION"
@@ -64,7 +64,7 @@ CANCELLATION: para esta tarea, el modelo revisará la categoría 16, en caso de 
 
 CHANGE: para esta tarea, el modelo revisará la categoría 16.
 
-MANUALCHANGE: para cambios manuales, el modelo revisará la categoría 2, 3, 4, 6, 7, 8, 10, 11.
+AVAILABILITY: para cambios manuales, el modelo revisará la categoría 2, 3, 4, 6, 7, 8, 10, 11.
 
 FUEL SURCHARGES: para combustible, el modelo revisará la categoría 12
 

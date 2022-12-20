@@ -81,7 +81,7 @@ def orchestrator_function(
         gpt_response = pipeline_change.pipeline(context, parameters_object)
         return gpt_response
 
-    if parameter_task == "MANUALCHANGE":
+    if parameter_task == "AVAILABILITY":
 
         gpt_response = pipeline_change_manual.pipeline(
             context, parameters_object)
