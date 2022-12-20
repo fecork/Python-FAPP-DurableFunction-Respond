@@ -72,7 +72,11 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     text_category_nineteen = parameters_dict["text_category_nineteen"]
     is_child = parameters_dict["is_child"]
     
-    set_category(question_list, 16) 
+    set_category(question_list, 16)
+    
+    if "change" in task:
+        set_boolean_change(question_list)
+    
     departure_date = parameters_dict["data_information"]["departureDate"]
     departure_date_response = build_date_response(departure_date, task)
     
@@ -115,6 +119,16 @@ def set_category(question_list: dict, category: int):
     for key, value in question_list.items():
         value["category"] = category
 
+def set_boolean_change(question_list: dict):
+    if "ANY" in question_list["question_1"]["quote"].upper():
+        question_list["question_1"]["boolean"] = True
+    elif "BEFORE" in question_list["question_1"]["quote"].upper():
+        question_list["question_1"]["boolean"] = True
+    elif "PERMITTED" in question_list["question_1"]["quote"].upper():
+        question_list["question_1"]["boolean"] = True
+    else:
+        question_list["question_1"]["boolean"] = False
+    
 
 def check_booleans(question_dic: dict) -> dict:
     # boolean_1 = question_dic["question_1"]["boolean"]
