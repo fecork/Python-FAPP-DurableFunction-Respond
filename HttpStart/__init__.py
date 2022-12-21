@@ -154,7 +154,7 @@ def validate_req(req) -> bool:
 
 
 def validate_task(parameter_task: str):
-    if parameter_task not in ["CANCELLATION", "CHANGE", "AVAILABILITY", "FUELSURCHARGE"]:
+    if parameter_task not in ["CANCELLATION", "CHANGE", "MANUALCHANGE", "FUELSURCHARGE","DEPARTUREDATE"]:
         return False
     else:
         return True
