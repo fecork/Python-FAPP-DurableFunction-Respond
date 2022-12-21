@@ -1,4 +1,6 @@
 from Utilities.load_parameter import load_parameters
+from Utilities.sort_response import set_category
+
 import azure.durable_functions as df
 import logging
 import os
@@ -78,8 +80,3 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
 
     return respuesta
-
-
-def set_category(question_list: dict, category: int):
-    for key, value in question_list.items():
-        value["category"] = category

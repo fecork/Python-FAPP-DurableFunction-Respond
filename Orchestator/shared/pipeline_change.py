@@ -10,6 +10,7 @@ import sys
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
+from Utilities.sort_response import set_category
 
 parameters = load_parameters()
 
@@ -113,11 +114,6 @@ def build_date_response(departure_date: str, task: str):
         boolean_i=True,
     )
     return respond
-
-
-def set_category(question_list: dict, category: int):
-    for key, value in question_list.items():
-        value["category"] = category
 
 def set_boolean_change(question_list: dict):
     if "ANY" in question_list["question_1"]["quote"].upper():

@@ -25,12 +25,6 @@ def main(dictRespond: list) -> list:
 
     return dict_response
 
-
-def set_category(question_list: dict, category: int):
-    for key, value in question_list.items():
-        value["category"] = category
-
-
 def build_date_response(departure_date: str):
     date_formated = validate_date(departure_date)
     respond = build_response.edit_response(
