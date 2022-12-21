@@ -227,7 +227,13 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 
 _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
 
-- **Wilberth Ferney Córdoba Canchala** - _Trabajo Inicial_ - [LinkenId](https://www.linkedin.com/in/wilberth-ferney-córdoba-canchala-9734b74b/)
+
+- **Jackeline Gomez** [LinkenId](https://www.linkedin.com/in/jackeline-g%C3%B3mez-londo%C3%B1o-97aa66204/)
+
+- **Mariana Jaramillo** [LinkenId](https://www.linkedin.com/in/mariana-jaramillo-acero-114b55234/)
+
+- **Wilberth Ferney Córdoba Canchala** - [LinkenId](https://www.linkedin.com/in/wilberth-ferney-córdoba-canchala-9734b74b/)
+
 
 ## Licencia 📄
 
