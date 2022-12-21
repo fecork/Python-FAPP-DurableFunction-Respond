@@ -112,3 +112,8 @@ def validate_charge_number(text: str) -> dict:
         dict_questions["value"] = None
         dict_questions["denomination"] = None
     return dict_questions
+
+
+def set_category(question_list: dict, category: int):
+    for key, value in question_list.items():
+        value["category"] = category
