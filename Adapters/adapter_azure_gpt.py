@@ -1,10 +1,8 @@
 import os
-import requests
-import json
 import openai
 import logging
 import numpy as np
-from Utilities.load_parameter import load_parameters
+from Dominio.Servicios.load_parameter import load_parameters
 
 
 def login_openai() -> dict:
@@ -46,7 +44,6 @@ def ask_openai(text: str, task: str) -> dict:
     if task == "list":
         parameters = loaded_parameters["open_ai_parameters_list"]
 
-
     prompt = parameters["prompt"]
     prompt = f"{prompt}:\n\n{text}"
     response = openai.Completion.create(
@@ -61,11 +58,15 @@ def ask_openai(text: str, task: str) -> dict:
     )
 
     response_mean_probability = mean_probability(response)
-
-    return {
-        "text": response.choices[0].text.lstrip(),
-        "meanProbability": response_mean_probability,
-    }
+    try:
+        return {
+            "text": response.choices[0].text.lstrip(),
+            "meanProbability": response_mean_probability,
+        }
+    except Exception as e:
+        logging.warning("Error in ask_openai")
+        logging.warning(e)
+        logging.warning(response.choices)
 
 
 def mean_probability(response: object) -> float:

@@ -1,5 +1,5 @@
-from Utilities.load_parameter import load_parameters
-from Utilities.sort_response import set_category
+from Dominio.Servicios.load_parameter import load_parameters
+from Dominio.Servicios.sort_response import set_category
 import azure.durable_functions as df
 import logging
 import os
@@ -16,7 +16,8 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     """
     This is the main pipeline function. Execute in parallel the activities
     Args:
-        context (DurableOrchestrationContext): The context object for durable function
+        context (DurableOrchestrationContext):
+        The context object for durable function
         parameters_dict (dict): This is a dictionary with the parameters
     Returns:
         parameters_dict: This is a dictionary with the respond of the GPT
@@ -47,14 +48,14 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         + "\n" * 2
         + structure_questions
     )
-    
-    logging.warning(quiz_text_and_question)
 
     parameters_quiz = {
         "quiz_text_and_question": quiz_text_and_question,
         "number_questions": parameters["number_question_departure_date"],
-        "list_questions": parameters["list_question_fare_rules_departure_date"],
-        "list_question_charge": parameters["list_question_charge_departure_date"],
+        "list_questions": parameters[
+            "list_question_fare_rules_departure_date"],
+        "list_question_charge": parameters[
+            "list_question_charge_departure_date"],
         "task": "change",
     }
 
@@ -62,10 +63,8 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "ActivitiesExecuteQuiz", parameters_quiz)
 
     outputs = yield context.task_all([response_quiz])
-    
     question_list = outputs[0]
     set_category(question_list, 12)
-    
     list_free_text = [{
         "category": 12,
         "text": parameters_dict["text_category_twelve"]
@@ -80,5 +79,6 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "model_respond": model_respond
     }
 
-    respuesta = yield context.call_activity("ActivitiesSortAnswer", data_respond)
+    respuesta = yield context.call_activity(
+            "ActivitiesSortAnswer", data_respond)
     return respuesta

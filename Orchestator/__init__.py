@@ -1,15 +1,3 @@
-# This function is not intended to be invoked directly. Instead it will be
-# triggered by an HTTP starter function.
-# Before running this sample, please:
-# - create a Durable activity function (default name is "Hello")
-# - create a Durable HTTP starter function
-# - add azure-functions-durable to requirements.txt
-# - run pip install -r requirements.txt
-
-
-
-
-import logging
 import os
 import sys
 
@@ -18,13 +6,13 @@ import azure.durable_functions as df
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from Utilities.load_parameter import load_parameters
-from Utilities import handler_select_text
-from Utilities import object_iterator
-from shared import pipeline_change_manual
-from shared import pipeline_change
-from shared import pipeline_fuel_surcharge
-from Orchestator.shared import pipeline_departure_date
+from Dominio.Servicios.load_parameter import load_parameters
+from Dominio.Servicios import handler_select_text
+from Dominio.Servicios import object_iterator
+from pipelines import pipeline_change_manual
+from pipelines import pipeline_change
+from pipelines import pipeline_fuel_surcharge
+from pipelines import pipeline_departure_date
 
 parameters = load_parameters()
 
@@ -43,19 +31,18 @@ def orchestrator_function(
     list_farebasis = []
     for dict_penalty in parameter_penalty_text:
 
-        passenger_type = handler_select_text.search_key(dict_penalty, 'passengerTypes')
-       
+        passenger_type = handler_select_text.search_key(
+            dict_penalty, 'passengerTypes')
         for passenger in passenger_type:
             list_passengers.append(passenger)
             list_passengers_type.append(passenger)
             is_child = validate_child(passenger)
             if is_child:
                 break
-       
-        farebasis = handler_select_text.search_key(dict_penalty, 'fareBasis')
+            farebasis = handler_select_text.search_key(
+                dict_penalty, 'fareBasis')
         list_farebasis.append(farebasis)
         list_passengers_type = list(set(list_passengers_type))
-
 
     passengers_type = tuple(list_passengers_type)
     parameter_penalty_text = handler_select_text.remove_duplicate_passenger(
@@ -73,7 +60,6 @@ def orchestrator_function(
     parameters_object["dict_penalty"]["passengerTypes"] = list(passengers_type)
     parameters_object["dict_penalty"]["fareBasis"] = list_farebasis
     parameters_object["dict_penalty"]["listPassengers"] = list_passengers
-    
     if parameter_task == "CANCELLATION":
         gpt_response = pipeline_change.pipeline(context, parameters_object)
         return gpt_response
@@ -103,11 +89,19 @@ def orchestrator_function(
 
         return gpt_response
 
+
 main = df.Orchestrator.create(orchestrator_function)
 
 
 def validate_child(passenger_type: str) -> bool:
-    
+    """
+    Validate if the passenger type is a child or infant.
+        Args:
+            passenger_type (str): Passenger type.
+        Returns:
+            bool: True if the passenger type is a child
+            or infant, False otherwise.
+    """
     if "child" in passenger_type.lower():
         return True
     if "infant" in passenger_type.lower():

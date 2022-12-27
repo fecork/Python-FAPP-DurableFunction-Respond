@@ -2,7 +2,7 @@
   "scriptFile": "__init__.py",
   "bindings": [
     {
-      "name": "parametersCancellation",
+      "name": "parameterscancellation",
       "type": "activityTrigger",
       "direction": "in"
     }

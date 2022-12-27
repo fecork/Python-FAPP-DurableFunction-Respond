@@ -1,16 +1,5 @@
-# This function is not intended to be invoked directly. Instead it will be
-# triggered by an orchestrator function.
-# Before running this sample, please:
-# - create a Durable orchestration function
-# - create a Durable HTTP starter function
-# - add azure-functions-durable to requirements.txt
-# - run pip install -r requirements.txt
-
-
-
-
-from Utilities.load_parameter import load_parameters
-from Utilities.clear_respond import format_text
+from Dominio.Servicios.load_parameter import load_parameters
+from Dominio.Servicios.clear_respond import format_text
 from Adapters import adapter_ls
 import logging
 import os
@@ -34,9 +23,13 @@ def main(parameters: dict) -> dict:
     if task == "CHANGE" or task == "CANCELLATION":
         response = task_change(parameters)
     if task == "FUELSURCHARGE":
-        select_text = text_segementation("text_category_twelve", "FUEL", parameters)
+        select_text = text_segementation(
+            "text_category_twelve", "FUEL", parameters)
         if len(select_text) > 0:
             response = {"FUELSURCHARGE": select_text}
+        elif len(parameters["text_category_twelve"]) > 2000:
+            response = {
+                "FUELSURCHARGE": parameters["text_category_twelve"][:2000]}
         else:
             response = {"FUELSURCHARGE": parameters["text_category_twelve"]}
     if task == "DEPARTUREDATE":
@@ -46,7 +39,7 @@ def main(parameters: dict) -> dict:
             response = {"DEPARTUREDATE": select_text}
         else:
             response = {"DEPARTUREDATE": parameters["text_category_twelve"]}
-        
+
     return response
 
 
@@ -56,16 +49,14 @@ def task_change(parameters: dict) -> dict:
     Args:content: String with the text.
     """
     logging.warning("Executing Change a Cancel Extraction")
-    content = format_text(parameters["text_category_sixteen"])
+    content = format_text(parameters["text_category_sixteen"], False)
     paragraph = parameters["paragraph"]
     index_change = content.index("CHANGE")
     index_cancellation = content.index("CANCELLATION")
 
-    # when cancellation pilicies go first
     if index_cancellation < index_change:
         cancellations = content[0:index_change]
         changes = content[index_change:]
-    # when changes policies go first
     else:
         changes = content[0:index_cancellation]
         cancellations = content[index_cancellation:]
@@ -79,13 +70,17 @@ def task_change(parameters: dict) -> dict:
         respond = adapter_ls.main(respond)
     return respond
 
-def text_segementation(category: str, word_to_search: str, parameters: dict) -> str:
+
+def text_segementation(
+        category: str,
+        word_to_search: str,
+        parameters: dict) -> str:
     """
     Split the text in a list of sentences.
     Args:content: String
     """
     logging.warning("Executing Fuel Surcharge Extraction")
-    content = format_text(parameters[category])
+    content = format_text(parameters[category], False)
     positions = [i for i, word in enumerate(
         content.split()) if word == word_to_search]
     long_text = 20
@@ -97,5 +92,4 @@ def text_segementation(category: str, word_to_search: str, parameters: dict) -> 
         list_paragraphs.append(paragraph)
 
     full_text = " ".join(list_paragraphs)
-    logging.warning(full_text)
     return full_text

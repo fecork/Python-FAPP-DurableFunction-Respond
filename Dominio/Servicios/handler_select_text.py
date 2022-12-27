@@ -1,9 +1,4 @@
-import sys
-import os
-import logging
-
-        
-def search_key(dict_penalty: dict, key_i: str) -> list:
+def search_key(dict_penalty: dict, key_input: str) -> list:
     """
     search farebasis in a json
     Args:
@@ -12,10 +7,13 @@ def search_key(dict_penalty: dict, key_i: str) -> list:
         list of farebasis
     """
     for key, value in dict_penalty.items():
-        if key == key_i:
+        if key == key_input:
             return value
 
-def remove_duplicate_passenger(penalty_text: list, list_passenger_type: list) -> list:
+
+def remove_duplicate_passenger(
+        penalty_text: list,
+        list_passenger_type: list) -> list:
     """
     remove duplicate passenger types
     Args:
@@ -29,7 +27,8 @@ def remove_duplicate_passenger(penalty_text: list, list_passenger_type: list) ->
     for dict_penalty in penalty_text:
         passenger_type = dict_penalty["passengerTypes"]
         if passenger_type[0] in list_passenger_type:
-            list_passenger_type.pop(list_passenger_type.index(passenger_type[0]))
+            list_passenger_type.pop(
+                list_passenger_type.index(passenger_type[0]))
             list_clean.append(dict_penalty)
     return list_clean
 
@@ -59,31 +58,31 @@ def extract_categories(dict_penalty: dict) -> dict:
     categorias = dict_penalty["categories"]
     for dict_category in categorias:
         code = dict_category["code"]
-        if code == "16" and thereis_sixteen == False:
+        if code == "16" and thereis_sixteen is False:
             text_category_sixteen = dict_category["freeText"]
             thereis_sixteen = True
-        if code == "19" and thereis_nineteen == False:
+        if code == "19" and thereis_nineteen is False:
             text_category_nineteen = dict_category["freeText"]
             thereis_nineteen = True
-        if code == "6" and thereis_six == False:
+        if code == "6" and thereis_six is False:
             text_category_six = dict_category["freeText"]
             thereis_six = True
-        if code == "7" and thereis_seven == False:
+        if code == "7" and thereis_seven is False:
             text_category_seven = dict_category["freeText"]
             thereis_seven = True
-        if code == "8" and thereis_eight == False:
+        if code == "8" and thereis_eight is False:
             text_category_eight = dict_category["freeText"]
             thereis_eight = True
-        if code == "11" and thereis_eleven == False:
+        if code == "11" and thereis_eleven is False:
             text_category_eleven = dict_category["freeText"]
             thereis_eleven = True
-        if code == "2" and thereis_two == False:
+        if code == "2" and thereis_two is False:
             text_category_two = dict_category["freeText"]
             thereis_two = True
-        if code == "3" and thereis_three == False:
+        if code == "3" and thereis_three is False:
             text_category_three = dict_category["freeText"]
             thereis_three = True
-        if code == "12" and thereis_twelve == False:
+        if code == "12" and thereis_twelve is False:
             text_category_twelve = dict_category["freeText"]
             thereis_twelve = True
 

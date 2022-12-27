@@ -2,7 +2,7 @@
   "scriptFile": "__init__.py",
   "bindings": [
     {
-      "name": "dictRespond",
+      "name": "dictrespond",
       "type": "activityTrigger",
       "direction": "in"
     }

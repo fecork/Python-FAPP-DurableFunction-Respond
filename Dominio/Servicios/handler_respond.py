@@ -1,4 +1,3 @@
-import logging
 import spacy
 import os
 import sys
@@ -8,11 +7,12 @@ from typing import Dict
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
+
 from validators_respond import (
     validate_structure_json,
 )
-from Utilities.load_parameter import load_parameters
-from Utilities.sort_response import execute_clean_json
+from Dominio.Servicios.load_parameter import load_parameters
+from Dominio.Servicios.sort_response import execute_clean_json
 
 nlp = spacy.load("en_core_web_sm")
 loaded_parameters = load_parameters()
@@ -37,13 +37,16 @@ def paragraph_segmentation(text: str) -> list:
     for token in document:
 
         if token.is_space and token.text.count("\n") > 1:
-            yield document[start : token.i]
+            yield document[start: token.i]
             start = token.i
     yield document[start:]
 
 
 def individual_paragraphs(
-    text: str, score: float, dict_question: dict, list_question_charge: list, task: str
+    text: str,
+    score: float,
+    dict_question: dict,
+    task: str
 ) -> Dict:
     """
     function to iterate over the paragraphs in the dataset
@@ -54,7 +57,6 @@ def individual_paragraphs(
     """
 
     paragraph_detected = paragraph_segmentation(text)
-
     list_paragraph = split_paragraph(paragraph_detected)
     dict_questions = text_to_json(list_paragraph, score, dict_question, task)
     return dict_questions

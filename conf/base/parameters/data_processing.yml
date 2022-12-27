@@ -1,1 +1,2 @@
 dataset : "ticket"
+list_tasks : ["CANCELLATION", "CHANGE", "AVAILABILITY", "FUELSURCHARGE", "DEPARTUREDATE"]
