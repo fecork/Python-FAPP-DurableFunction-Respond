@@ -37,8 +37,9 @@ func host start
 
 consultar al modelo por la ruta
 
+### QA
 ```
-https://tptravel-model.azurewebsites.net/api/GptModelPoliciesTpt?
+https://aznprd-eus-trqa-func02.azurewebsites.net/api/GptModelPoliciesTpt?
 ```
 
 Recibe el objeto Json
@@ -54,7 +55,7 @@ Recibe el objeto Json
 
 donde:
 
-- Task: string con la tarea a ejecutar: CANCELLATION, CHANGE, AVAILABILITY
+- Task: string con la tarea a ejecutar: CANCELLATION, CHANGE, AVAILABILITY, FUELSURCHARGE, DEPARTUREDATE
 
 ```json
  "task": "CANCELLATION"
@@ -67,6 +68,10 @@ CHANGE: para esta tarea, el modelo revisará la categoría 16.
 AVAILABILITY: para cambios manuales, el modelo revisará la categoría 2, 3, 4, 6, 7, 8, 10, 11.
 
 FUEL SURCHARGES: para combustible, el modelo revisará la categoría 12
+
+DEPARTURE DATE: para cargos sobre el origen y
+fecha de salida del vuelo, el modelo revisa la
+categoría 12
 
 - Information: string de la información del ticket: fareBasis, origin, date departure, información de menor de edad, etc
 
