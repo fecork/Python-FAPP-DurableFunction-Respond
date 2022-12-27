@@ -1,16 +1,14 @@
+from Dominio.Servicios import build_response
+from Dominio.Servicios import clear_respond
+from Dominio.Servicios.clear_respond import clear_value_json, extract_number
+from Dominio.Servicios.load_parameter import load_parameters
+from validators_respond import validate_boolean
 import os
-import logging
 import sys
 import re
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
-from validators_respond import validate_boolean
-from Utilities.load_parameter import load_parameters
-from Utilities.clear_respond import clear_value_json, extract_number
-from Utilities import clear_respond
-from Utilities import build_response
-from Utilities.load_parameter import load_parameters
 
 loaded_parameters = load_parameters()
 
@@ -34,7 +32,7 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
         "quote": "",
         "freeText": True,
         "boolean": False,
-        "meanProbability": score,
+        "mean_probability": score,
         "value": 0,
         "denomination": None,
     }
@@ -47,20 +45,17 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
         if answer_i is not None:
             dict_response["answer"] = answer_i
 
-        numberQuestion_i = clear_value_json(line, "number_question")
+        number_question_input = clear_value_json(line, "number_question")
 
-        if numberQuestion_i is not None:
+        if number_question_input is not None:
 
-            numberQuestion_i = extract_number(numberQuestion_i)[0]
+            number_question_input = extract_number(number_question_input)[0]
 
-            if int(numberQuestion_i) < int(number_question) + 1:
-                key_number = int(numberQuestion_i)
+            if int(number_question_input) < int(number_question) + 1:
+                key_number = int(number_question_input)
 
                 dict_response["question"] = list_questions[key_number - 1]
                 dict_response["numberQuestion"] = key_number
-
-                if key_number == 3:
-                    dict_response["freeText"] = False
 
         quote_i = clear_value_json(line, "quote")
         if quote_i is not None:
@@ -72,22 +67,45 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
             dict_response["boolean"] = boolean_i
         data = validate_charge_number(dict_response["answer"])
         other_response = build_response.edit_response(
-            question_i=dict_response["question"],
-            answer_i=dict_response["answer"],
-            quote_i=dict_response["quote"],
-            freeText_i=True,
-            numberQuestion_i=dict_response["numberQuestion"],
-            boolean_i=data["boolean"],
-            value_i=data["value"],
-            denomination_i=data["denomination"],
-            meanProbability_i=dict_response["meanProbability"],
+            question_input=dict_response["question"],
+            answer_input=dict_response["answer"],
+            quote_input=dict_response["quote"],
+            free_text_input=True,
+            number_question_input=dict_response["numberQuestion"],
+            boolean_input=data["boolean"],
+            value_input=data["value"],
+            denomination_input=data["denomination"],
+            mean_probability_input=dict_response["mean_probability"],
         )
     return {"dict_response": other_response, "key_number": key_number}
 
 
+def set_number_question(
+        number_question_input: list,
+        number_question: int,
+        dict_response: dict,
+        list_questions: list
+        ) -> int:
+    """
+    function to set the number of the question
+    Args:
+        key_number: number of the question
+        number_question: number of the question
+    return:
+        number of the question
+    """
+    if number_question_input is not None:
+        number_question_input = extract_number(number_question_input)[0]
+        if int(number_question_input) < int(number_question) + 1:
+            key_number = int(number_question_input)
+            dict_response["question"] = list_questions[key_number - 1]
+            dict_response["numberQuestion"] = key_number
+
+
 def validate_charge_number(text: str) -> dict:
     """
-    build a dictionary with the information about the charge number, denomination and value
+    build a dictionary with the information about
+    the charge number, denomination and value
     Args:
         dict_questions: dictionary with the information of the questions
     return:

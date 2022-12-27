@@ -1,13 +1,5 @@
-# This function an HTTP starter function for Durable Functions.
-# Before running this sample, please:
-# - create a Durable orchestration function
-# - create a Durable activity function (default name is "Hello")
-# - add azure-functions-durable to requirements.txt
-# - run pip install -r requirements.txt
-
-
-from Utilities.load_parameter import load_parameters
-from Utilities.error_respond import validate_error
+from Dominio.Servicios.load_parameter import load_parameters
+from Dominio.Entidades.error_respond import validate_error
 from Adapters.adapter_auth import get_jwk
 
 import json
@@ -37,7 +29,7 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
         jwt = req.headers.get("Authorization")
         # is_token = validate_token(jwt)
         is_token = True
-        if is_token == False:
+        if is_token is False:
             return func.HttpResponse(
                 status_code=401, mimetype="application/json"
             )
@@ -89,7 +81,7 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
                     {
                         "cause": (
                             "There is a Error in the Json, review that task"
-                            " should be CANCELLATION or CHANGE, or penaltyText"
+                            " or penaltyText"
                             " and information is not empty"
                         ),
                         "error": "Bad Request",
@@ -145,7 +137,9 @@ def validate_req(req) -> bool:
     logging.warning("correct_penalty: " + str(correct_penalty))
     correct_information = validate_text(parameter_information)
     logging.warning("correct_information: " + str(correct_information))
-    logging.warning("fareBasis: " + fare_basis)
+    logging.warning("fareBasis: " + str(fare_basis))
+    logging.info("information: " + str(parameter_information))
+    logging.info("parameter_penalty_text: " + str(parameter_penalty_text))
     logging.info("======================================")
     if correct_task and correct_penalty and correct_information:
         return True
@@ -154,7 +148,8 @@ def validate_req(req) -> bool:
 
 
 def validate_task(parameter_task: str):
-    if parameter_task not in ["CANCELLATION", "CHANGE", "AVAILABILITY", "FUELSURCHARGE","DEPARTUREDATE"]:
+    list_tasks = parameters["list_tasks"]
+    if parameter_task not in list_tasks:
         return False
     else:
         return True

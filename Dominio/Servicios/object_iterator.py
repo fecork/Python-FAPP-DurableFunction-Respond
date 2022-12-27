@@ -1,5 +1,4 @@
-import logging
-from Utilities import handler_select_text
+from Dominio.Servicios import handler_select_text
 
 
 def iterate_penalty_text(

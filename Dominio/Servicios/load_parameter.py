@@ -1,9 +1,7 @@
-from typing import Dict
 from kedro.config import ConfigLoader, MissingConfigException
-from typing import Dict
 
 
-def load_parameters() -> Dict:
+def load_parameters() -> dict:
     """
     Funtion for load parameters from /parameters.
     """

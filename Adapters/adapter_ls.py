@@ -1,11 +1,3 @@
-# This function is not intended to be invoked directly. Instead it will be
-# triggered by an orchestrator function.
-# Before running this sample, please:
-# - create a Durable orchestration function
-# - create a Durable HTTP starter function
-# - add azure-functions-durable to requirements.txt
-# - run pip install -r requirements.txt
-
 import logging
 import os
 import sys
@@ -13,7 +5,7 @@ import sys
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from Utilities.load_parameter import load_parameters
+from Dominio.Servicios.load_parameter import load_parameters
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient, ExtractSummaryAction
 
@@ -26,7 +18,8 @@ def main(article: str) -> str:
     """
 
     loaded_parameters = load_parameters()
-    max_sentence_count = loaded_parameters["language_studio"]["max_sentence_count"]
+    max_sentence_count = loaded_parameters[
+        "language_studio"]["max_sentence_count"]
     client = authenticate_client()
 
     document = [article]
@@ -47,12 +40,14 @@ def main(article: str) -> str:
             )
         else:
             result = " ".join(
-                [sentence.text for sentence in extract_summary_result.sentences]
+                [sentence.text for sentence in
+                 extract_summary_result.sentences]
             )
             logging.warning(
                 "Summary extracted: \n{}".format(
                     " ".join(
-                        [sentence.text for sentence in extract_summary_result.sentences]
+                        [sentence.text for sentence in
+                         extract_summary_result.sentences]
                     )
                 )
             )

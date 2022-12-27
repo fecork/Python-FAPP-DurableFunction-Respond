@@ -1,18 +1,5 @@
 import logging
-import sys
-import os
 import re
-
-from datetime import datetime
-
-dir_path = os.path.dirname(os.path.realpath(__file__))
-sys.path.insert(0, dir_path)
-from Utilities.dto_respond import Respond
-from validators_respond import validate_boolean
-from Utilities.load_parameter import load_parameters
-from Utilities import clear_respond, build_response
-
-loaded_parameters = load_parameters()
 
 
 def clear_value_json(line: str, key: str) -> str:
@@ -24,7 +11,6 @@ def clear_value_json(line: str, key: str) -> str:
     return:
         value of the key
     """
-    # logging.info("clear_value_json")
     key_json = key.translate({ord(i): None for i in ":"})
 
     if "quote" in line:
@@ -54,18 +40,17 @@ def extract_number(sentence: str) -> list:
     return list_number
 
 
-def format_text(text: str) -> str:
-
+def format_text(text: str, activate: bool) -> str:
     """Preprocesses the data text, clean it.
 
     Args:
         text: String Raw data.
+        activate: Boolean to activate the function.
     Returns:
         Preprocessed data text, without stranger character.
 
     add activate value to test text format from front end
     """
-    activate = False
     if activate:
         logging.info("format_text ACTIVATE")
         text = text.replace(str("\\n"), "\n")

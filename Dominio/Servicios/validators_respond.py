@@ -6,7 +6,7 @@ from datetime import datetime
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from Utilities.load_parameter import load_parameters
+from Dominio.Servicios.load_parameter import load_parameters
 
 loaded_parameters = load_parameters()
 
@@ -43,19 +43,22 @@ def validate_structure_json(dict_questions: dict, task: str) -> dict:
         number_questions = loaded_parameters["number_question_cancellation"]
 
     if "change" in task.lower():
-        list_questions = loaded_parameters["list_question_fare_rules_change"].split(",")
+        list_questions = loaded_parameters[
+            "list_question_fare_rules_change"].split(
+            ",")
         number_questions = loaded_parameters["number_question_change"]
     if "manual_group_one" in task.lower():
         list_questions = loaded_parameters[
             "list_question_fare_rules_change_manual_group_one"
         ].split(",")
-        number_questions = loaded_parameters["number_question_change_manual_group_one"]
-        # add group two and three
+        number_questions = loaded_parameters[
+            "number_question_change_manual_group_one"]
     if "manual_group_two" in task.lower():
         list_questions = loaded_parameters[
             "list_question_fare_rules_change_manual_group_two"
         ].split(",")
-        number_questions = loaded_parameters["number_question_change_manual_group_two"]
+        number_questions = loaded_parameters[
+            "number_question_change_manual_group_two"]
     if "manual_group_three" in task.lower():
         list_questions = loaded_parameters[
             "list_question_fare_rules_change_manual_group_three"
@@ -69,7 +72,7 @@ def validate_structure_json(dict_questions: dict, task: str) -> dict:
         number = number + 1
         if "question_" + str(number) not in dict_questions:
             dict_questions["question_" + str(number)] = {
-                "numberQuestion": number,
+                "number_question": number,
                 "answer": [],
                 "category": "",
                 "quote": "",
@@ -95,7 +98,8 @@ def validate_date(date: dict) -> str:
     try:
         date_quote = date.upper()
         date_quote = clean_text(date_quote)
-        response = datetime.strptime(date_quote, date_format_base).strftime(date_format)
+        response = datetime.strptime(
+            date_quote, date_format_base).strftime(date_format)
         return response
     except Exception as e:
         logging.warning("Error: " + str(e))
