@@ -27,6 +27,9 @@ def main(parameters: dict) -> dict:
             "text_category_twelve", "FUEL", parameters)
         if len(select_text) > 0:
             response = {"FUELSURCHARGE": select_text}
+        elif len(parameters["text_category_twelve"]) > 2000:
+            response = {
+                "FUELSURCHARGE": parameters["text_category_twelve"][:2000]}
         else:
             response = {"FUELSURCHARGE": parameters["text_category_twelve"]}
     if task == "DEPARTUREDATE":
