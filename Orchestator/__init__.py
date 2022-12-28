@@ -36,14 +36,11 @@ def orchestrator_function(
         for passenger in passenger_type:
             list_passengers.append(passenger)
             list_passengers_type.append(passenger)
-            is_child = validate_child(passenger)
-            if is_child:
-                break
             farebasis = handler_select_text.search_key(
                 dict_penalty, 'fareBasis')
         list_farebasis.append(farebasis)
         list_passengers_type = list(set(list_passengers_type))
-
+        is_child = validate_child(list_passengers_type)
     passengers_type = tuple(list_passengers_type)
     parameter_penalty_text = handler_select_text.remove_duplicate_passenger(
         parameter_penalty_text, list_passengers_type
@@ -93,17 +90,15 @@ def orchestrator_function(
 main = df.Orchestrator.create(orchestrator_function)
 
 
-def validate_child(passenger_type: str) -> bool:
+def validate_child(list_passenger: list) -> bool:
     """
-    Validate if the passenger type is a child or infant.
-        Args:
-            passenger_type (str): Passenger type.
-        Returns:
-            bool: True if the passenger type is a child
-            or infant, False otherwise.
+    Validate if the passenger is a child or infant
+    Args:list_passenger: list of passenger types
+    Returns: True if the passenger is a child or infant
     """
-    if "child" in passenger_type.lower():
-        return True
-    if "infant" in passenger_type.lower():
-        return True
+    for passenger_type in list_passenger:
+        if "child" in passenger_type.lower():
+            return True
+        if "infant" in passenger_type.lower():
+            return True
     return False
