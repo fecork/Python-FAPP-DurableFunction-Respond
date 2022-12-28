@@ -59,12 +59,12 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_list_group_3["question_1"]["category"] = 2
     question_list_group_3["question_2"]["category"] = 3
 
-    question_list_group_1["question_1"]["number_question"] = 1
-    question_list_group_1["question_2"]["number_question"] = 2
-    question_list_group_2["question_1"]["number_question"] = 3
-    question_list_group_2["question_2"]["number_question"] = 4
-    question_list_group_3["question_1"]["number_question"] = 5
-    question_list_group_3["question_2"]["number_question"] = 6
+    question_list_group_1["question_1"]["numberQuestion"] = 1
+    question_list_group_1["question_2"]["numberQuestion"] = 2
+    question_list_group_2["question_1"]["numberQuestion"] = 3
+    question_list_group_2["question_2"]["numberQuestion"] = 4
+    question_list_group_3["question_1"]["numberQuestion"] = 5
+    question_list_group_3["question_2"]["numberQuestion"] = 6
 
     list_free_text = [
         {"category": 2, "text": text_category_two},
