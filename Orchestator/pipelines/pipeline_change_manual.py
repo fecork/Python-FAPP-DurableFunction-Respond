@@ -1,10 +1,12 @@
 import azure.durable_functions as df
 import os
 import sys
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
 from Dominio.Servicios.load_parameter import load_parameters
+from Dominio.Servicios.sort_dates import build_dates
 
 parameters = load_parameters()
 
@@ -59,12 +61,16 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_list_group_3["question_1"]["category"] = 2
     question_list_group_3["question_2"]["category"] = 3
 
-    question_list_group_1["question_1"]["number_question"] = 1
-    question_list_group_1["question_2"]["number_question"] = 2
-    question_list_group_2["question_1"]["number_question"] = 3
-    question_list_group_2["question_2"]["number_question"] = 4
-    question_list_group_3["question_1"]["number_question"] = 5
-    question_list_group_3["question_2"]["number_question"] = 6
+    question_list_group_1["question_1"]["numberQuestion"] = 1
+    question_list_group_1["question_2"]["numberQuestion"] = 2
+    question_list_group_2["question_1"]["numberQuestion"] = 3
+    question_list_group_2["question_2"]["numberQuestion"] = 4
+    question_list_group_3["question_1"]["numberQuestion"] = 5
+    question_list_group_3["question_2"]["numberQuestion"] = 6
+
+    list_question_date_group_3 = parameters_quiz_group_three[
+        "list_question_date"]
+    set_data(question_list_group_3, list_question_date_group_3)
 
     list_free_text = [
         {"category": 2, "text": text_category_two},
@@ -233,7 +239,19 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
             "list_question_charge": parameters[
                 "list_question_charge_change_manual_group_three"
             ],
+            "list_question_date": parameters[
+                "list_question_date_change_manual_group_three"
+            ],
             "task": "manual_group_three",
         }
 
     return parameters_quiz
+
+
+def set_data(list_question: list, list_question_date: list):
+    for key, value in list_question.items():
+        if key in list_question_date:
+            list_format_dates = build_dates(value["quote"])
+            if len(list_format_dates) == 0:
+                list_format_dates = build_dates(value["answer"])
+            value["value"] = list_format_dates
