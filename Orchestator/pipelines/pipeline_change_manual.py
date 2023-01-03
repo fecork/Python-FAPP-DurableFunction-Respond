@@ -1,7 +1,6 @@
 import azure.durable_functions as df
 import os
 import sys
-import logging
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
@@ -287,7 +286,6 @@ def set_weeks(dict_question: dict, list_question_week: list, list_weeks: list):
     for key, value in dict_question.items():
         if key in list_question_week:
             text_split = value["answer"][0].split(" ")
-            logging.warning(text_split)
             for text in text_split:
                 if text in list_weeks:
                     response.append(text)
