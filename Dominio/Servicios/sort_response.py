@@ -116,7 +116,8 @@ def validate_charge_number(text: str) -> dict:
 
     dict_questions = {"boolean": False, "value": [], "denomination": None}
     number = [float(s) for s in re.findall(r"-?\d+\.?\d*", text)]
-    denomination = [value for value in list_denomination if str(value) in text]
+    denomination = [
+        value for value in list_denomination if str(value) in text.upper()]
     denomination = denomination[0] if len(denomination) > 0 else text
 
     if len(number) > 0:

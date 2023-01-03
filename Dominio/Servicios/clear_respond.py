@@ -69,5 +69,6 @@ def format_denomination(text: str) -> str:
     """
     text = text.replace(str("\\n"), "\n")
     text = text.replace(str("/"), " ")
+    text = text.upper()
     text = re.sub(r"[^a-zA-Z0-9\s\n;]", "", text)
     return text

@@ -1,7 +1,8 @@
 import azure.durable_functions as df
 import os
 import sys
-
+import logging
+#LOG
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
@@ -45,6 +46,14 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_list_group_1 = outputs[0]
     question_list_group_2 = outputs[1]
     question_list_group_3 = outputs[2]
+    
+    logging.error("-----------AMBIAKU-----------")
+    logging.warning(outputs[0])
+    logging.warning(outputs[1])
+    logging.warning(outputs[2])
+    logging.info(type(outputs[0]))
+    logging.info(type(outputs[1]))
+    logging.info(type(outputs[2]))
 
     text_category_two = parameters_dict["text_category_two"]
     text_category_three = parameters_dict["text_category_three"]
@@ -68,10 +77,20 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_list_group_3["question_1"]["numberQuestion"] = 5
     question_list_group_3["question_2"]["numberQuestion"] = 6
 
+    list_question_date_group_2 = parameters_quiz_group_two[
+        "list_question_date_two"]
     list_question_date_group_3 = parameters_quiz_group_three[
-        "list_question_date"]
+        "list_question_date_three"]
+    logging.error("-----------SETDATA-----------")
+    logging.warning(question_list_group_2)
+    logging.info(type(question_list_group_2))
+    logging.warning(list_question_date_group_2)
+    logging.info(type(list_question_date_group_2))
+    set_data(question_list_group_2, list_question_date_group_2)
     set_data(question_list_group_3, list_question_date_group_3)
-
+    logging.warning(question_list_group_2)
+    logging.warning(question_list_group_3)
+    logging.error("-----------LIST FREE TEXT-----------")
     list_free_text = [
         {"category": 2, "text": text_category_two},
         {"category": 3, "text": text_category_three},
@@ -81,19 +100,22 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         {"category": 11, "text": text_category_eleven},
         {"category": 12, "text": text_category_twelve},
     ]
+    logging.error("-----------MODEL RESPONSE-----------")
+
     model_respond = [question_list_group_1["question_1"],
                      question_list_group_1["question_2"],
                      question_list_group_2["question_1"],
                      question_list_group_2["question_2"],
                      question_list_group_3["question_1"],
                      question_list_group_3["question_2"]]
+    logging.error("-----------RESPONSE-----------")
     data_respond = {
         "outputs": outputs,
         "parameters_dict": parameters_dict,
         "list_free_text": list_free_text,
         "model_respond": model_respond
     }
-
+    logging.error("-----------SORT ANSWER-----------")
     respuesta = yield context.call_activity(
         "ActivitiesSortAnswer", data_respond)
     return respuesta
@@ -191,6 +213,9 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
             "list_question_charge": parameters[
                 "list_question_charge_change_manual_group_two"
             ],
+            "list_question_date_two": parameters[
+                "list_question_date_change_manual_group_two"
+            ],
             "task": "manual_group_two",
         }
 
@@ -239,7 +264,7 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
             "list_question_charge": parameters[
                 "list_question_charge_change_manual_group_three"
             ],
-            "list_question_date": parameters[
+            "list_question_date_three": parameters[
                 "list_question_date_change_manual_group_three"
             ],
             "task": "manual_group_three",
@@ -248,10 +273,13 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
     return parameters_quiz
 
 
-def set_data(list_question: list, list_question_date: list):
-    for key, value in list_question.items():
+def set_data(dict_question: dict, list_question_date: list):
+    """
+    This functios is used to format the dates in the questions
+    Args: list_question: list of questions
+    list_question_date: list of questions with dates
+    """
+    for key, value in dict_question.items():
         if key in list_question_date:
             list_format_dates = build_dates(value["quote"])
-            if len(list_format_dates) == 0:
-                list_format_dates = build_dates(value["answer"])
             value["value"] = list_format_dates

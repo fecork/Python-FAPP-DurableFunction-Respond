@@ -13,7 +13,8 @@ question_fare_rules_change_manual_group_one: |
           - 
 
 question_fare_rules_change_manual_group_two: |
-
+          NOTE: answer the int values just  with cardinal numbers, for instance 10 STOPOVERS
+          answer the dates with the format for example 12OCT, 23APR, and so.
           According to the above rules, answer the next questions:
 
           1. According to STOPOVERS, how many stopovers are allowed? 1, 2?
@@ -23,9 +24,10 @@ question_fare_rules_change_manual_group_two: |
 
 question_fare_rules_change_manual_group_three: |
 
+          NOTE: answer the dates with the format for example 12OCT, 23APR, and so.
           According to the above rules, answer the next questions: 
 
-          1. According to DAY/TIMES, are there any restrictions on days or times? What days or times are there restrictions?
+          1. According to DAY/TIMES, What days or times are there restrictions?.
           - 
           2. According to SEASONALITY, are there any season restrictions? list which ones.
           - 
@@ -67,4 +69,5 @@ list_question_charge_change_manual_group_one: [question_1, question_2]
 list_question_charge_change_manual_group_two: [question_1]
 list_question_charge_change_manual_group_three: []
 
-list_question_date_change_manual_group_three: [question_2]
+list_question_date_change_manual_group_two: [question_2]
+list_question_date_change_manual_group_three: [question_1, question_2]
