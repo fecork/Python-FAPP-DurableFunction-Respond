@@ -1,8 +1,6 @@
 import logging
 
-# from Dominio.Servicios.validators_respond import validate_date
 from Dominio.Servicios.calculate import overall_average
-# from Dominio.Servicios import build_response
 from Dominio.Entidades import dto_respond_backend
 
 
@@ -17,18 +15,6 @@ def main(dictrespond: list) -> list:
         model_respond, average, list_free_text, dict_penalty)
 
     return dict_response
-
-
-# def build_date_response(departure_date: str):
-#     date_formated = validate_date(departure_date)
-#     respond = build_response.edit_response(
-#         question_input="Departure date?",
-#         answer_input=date_formated,
-#         quote_input=departure_date,
-#         number_question_input=6,
-#         boolean_input=True,
-#     )
-#     return respond
 
 
 def build_response_backend(

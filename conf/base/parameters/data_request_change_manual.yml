@@ -7,19 +7,21 @@ question_fare_rules_change_manual_group_one: |
 
           According to the above rules, answer the next questions:
 
-          1. According to MINIMUM STAY, are there minimum stay requirements? How many days or months?
+          1. According to MINIMUM STAY, What are the minimum stay requirements?
           - 
-          2. According to MAXIMUM STAY, are there maximum stay requirements? How many days or months?
+          2. According to MAXIMUM STAY, What are the minimum stay requirements?
           - 
 
 question_fare_rules_change_manual_group_two: |
+  
           NOTE: answer the int values just  with cardinal numbers, for instance 10 STOPOVERS
           answer the dates with the format for example 12OCT, 23APR, and so.
+
           According to the above rules, answer the next questions:
 
-          1. According to STOPOVERS, how many stopovers are allowed? 1, 2?
+          1. According to STOPOVERS, how many stopovers are allowed? 5 STOPOVERS, 10 STOPOVERS?
           - 
-          2. According to BLACKOUT DATES, are there any dates or blackout restrictions? list which ones
+          2. According to BLACKOUT DATES, what are dates with blackout restrictions? list which ones
           - 
 
 question_fare_rules_change_manual_group_three: |
@@ -27,9 +29,9 @@ question_fare_rules_change_manual_group_three: |
           NOTE: answer the dates with the format for example 12OCT, 23APR, and so.
           According to the above rules, answer the next questions: 
 
-          1. According to DAY/TIMES, What days or times are there restrictions?.
+          1. According to DAY/TIMES, What days or times are permitted?.
           - 
-          2. According to SEASONALITY, are there any season restrictions? list which ones.
+          2. According to SEASONALITY, what are the seasons with restrictions?.
           - 
           3. According to SURCHARGES, What surcharges apply?
           -
@@ -58,16 +60,22 @@ list_question_fare_rules_change_manual_group_two: |
           are there any dates or blackout restrictions?.,
 
 list_question_fare_rules_change_manual_group_three: |
-          are there any restrictions on days or times?,
+          What days or times are permitted?,
           are there any season restrictions?,
 
+# number of questions in each group
 number_question_change_manual_group_one: 2
 number_question_change_manual_group_two: 2
 number_question_change_manual_group_three: 2
 
+# questions with charges
 list_question_charge_change_manual_group_one: [question_1, question_2]
 list_question_charge_change_manual_group_two: [question_1]
 list_question_charge_change_manual_group_three: []
 
+#questions with dates
 list_question_date_change_manual_group_two: [question_2]
-list_question_date_change_manual_group_three: [question_1, question_2]
+list_question_date_change_manual_group_three: [question_2]
+
+# questions with weeks
+list_question_week_change_manual_group_three: [question_1]
