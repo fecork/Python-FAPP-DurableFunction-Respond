@@ -1,10 +1,12 @@
 import azure.durable_functions as df
 import os
 import sys
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
 from Dominio.Servicios.load_parameter import load_parameters
+from Dominio.Servicios.sort_dates import build_dates
 
 parameters = load_parameters()
 
@@ -66,6 +68,18 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_list_group_3["question_1"]["numberQuestion"] = 5
     question_list_group_3["question_2"]["numberQuestion"] = 6
 
+    list_question_date_group_2 = parameters_quiz_group_two[
+        "list_question_date_two"]
+    list_question_date_group_3 = parameters_quiz_group_three[
+        "list_question_date_three"]
+    list_question_week_group_3 = parameters_quiz_group_three[
+        "list_question_week_three"]
+    list_weeks = parameters["weeks"]
+
+    set_data(question_list_group_2, list_question_date_group_2)
+    set_data(question_list_group_3, list_question_date_group_3)
+    set_weeks(question_list_group_3, list_question_week_group_3, list_weeks)
+
     list_free_text = [
         {"category": 2, "text": text_category_two},
         {"category": 3, "text": text_category_three},
@@ -75,6 +89,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         {"category": 11, "text": text_category_eleven},
         {"category": 12, "text": text_category_twelve},
     ]
+
     model_respond = [question_list_group_1["question_1"],
                      question_list_group_1["question_2"],
                      question_list_group_2["question_1"],
@@ -87,7 +102,6 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "list_free_text": list_free_text,
         "model_respond": model_respond
     }
-
     respuesta = yield context.call_activity(
         "ActivitiesSortAnswer", data_respond)
     return respuesta
@@ -185,6 +199,9 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
             "list_question_charge": parameters[
                 "list_question_charge_change_manual_group_two"
             ],
+            "list_question_date_two": parameters[
+                "list_question_date_change_manual_group_two"
+            ],
             "task": "manual_group_two",
         }
 
@@ -233,7 +250,43 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
             "list_question_charge": parameters[
                 "list_question_charge_change_manual_group_three"
             ],
+            "list_question_date_three": parameters[
+                "list_question_date_change_manual_group_three"
+            ],
+            "list_question_week_three": parameters[
+                "list_question_week_change_manual_group_three"
+            ],
             "task": "manual_group_three",
         }
 
     return parameters_quiz
+
+
+def set_data(dict_question: dict, list_question_date: list):
+    """
+    This functios is used to extract the dates in the questions
+    Args: list_question: list of questions
+    list_question_date: list of questions with dates
+    """
+    for key, value in dict_question.items():
+        if key in list_question_date:
+            select_text = "quote" if len(
+                value["quote"]) > len(value["answer"]) else "answer"
+            list_format_dates = build_dates(value[select_text])
+            value["value"] = list_format_dates
+
+
+def set_weeks(dict_question: dict, list_question_week: list, list_weeks: list):
+    """
+    This function is used to extract the weeks in the questions
+    Args: list_question: list of questions
+    list_question_week: list of questions with weeks
+    """
+    response = []
+    for key, value in dict_question.items():
+        if key in list_question_week:
+            text_split = value["answer"][0].split(" ")
+            for text in text_split:
+                if text in list_weeks:
+                    response.append(text)
+            value["value"] = response
