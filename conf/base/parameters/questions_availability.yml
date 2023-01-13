@@ -1,0 +1,119 @@
+question_paragraph_general: |
+          extract verbatim the paragraph that corresponds just to changes:
+
+          According to the above rules, answer the next questions:
+            
+question_category_2: 
+   availability: |
+          According to DAY/TIMES, What days or times are permitted?.
+          -
+question_category_3: 
+   availability: |
+  
+          According to SEASONALITY, what are the seasons with restrictions?.
+          - 
+question_category_6: 
+   availability: |
+  
+          According to MINIMUM STAY, What are the minimum stay requirements?
+          - 
+question_category_7: 
+   availability: |
+  
+          According to MAXIMUM STAY, What are the maximum stay requirements?
+          - 
+question_category_8: 
+   availability: |
+          NOTE: answer the int values just  with cardinal numbers, for instance 10 STOPOVERS
+
+          According to STOPOVERS, how many stopovers are allowed? 5 STOPOVERS, 10 STOPOVERS, 1 STOPOVERS?
+
+question_category_11: 
+   availability: |
+          NOTE: answer the dates with the format for example 12OCT, 23APR, and so.
+
+          According to BLACKOUT DATES, what are dates with blackout restrictions? list which ones
+          - 
+    
+question_category_12:
+  departuredate: |
+          What is the departure date of the flight?
+          -
+
+          According to the departure date of the flight, is there any surcharge added to the applicable fare? Choose one.
+          -Yes.
+          -No.
+          -None.
+
+  fuelsurcharge: |
+          What is the origin of the flight?
+          -
+
+          According to FUEL SURCHARGE, what fuel surcharge does apply from that origin?
+          -
+
+question_category_16:
+  cancellation: |
+          extract verbatim the paragraph that corresponds just to cancellations:
+
+          CANCELLATIONS
+
+          according to the above rules, answer
+
+          According to the rules at which time you can cancel?. Choose one.
+          -ANY TIME.
+          -BEFORE DEPARTURE.
+          -None
+
+          How much is the CHARGE FOR CANCEL? Complete, in there is not charge respond null.
+          -CHARGE: ___.
+          -null
+          
+          How much is THE FEE FOR NO-SHOW. complete:
+          - FEE: __ FOR NO SHOW
+          - None.
+
+  change: |
+          extract verbatim the paragraph that corresponds just to changes:
+
+          CHANGES
+
+          according to the above rules,answer the five questions:
+
+          1. according to the rules at which time you can make changes?. Choose one:
+          - ANY TIME
+          - AFTER AND BEFORE DEPARTURE
+          - BEFORE DEPARTURE
+          - AFTER DEPARTURE
+          - None
+
+          2. How much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION? Choose one and complete:
+          - CHARGE: __ FOR REISSUE OR REVALIDATION
+          - None
+
+          3. How much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW. Choose one and complete:
+          - FEE: __ FOR NO SHOW
+          - None.
+
+          4. Changes is permitted in case of no-show? Choose one:
+          - Yes, is permitted in case of no-show
+          - No, is not permitted in case of no-show
+          - None
+
+          5. extract verbatim the departure Date:
+          - departureDate =
+          
+question_category_19:
+  cancellation: |
+          What is the PERCENTAGE for a #{AGE}# year old passenger #{SEAT}# #{ACCOMPANIED}#?
+          -
+  
+          choose the best option and answer with the structure, and separate answers with double #:
+        
+            "answer":"your answer ## other answer",
+            "quote":"THE TEXT EXCERPT",
+          
+          
+          from quote value, add a very short text of five words from which you extract the answer
+
+          "answer":

@@ -46,13 +46,13 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_list_group_2 = outputs[1]
     question_list_group_3 = outputs[2]
 
-    text_category_two = parameters_dict["text_category_two"]
-    text_category_three = parameters_dict["text_category_three"]
-    text_category_six = parameters_dict["text_category_six"]
-    text_category_seven = parameters_dict["text_category_seven"]
-    text_category_eight = parameters_dict["text_category_eight"]
-    text_category_eleven = parameters_dict["text_category_eleven"]
-    text_category_twelve = parameters_dict["text_category_twelve"]
+    text_category_two = parameters_dict["text_category_2"]
+    text_category_three = parameters_dict["text_category_3"]
+    text_category_six = parameters_dict["text_category_6"]
+    text_category_seven = parameters_dict["text_category_7"]
+    text_category_eight = parameters_dict["text_category_8"]
+    text_category_eleven = parameters_dict["text_category_11"]
+    text_category_twelve = parameters_dict["text_category_12"]
 
     question_list_group_1["question_1"]["category"] = 6
     question_list_group_1["question_2"]["category"] = 7
@@ -115,8 +115,8 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
         structure_fare_rules = parameters["structure_fare_rules"]
         structure_questions = parameters[
             "structure_fare_rules_change_manual_group_one"]
-        text_category_six = parameters_dict["text_category_six"]
-        text_category_seven = parameters_dict["text_category_seven"]
+        text_category_six = parameters_dict["text_category_6"]
+        text_category_seven = parameters_dict["text_category_7"]
         parameters_dict["question_paragraph"] = parameters[
             "question_paragraph_change_manual_group_one"
         ]
@@ -162,8 +162,8 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
         structure_fare_rules = parameters["structure_fare_rules"]
         structure_questions = parameters[
             "structure_fare_rules_change_manual_group_two"]
-        text_category_eight = parameters_dict["text_category_eight"]
-        text_category_eleven = parameters_dict["text_category_eleven"]
+        text_category_eight = parameters_dict["text_category_8"]
+        text_category_eleven = parameters_dict["text_category_11"]
         parameters_dict["question_paragraph"] = parameters[
             "question_paragraph_change_manual_group_one"
         ]
@@ -213,8 +213,8 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
         structure_questions = parameters[
             "structure_fare_rules_change_manual_group_three"
         ]
-        text_category_two = parameters_dict["text_category_two"]
-        text_category_three = parameters_dict["text_category_three"]
+        text_category_two = parameters_dict["text_category_2"]
+        text_category_three = parameters_dict["text_category_3"]
         parameters_dict["question_paragraph"] = parameters[
             "question_paragraph_change_manual_group_one"
         ]

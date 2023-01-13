@@ -1,6 +1,6 @@
 import os
 import sys
-
+import logging
 import azure.durable_functions as df
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -13,6 +13,7 @@ from pipelines import pipeline_change_manual
 from pipelines import pipeline_change
 from pipelines import pipeline_fuel_surcharge
 from pipelines import pipeline_departure_date
+from pipelines import pipeline
 
 parameters = load_parameters()
 
@@ -57,34 +58,50 @@ def orchestrator_function(
     parameters_object["dict_penalty"]["passengerTypes"] = list(passengers_type)
     parameters_object["dict_penalty"]["fareBasis"] = list_farebasis
     parameters_object["dict_penalty"]["listPassengers"] = list_passengers
-    if parameter_task == "CANCELLATION":
-        gpt_response = pipeline_change.pipeline(context, parameters_object)
-        return gpt_response
+    
+    
 
-    if parameter_task == "CHANGE":
-        gpt_response = pipeline_change.pipeline(context, parameters_object)
-        return gpt_response
+    
+    # if parameter_task == "CANCELLATION":
+    #     gpt_response = pipeline_change.pipeline(context, parameters_object)
+    #     return gpt_response
 
-    if parameter_task == "AVAILABILITY":
+    # if parameter_task == "CHANGE":
+    #     gpt_response = pipeline_change.pipeline(context, parameters_object)
+    #     return gpt_response
 
-        gpt_response = pipeline_change_manual.pipeline(
-            context, parameters_object)
+    # if parameter_task == "AVAILABILITY":
 
-        return gpt_response
+    #     gpt_response = pipeline_change_manual.pipeline(
+    #         context, parameters_object)
+    #     # gpt_response = pipeline.pipeline(context, parameters_object)
 
-    if parameter_task == "FUELSURCHARGE":
+    #     return gpt_response
+    # if parameter_task == "FLEX":
+    
+    #     # gpt_response = pipeline_change_manual.pipeline(
+    #     #     context, parameters_object)
+    #     gpt_response = pipeline.pipeline(context, parameters_object)
 
-        gpt_response = pipeline_fuel_surcharge.pipeline(
-            context, parameters_object)
+    #     return gpt_response
 
-        return gpt_response
+    # if parameter_task == "FUELSURCHARGE":
 
-    if parameter_task == "DEPARTUREDATE":
+    #     gpt_response = pipeline_fuel_surcharge.pipeline(
+    #         context, parameters_object)
 
-        gpt_response = pipeline_departure_date.pipeline(
-            context, parameters_object)
+    #     return gpt_response
 
-        return gpt_response
+    # if parameter_task == "DEPARTUREDATE":
+
+    #     gpt_response = pipeline_departure_date.pipeline(
+    #         context, parameters_object)
+
+    #     return gpt_response
+    
+    gpt_response = pipeline.pipeline(context, parameters_object)
+
+    return gpt_response
 
 
 main = df.Orchestrator.create(orchestrator_function)

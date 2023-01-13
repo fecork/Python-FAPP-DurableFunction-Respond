@@ -19,7 +19,7 @@ def main(parameterscancellation: dict) -> dict:
     parameters = load_parameters()
     is_child = parameterscancellation["is_child"]
     information = parameterscancellation["data_information"]
-    text_category_nineteen = parameterscancellation["text_category_nineteen"]
+    text_category_nineteen = parameterscancellation["text_category_19"]
     if is_child:
         question_fare_rules_nineteen = parameters[
                 "question_fare_rules_nineteen"

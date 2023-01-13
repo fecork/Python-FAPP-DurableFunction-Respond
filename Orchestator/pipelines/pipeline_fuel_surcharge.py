@@ -66,10 +66,10 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
 
     outputs = yield context.task_all([response_quiz])
     question_list = outputs[0]
-    set_category(question_list, 12)
+    set_category(question_list, [12, 12])
     list_free_text = [{
         "category": 12,
-        "text": parameters_dict["text_category_twelve"]
+        "text": parameters_dict["text_category_12"]
     }]
     model_respond = [question_list["question_1"], question_list["question_2"]]
     data_respond = {

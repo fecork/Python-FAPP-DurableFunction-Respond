@@ -55,35 +55,65 @@ def extract_categories(dict_penalty: dict) -> dict:
     text_category_sixteen = ""
     text_category_nineteen = ""
 
+    name_category_two = ""
+    name_category_three = ""
+    name_category_six = ""
+    name_category_seven = ""
+    name_category_eight = ""
+    name_category_eleven = ""
+    name_category_twelve = ""
+    name_category_sixteen = ""
+    name_category_nineteen = ""
+
+    list_categories = []
+
     categorias = dict_penalty["categories"]
     for dict_category in categorias:
         code = dict_category["code"]
         if code == "16" and thereis_sixteen is False:
             text_category_sixteen = dict_category["freeText"]
+            name_category_sixteen = dict_category["name"]
+            list_categories.append(code)
             thereis_sixteen = True
         if code == "19" and thereis_nineteen is False:
             text_category_nineteen = dict_category["freeText"]
+            name_category_nineteen = dict_category["name"]
+            list_categories.append(code)
             thereis_nineteen = True
         if code == "6" and thereis_six is False:
             text_category_six = dict_category["freeText"]
+            name_category_six = dict_category["name"]
+            list_categories.append(code)
             thereis_six = True
         if code == "7" and thereis_seven is False:
             text_category_seven = dict_category["freeText"]
+            name_category_seven = dict_category["name"]
+            list_categories.append(code)
             thereis_seven = True
         if code == "8" and thereis_eight is False:
             text_category_eight = dict_category["freeText"]
+            name_category_eight = dict_category["name"]
+            list_categories.append(code)
             thereis_eight = True
         if code == "11" and thereis_eleven is False:
             text_category_eleven = dict_category["freeText"]
+            name_category_eleven = dict_category["name"]
+            list_categories.append(code)
             thereis_eleven = True
         if code == "2" and thereis_two is False:
             text_category_two = dict_category["freeText"]
+            name_category_two = dict_category["name"]
+            list_categories.append(code)
             thereis_two = True
         if code == "3" and thereis_three is False:
             text_category_three = dict_category["freeText"]
+            name_category_three = dict_category["name"]
+            list_categories.append(code)
             thereis_three = True
         if code == "12" and thereis_twelve is False:
             text_category_twelve = dict_category["freeText"]
+            name_category_twelve = dict_category["name"]
+            list_categories.append(code)
             thereis_twelve = True
 
         if (
@@ -98,6 +128,9 @@ def extract_categories(dict_penalty: dict) -> dict:
             and thereis_twelve
         ):
             break
+
+    list_categories = [int(i) for i in list_categories]
+
     return {
         "2": text_category_two,
         "3": text_category_three,
@@ -108,6 +141,16 @@ def extract_categories(dict_penalty: dict) -> dict:
         "12": text_category_twelve,
         "16": text_category_sixteen,
         "19": text_category_nineteen,
+        "name_2": name_category_two,
+        "name_3": name_category_three,
+        "name_6": name_category_six,
+        "name_7": name_category_seven,
+        "name_8": name_category_eight,
+        "name_11": name_category_eleven,
+        "name_12": name_category_twelve,
+        "name_16": name_category_sixteen,
+        "name_19": name_category_nineteen,
+        "list_categories": list_categories,
     }
 
 

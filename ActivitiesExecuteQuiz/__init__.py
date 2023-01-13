@@ -31,8 +31,10 @@ def main(parameters: dict) -> dict:
     gpt_quiz_text = gpt_quiz["text"]
 
     gpt_quiz_mean_probability = gpt_quiz["meanProbability"]
+    number_questions = parameters["number_questions"]
+    list_questions = parameters["list_questions"]
 
     respond = individual_paragraphs(
-        gpt_quiz_text, gpt_quiz_mean_probability, parameters, task
+        gpt_quiz_text, gpt_quiz_mean_probability, parameters, task, number_questions, list_questions
     )
     return respond

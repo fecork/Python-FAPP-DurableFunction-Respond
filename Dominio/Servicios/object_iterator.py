@@ -33,28 +33,29 @@ def iterate_categories_in_penalties(
 
     result_categories = handler_select_text.extract_categories(dict_penalty)
 
-    text_category_two = result_categories["2"]
-    text_category_three = result_categories["3"]
-    text_category_six = result_categories["6"]
-    text_category_seven = result_categories["7"]
-    text_category_eight = result_categories["8"]
-    text_category_eleven = result_categories["11"]
-    text_category_twelve = result_categories["12"]
-    text_category_sixteen = result_categories["16"]
-    text_category_nineteen = result_categories["19"]
-
     dict_parameters = {
-        "text_category_sixteen": text_category_sixteen,
-        "text_category_nineteen": text_category_nineteen,
-        "text_category_six": text_category_six,
-        "text_category_seven": text_category_seven,
-        "text_category_eight": text_category_eight,
-        "text_category_eleven": text_category_eleven,
-        "text_category_two": text_category_two,
-        "text_category_three": text_category_three,
-        "text_category_twelve": text_category_twelve,
+        "text_category_2": result_categories["2"],
+        "text_category_3": result_categories["3"],
+        "text_category_6": result_categories["6"],
+        "text_category_7": result_categories["7"],
+        "text_category_8": result_categories["8"],
+        "text_category_11": result_categories["11"],
+        "text_category_12": result_categories["12"],
+        "text_category_16": result_categories["16"],
+        "text_category_19": result_categories["19"],
+        "name_category_2": result_categories["name_2"],
+        "name_category_3": result_categories["name_3"],
+        "name_category_6": result_categories["name_6"],
+        "name_category_7": result_categories["name_7"],
+        "name_category_8": result_categories["name_8"],
+        "name_category_11": result_categories["name_11"],
+        "name_category_12": result_categories["name_12"],
+        "name_category_16": result_categories["name_16"],
+        "name_category_19": result_categories["name_19"],
+        "list_categories": result_categories["list_categories"],
         "data_information": parameter_information,
         "is_child": is_child,
         "dict_penalty": dict_penalty,
     }
+
     return dict_parameters

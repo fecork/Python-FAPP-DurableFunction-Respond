@@ -27,7 +27,7 @@ def validate_boolean(text: str) -> bool:
     return None
 
 
-def validate_structure_json(dict_questions: dict, task: str) -> dict:
+def validate_structure_json(dict_questions: dict, task: str, number_questions: int, list_questions: list) -> dict:
     """
     build and sort a dictionary with the information of each question
     Args:
@@ -66,22 +66,33 @@ def validate_structure_json(dict_questions: dict, task: str) -> dict:
         number_questions = loaded_parameters[
             "number_question_change_manual_group_three"
         ]
+        
+    if "flex" in task.lower():
+        #TODO
+        # list_questions = loaded_parameters[
+        #     "list_question_fare_rules_change_manual_group_three"
+        # ].split(",")
+        # list_questions = loaded_parameters[
+        #     "list_question_fare_rules_change_flex"
+        # ].split(",")
+        list_questions = list_questions
+        number_questions = number_questions
 
-    list_numbers = range(number_questions)
-    for number in list_numbers:
-        number = number + 1
-        if "question_" + str(number) not in dict_questions:
-            dict_questions["question_" + str(number)] = {
-                "number_question": number,
-                "answer": [],
-                "category": "",
-                "quote": "",
-                "boolean": False,
-                "question": list_questions[int(number) - 1],
-                "score": 0,
-                "value": [],
-                "denomination": None,
-            }
+    # list_numbers = range(number_questions)
+    # for number in list_numbers:
+    #     number = number + 1
+    #     if "question_" + str(number) not in dict_questions:
+    #         dict_questions["question_" + str(number)] = {
+    #             "number_question": number,
+    #             "answer": [],
+    #             "category": "",
+    #             "quote": "",
+    #             "boolean": False,
+    #             "question": list_questions[int(number) - 1],
+    #             "score": 0,
+    #             "value": [],
+    #             "denomination": None,
+    #         }
 
     return dict_questions
 

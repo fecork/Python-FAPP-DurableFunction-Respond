@@ -43,6 +43,9 @@ def ask_openai(text: str, task: str) -> dict:
 
     if task == "list":
         parameters = loaded_parameters["open_ai_parameters_list"]
+    #TODO
+    if task == "flex":
+        parameters = loaded_parameters["open_ai_parameters_change"]
 
     prompt = parameters["prompt"]
     prompt = f"{prompt}:\n\n{text}"

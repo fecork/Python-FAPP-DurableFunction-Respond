@@ -11,7 +11,7 @@ sys.path.insert(0, dir_path)
 parameters = load_parameters()
 
 
-def main(parameters: dict) -> dict:
+def extract(parameters: str, task: str) -> str:
     """
     Split the text in a list of sentences.
     Args:content: String with the text.
@@ -19,9 +19,12 @@ def main(parameters: dict) -> dict:
     """
     logging.warning("Executing ActivitiesExtractParagraph")
 
-    task = parameters["task"]
-    if task == "CHANGE" or task == "CANCELLATION":
-        response = task_change(parameters)
+    # task = parameters["task"]
+    # task.upper()
+    if task.upper() == "CHANGE" or task.upper() == "CANCELLATION":
+        response = task_change(parameters, task)
+        logging.error('HHHHHHHHHHHHHHHHH')
+        logging.warning(response)
     if task == "FUELSURCHARGE":
         select_text = text_segementation(
             "text_category_12", "FUEL", parameters)
@@ -39,18 +42,21 @@ def main(parameters: dict) -> dict:
             response = {"DEPARTUREDATE": select_text}
         else:
             response = {"DEPARTUREDATE": parameters["text_category_12"]}
-
+    #LOG
+    logging.warning("Executing Extract Paragraph")
+    logging.error('¡?¡?¡?¡?¡?')
+    logging.info(response)
     return response
 
 
-def task_change(parameters: dict) -> dict:
+def task_change(text: str, task: str) -> dict:
     """
     Split the text in a list of sentences.
     Args:content: String with the text.
     """
     logging.warning("Executing Change a Cancel Extraction")
-    content = format_text(parameters["text_category_16"], False)
-    paragraph = parameters["paragraph"]
+    content = text
+    paragraph = task.upper()
     index_change = content.index("CHANGE")
     index_cancellation = content.index("CANCELLATION")
 
@@ -63,7 +69,10 @@ def task_change(parameters: dict) -> dict:
 
     dict_split_text = {"CANCELLATION": cancellations, "CHANGE": changes}
     respond = dict_split_text[paragraph]
-
+    # LOG
+    logging.error('qqqqqqqqqqqq')
+    logging.warning(respond)
+    logging.error('qqqqqqqqqqqq')
     if len(respond) > 5000:
         logging.warning(
             "ActivitiesExtractParagraph: Text is too long, summarizing")

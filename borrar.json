@@ -1,0 +1,162 @@
+{
+    "dataset": "ticket",
+    "list_tasks": [
+        "CANCELLATION",
+        "CHANGE",
+        "AVAILABILITY",
+        "FUELSURCHARGE",
+        "DEPARTUREDATE",
+        "FLEX"
+    ],
+    "category_to_format_date": [
+        3,
+        11
+    ],
+    "category_to_days": [
+        2
+    ],
+    "question_paragraph_cancellation": "extract verbatim the paragraph that corresponds just to cancellations:\n\nCANCELLATIONS\n",
+    "question_fare_rules_cancellation": "\naccording to the above rules, answer\n\n1. According to the rules at which time you can cancel?. Choose one.\n-ANY TIME.\n-BEFORE DEPARTURE.\n-None\n\n2. How much is the CHARGE FOR CANCEL? Complete, in there is not charge respond null.\n-CHARGE: ___.\n-null\n\n3. How much is THE FEE FOR NO-SHOW. complete:\n- FEE: __ FOR NO SHOW\n- None.\n",
+    "structure_fare_rules_cancellation": "\nSOLUTION QUESTIONS 1-3:\n",
+    "list_question_fare_rules_cancellation": "According to the rules at which time you can cancel,\nHow much is the CHARGE FOR CANCEL?,\nHow much is THE FEE FOR NO-SHOW.\n",
+    "number_question_cancellation": 3,
+    "list_question_charge_cancellation": [
+        "question_2",
+        "question_3",
+        "question_5"
+    ],
+    "question_paragraph_change": "extract verbatim the paragraph that corresponds just to changes:\n\nCHANGES\n",
+    "question_fare_rules_change": "\naccording to the above rules,answer the five questions:\n\n1. according to the rules at which time you can make changes?. Choose one:\n- ANY TIME\n- AFTER AND BEFORE DEPARTURE\n- BEFORE DEPARTURE\n- AFTER DEPARTURE\n- None\n\n2. How much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION? Choose one and complete:\n- CHARGE: __ FOR REISSUE OR REVALIDATION\n- None\n\n3. How much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW. Choose one and complete:\n- FEE: __ FOR NO SHOW\n- None.\n\n4. Changes is permitted in case of no-show? Choose one:\n- Yes, is permitted in case of no-show\n- No, is not permitted in case of no-show\n- None\n\n5. extract verbatim the departure Date:\n- departureDate =\n",
+    "structure_fare_rules_change": "\nSOLUTION QUESTIONS 1 to 5:\n",
+    "list_question_fare_rules_change": "According to the rules at which time you can make changes?,\nHow much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION?,\nHow much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW.,\nChanges is permitted in case of no-show?,\nAccording to the ticket information the departure date is?\n",
+    "number_question_change": 5,
+    "list_question_charge_change": [
+        "question_2",
+        "question_3"
+    ],
+    "question_paragraph_change_manual_group_one": "extract verbatim the paragraph that corresponds just to changes:\n\nCHANGES\n",
+    "question_fare_rules_change_manual_group_one": "\nAccording to the above rules, answer the next questions:\n\n1. According to MINIMUM STAY, What are the minimum stay requirements?\n- \n2. According to MAXIMUM STAY, What are the minimum stay requirements?\n- \n",
+    "question_fare_rules_change_manual_group_two": "\nNOTE: answer the int values just  with cardinal numbers, for instance 10 STOPOVERS\nanswer the dates with the format for example 12OCT, 23APR, and so.\n\nAccording to the above rules, answer the next questions:\n\n1. According to STOPOVERS, how many stopovers are allowed? 5 STOPOVERS, 10 STOPOVERS?\n- \n2. According to BLACKOUT DATES, what are dates with blackout restrictions? list which ones\n- \n",
+    "question_fare_rules_change_manual_group_three": "\nNOTE: answer the dates with the format for example 12OCT, 23APR, and so.\nAccording to the above rules, answer the next questions: \n\n1. According to DAY/TIMES, What days or times are permitted?.\n- \n2. According to SEASONALITY, what are the seasons with restrictions?.\n- \n3. According to SURCHARGES, What surcharges apply?\n-\n",
+    "structure_fare_rules_change_manual_group_one": "\nSOLUTION QUESTIONS 1 to 2:\n  \n",
+    "structure_fare_rules_change_manual_group_two": "\nSOLUTION QUESTIONS 1 to 2:\n",
+    "structure_fare_rules_change_manual_group_three": "\nSOLUTION QUESTIONS 1 to 2:\n",
+    "list_question_fare_rules_change_manual_group_one": "are there minimum stay requirements?,\nare there maximum stay requirements?.,\n",
+    "list_question_fare_rules_change_manual_group_two": "are stopovers permitted at intermediate points?,\nare there any dates or blackout restrictions?.,\n",
+    "list_question_fare_rules_change_manual_group_three": "What days or times are permitted?,\nare there any season restrictions?,\n",
+    "number_question_change_manual_group_one": 2,
+    "number_question_change_manual_group_two": 2,
+    "number_question_change_manual_group_three": 2,
+    "list_question_charge_change_manual_group_one": [
+        "question_1",
+        "question_2"
+    ],
+    "list_question_charge_change_manual_group_two": [
+        "question_1"
+    ],
+    "list_question_charge_change_manual_group_three": [],
+    "list_question_date_change_manual_group_two": [
+        "question_2"
+    ],
+    "list_question_date_change_manual_group_three": [
+        "question_2"
+    ],
+    "list_question_week_change_manual_group_three": [
+        "question_1"
+    ],
+    "question_fare_rules_departure_date": "\naccording to the above rules,answer the next questions:\n\n1. What is the departure date of the flight?\n-\n\n2. According to the departure date of the flight, is there any surcharge added to the applicable fare? Choose one.\n-Yes.\n-No.\n-None.\n",
+    "structure_fare_rules_departure_date": "\nSOLUTION QUESTIONS 1 to 2:\n",
+    "list_question_fare_rules_departure_date": ""What is the departure date of the flight?",\n"According to the departure date of the flight is there any surcharge added to the applicable fare?",\n",
+    "number_question_departure_date": 2,
+    "list_question_charge_departure_date": [],
+    "question_fare_rules_fuel_surcharge": "\naccording to the above rules,answer the next questions:\n\n1. What is the origin of the flight?\n-\n2. According to FUEL SURCHARGE, what fuel surcharge does apply from that origin?\n-\n",
+    "structure_fare_rules_fuel_surcharge": "\nSOLUTION QUESTIONS 1 to 2:\n",
+    "list_question_fare_rules_fuel_surcharge": ""What is the origin of the flight?",\n"What fuel surcharge does apply from that origin?",\n",
+    "number_question_fuel_surcharge": 2,
+    "list_question_charge_fuel_surcharge": [
+        "question_2"
+    ],
+    "open_ai_parameters": {
+        "model": "text-davinci-003",
+        "prompt": "Choose the best option according to the text",
+        "temperature": 0.7,
+        "max_tokens": 1500,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
+    },
+    "open_ai_parameters_change": {
+        "model": "text-davinci-003",
+        "prompt": "Choose the best option according to the text",
+        "temperature": 0.7,
+        "max_tokens": 2000,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
+    },
+    "open_ai_parameters_change_manual": {
+        "model": "text-davinci-003",
+        "prompt": "Choose the best option according to the text",
+        "temperature": 0.7,
+        "max_tokens": 500,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
+    },
+    "open_ai_parameters_classification": {
+        "model": "text-davinci-003",
+        "prompt": "Classify the following text in refund or nonrefund",
+        "temperature": 0.7,
+        "max_tokens": 100,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
+    },
+    "open_ai_parameters_list": {
+        "model": "text-davinci-003",
+        "prompt": "Choose the best option according to the text",
+        "temperature": 0.5,
+        "max_tokens": 500,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
+    },
+    "language_studio": {
+        "max_sentence_count": 1
+    },
+    "question_fare_rules_nineteen": "What is the PERCENTAGE for a #{AGE}# year old passenger #{SEAT}# #{ACCOMPANIED}#?\n-\n",
+    "structure_fare_rules_nineteen": "\nchoose the best option and answer with the structure, and separate answers with double #:\n\n  "answer":"your answer ## other answer",\n  "quote":"THE TEXT EXCERPT",\n\n\nfrom quote value, add a very short text of five words from which you extract the answer\n\n"answer":",
+    "structure_fare_rules": "\nchoose the best option and answer with the JSON structure:\n1. {\n  "number_question":1,\n  "answer":"your answer",\n  "quote":"THE TEXT EXCERPT",\n  "boolean": True or False,\n}\n\n2. {\n  "number_question":2,\n  "answer":"your answer",\n  "quote":"THE TEXT EXCERPT",\n  "boolean": True or False,\n}\n\nfrom quote value, add a very short text from which you extract the answer\n",
+    "tag_structure": "1. {\n  "number_question":1,\n  "answer":",
+    "denomination": "$\nPERCENT\n%\nDAY\nMONTH\nSTOPOVER\nPCT\nNZD \nAUD           \nEUR\nGBP\nUSD\nHKD\nCAD\nJPY\nAFN\nALL\nDZD\nXCD\nARS\nAMD\nANG\nAZN\nBSD\nBHD\nBDT\nBBD\nBYR\nBZD\nXOF\nBMD\nINR\nBOB\nBWP\nNOK\nBRL\nBND\nBGN\nBIF\nKHR\nXAF\nCVE\nKYD\nCLP\nCNY\nCOP\nKMF\nCDF\nCRC\nHRK\nCUP\nCYP\nCZK\nDKK\nDJF\nDOP\nIDR\nECS\nEGP\nSVC\nETB\nEEK\nFKP\nFJD\nXPF\nGMD\nGEL\nGIP\nGTQ\nGNF\nGYD\nHTG\nHNL\nHUF\nISK\nIRR\nIQD\nILS\nJMD\nJOD\nKZT\nKES\nKPW\nKRW\nKWD\nKGS\nLAK\nLVL\nLBP\nLSL\nLRD\nLYD\nCHF\nLTL\nMOP\nMKD\nMGA\nMWK\nMYR\nMVR\nMTL\nMRO\nMUR\nMXN\nMDL\nMNT\nMAD\nMZN\nMMK\nNAD\nNPR\nNIO\nNGN\nOMR\nPKR\nPAB\nPGK\nPYG\nPEN\nPHP\nPLN\nQAR\nRON\nRUB\nRWF\nSTD\nSAR\nSCR\nSLL\nSGD\nSKK\nSBD\nSOS\nZAR\nLKR\nSDG\nSRD\nSZL\nSEK\nSYP\nTWD\nTJS\nTZS\nTHB\nTOP\nTTD\nTND\nTRY\nTMT\nUGX\nUAH\nAED\nUYU\nUZS\nVUV\nVEF\nVND\nYER\nZMK\nZWD\nAOA\nAQD\nBAM\nGHS\nGGP\nRSD",
+    "question_paragraph_general": "extract verbatim the paragraph that corresponds just to changes:\n\nAccording to the above rules, answer the next questions:\n  \n",
+    "question_category_2": "According to DAY/TIMES, What days or times are permitted?.\n-\n",
+    "question_category_3": "\nAccording to SEASONALITY, what are the seasons with restrictions?.\n- \n",
+    "question_category_6": "\nAccording to MINIMUM STAY, What are the minimum stay requirements?\n- \n",
+    "question_category_7": "\nAccording to MAXIMUM STAY, What are the maximum stay requirements?\n- \n",
+    "question_category_8": "NOTE: answer the int values just  with cardinal numbers, for instance 10 STOPOVERS\n\nAccording to STOPOVERS, how many stopovers are allowed? 5 STOPOVERS, 10 STOPOVERS?\n",
+    "question_category_11": "NOTE: answer the dates with the format for example 12OCT, 23APR, and so.\n\nAccording to BLACKOUT DATES, what are dates with blackout restrictions? list which ones\n- \n",
+    "question_category_12": {
+        "departure_date": "What is the departure date of the flight?\n-\n\nAccording to the departure date of the flight, is there any surcharge added to the applicable fare? Choose one.\n-Yes.\n-No.\n-None.\n",
+        "fuel_surcharge": "What is the origin of the flight?\n-\n\nAccording to FUEL SURCHARGE, what fuel surcharge does apply from that origin?\n-"
+    },
+    "qlite_category_2": "What days or times are permitted?.\n",
+    "qlite_category_3": "what are the seasons with restrictions?.\n",
+    "qlite_category_6": "What are the minimum stay requirements?.\n",
+    "qlite_category_7": "What are the maximum stay requirements?.\n",
+    "qlite_category_8": "How many stopovers are allowed?.\n",
+    "qlite_category_11": "what are dates with blackout restrictions?.\n",
+    "qlite_category_12": {
+        "departure_date": "What is the departure date of the flight?.\nAccording to the departure date of the flight is there any surcharge added to the applicable fare?.\n",
+        "fuel_surcharge": "What is the origin of the flight?.\nWhat fuel surcharge does apply from that origin?."
+    },
+    "weeks": [
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT",
+        "SUN"
+    ]
+}

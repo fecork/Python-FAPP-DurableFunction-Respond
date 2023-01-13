@@ -1,2 +1,4 @@
 dataset : "ticket"
-list_tasks : ["CANCELLATION", "CHANGE", "AVAILABILITY", "FUELSURCHARGE", "DEPARTUREDATE"]
+list_tasks : ["CANCELLATION", "CHANGE", "AVAILABILITY", "FUELSURCHARGE", "DEPARTUREDATE", "FLEX"]
+category_to_format_date : [3, 11]
+category_to_days : [2]

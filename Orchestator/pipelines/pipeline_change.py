@@ -73,10 +73,10 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     outputs = yield context.task_all([response_quiz, response_child_discount])
     question_list = outputs[0]
     percent_child = outputs[1]
-    text_category_sixteen = parameters_dict["text_category_six"]
-    text_category_nineteen = parameters_dict["text_category_nineteen"]
+    text_category_sixteen = parameters_dict["text_category_16"]
+    text_category_nineteen = parameters_dict["text_category_19"]
     is_child = parameters_dict["is_child"]
-    set_category(question_list, 16)
+    set_category(question_list, [16, 16, 16, 16, 16])
     if "change" in task:
         set_boolean_change(question_list)
     departure_date = parameters_dict["data_information"]["departureDate"]

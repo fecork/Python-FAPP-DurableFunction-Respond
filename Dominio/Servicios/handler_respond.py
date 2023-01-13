@@ -45,8 +45,10 @@ def paragraph_segmentation(text: str) -> list:
 def individual_paragraphs(
     text: str,
     score: float,
-    dict_question: dict,
-    task: str
+    dict_parameter: dict,
+    task: str,
+    number_questions: int,
+    list_questions: list
 ) -> Dict:
     """
     function to iterate over the paragraphs in the dataset
@@ -58,7 +60,8 @@ def individual_paragraphs(
 
     paragraph_detected = paragraph_segmentation(text)
     list_paragraph = split_paragraph(paragraph_detected)
-    dict_questions = text_to_json(list_paragraph, score, dict_question, task)
+    dict_questions = text_to_json(
+        list_paragraph, score, dict_parameter, task, number_questions, list_questions)
     return dict_questions
 
 
@@ -82,8 +85,10 @@ def split_paragraph(paragraph_detected: list) -> list:
 def text_to_json(
     list_paragraph: list,
     score: float,
-    dict_question: dict,
+    dict_parameter: dict,
     task: str,
+    number_questions: int,
+    list_questions: list
 ) -> dict:
     """
     function to transform the text in json
@@ -96,10 +101,11 @@ def text_to_json(
 
     for paragraphs in list_paragraph:
         text = paragraphs.split("\n")
-        response_clean = execute_clean_json(score, text, dict_question)
+        response_clean = execute_clean_json(score, text, dict_parameter)
         dict_questions[
             "question_" + str(response_clean["key_number"])
         ] = response_clean["dict_response"]
 
-    dict_questions = validate_structure_json(dict_questions, task)
+    # dict_questions = validate_structure_json(
+    #     dict_questions, task, number_questions, list_questions)
     return dict_questions

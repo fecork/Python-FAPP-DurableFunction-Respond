@@ -1,0 +1,49 @@
+# just to the strings end put a point to count questions
+
+qlite_category_2:
+  availability: |
+          What days or times are permitted?.
+
+qlite_category_3:
+  availability: |
+          what are the seasons with restrictions?.
+
+qlite_category_6:
+  availability: |
+          What are the minimum stay requirements?.
+
+qlite_category_7:
+  availability: |
+          What are the maximum stay requirements?.
+
+qlite_category_8:
+  availability: |
+          How many stopovers are allowed?.
+
+qlite_category_11:
+  availability: |
+          what are dates with blackout restrictions?.
+
+qlite_category_12:
+  departuredate: |
+          What is the departure date of the flight?.
+          According to the departure date of the flight is there any surcharge added to the applicable fare?.
+  fuelsurcharge: |
+          What is the origin of the flight?.
+          What fuel surcharge does apply from that origin?.
+
+qlite_category_16:
+  cancellation: |
+          According to the rules at which time you can cancel.
+          How much is the CHARGE FOR CANCEL?.
+          How much is THE FEE FOR NO-SHOW.
+  change: |
+          According to the rules at which time you can make changes?.
+          How much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION?.
+          How much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW.
+          Changes is permitted in case of no-show?.
+          According to the ticket information the departure date is?.
+
+qlite_category_19:
+  cancellation: |
+          What is the PERCENTAGE for a #{AGE}# year old passenger #{SEAT}# #{ACCOMPANIED}#?

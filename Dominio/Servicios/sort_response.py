@@ -6,6 +6,7 @@ from validators_respond import validate_boolean
 import os
 import sys
 import re
+import logging
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
@@ -13,7 +14,7 @@ sys.path.insert(0, dir_path)
 loaded_parameters = load_parameters()
 
 
-def execute_clean_json(score, text: str, dict_question: dict) -> dict:
+def execute_clean_json(score, text: str, dict_parameter: dict) -> dict:
     """
     block to execute the clean json
     Args:
@@ -22,8 +23,8 @@ def execute_clean_json(score, text: str, dict_question: dict) -> dict:
     return:
         dictionary with the information of the paragraphs
     """
-    list_questions = dict_question["list_questions"].split(",")
-    number_question = dict_question["number_questions"]
+    list_questions = dict_parameter["list_questions"]
+    number_question = dict_parameter["number_questions"]
     dict_response = {
         "numberQuestion": 0,
         "question": "",
@@ -133,6 +134,21 @@ def validate_charge_number(text: str) -> dict:
     return dict_questions
 
 
-def set_category(question_list: dict, category: int):
+def set_category(question_list: dict, category: list):
+    logging.error(question_list)
+    logging.warning(category)
+    logging.info('{{{{{{{{{')
+    category_count = 0
     for key, value in question_list.items():
-        value["category"] = category
+        value["category"] = category[category_count]
+        category_count = category_count + 1
+        
+
+def set_question(question_dict:dict, list_categories:list):
+    #TODO
+    count_categories = 0
+    
+    for key, value in question_dict.items():
+        value["question"] = loaded_parameters["qlite_category_"+str(list_categories[count_categories])]
+        count_categories = count_categories + 1
+        logging.info(value)
