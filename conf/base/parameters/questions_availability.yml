@@ -72,6 +72,10 @@ question_category_16:
           How much is THE FEE FOR NO-SHOW. complete:
           - FEE: __ FOR NO SHOW
           - None.
+          
+          if cancel is ANY TIME O BEFORE DEPARTURE and there a charge for cancel, the cancel is refundable.
+          - Refundable
+          - Not refundable
 
   change: |
           extract verbatim the paragraph that corresponds just to changes:
@@ -99,21 +103,9 @@ question_category_16:
           - Yes, is permitted in case of no-show
           - No, is not permitted in case of no-show
           - None
-
-          5. extract verbatim the departure Date:
-          - departureDate =
           
 question_category_19:
   cancellation: |
+          about CHILDREN DISCOUNTS: 
           What is the PERCENTAGE for a #{AGE}# year old passenger #{SEAT}# #{ACCOMPANIED}#?
           -
-  
-          choose the best option and answer with the structure, and separate answers with double #:
-        
-            "answer":"your answer ## other answer",
-            "quote":"THE TEXT EXCERPT",
-          
-          
-          from quote value, add a very short text of five words from which you extract the answer
-
-          "answer":

@@ -3,6 +3,8 @@ from Dominio.Servicios.sort_response import set_category, set_question
 from Dominio.Servicios.sort_dates import build_dates
 from Dominio.Servicios.clear_respond import format_text
 from Dominio.Servicios.extract_paragraph import extract
+from Dominio.Servicios import build_response
+from Dominio.Servicios.validators_respond import validate_date
 
 
 import azure.durable_functions as df
@@ -27,7 +29,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     Returns:
         parameters_dict: This is a dictionary with the respond of the GPT
     """
- 
+    task = parameters_dict["task"]
     question_category_dict = join_question_category(parameters, parameters_dict)
     logging.info("111")    
     quiz_text_and_question = question_category_dict["text"]
@@ -38,6 +40,21 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     #TODO: list question no trae todas las preguntas.
     list_question = count_questions(
         parameters, list_categories, parameters_dict)
+    
+    list_test = []
+    for question in list_question:
+        passenger_child = parameters_dict["data_information"]["passengerChild"]
+        # for child in passenger_child:
+        #     question = replace_data(question, child)
+        #     # question = replace_data(
+        #     #     question, parameters_dict["data_information"]["passengerChild"][0])
+        #     list_test.append(question)
+            
+        question = replace_data(question, parameters_dict["data_information"]["passengerChild"][0])
+        list_test.append(question)
+        
+    list_question = list_test
+    
     logging.info("444")
     number_questions = len(list_question)
     logging.info("555")
@@ -51,6 +68,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "quiz_text_and_question": quiz_text_and_question,
         "number_questions": number_questions,
         "list_questions": list_question,
+        #TODO
         "task": "flex",
         "list_categories": parameters_dict["list_categories"]
     }
@@ -65,7 +83,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     logging.error('DDDDDDDDDDDDDD')
     logging.warning('len(list_gpt_responses): ' + str(len(list_gpt_responses)))
     logging.warning(len(list_categories))
-    if len(list_categories) < len (list_gpt_responses):
+    if len(list_categories) < len(list_gpt_responses):
         logging.warning('len(list_categories) < len (list_gpt_responses)')
         # resize list categories to list gpt responses, add repeat the list_categories[0]
         list_categories = list_categories * len(list_gpt_responses)
@@ -95,7 +113,13 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     numbers = list(range(1, number_questions + 1))
     for number in numbers:
         model_respond.append(list_gpt_responses["question_" + str(number)])
-
+    
+    if task.upper() == "CHANGE":
+        departure_date = parameters_dict["data_information"]["departureDate"]
+        departure_date_response = build_date_response(
+            departure_date, len(model_respond)+1)
+        model_respond.append(departure_date_response)
+        
     data_respond = {
         "outputs": outputs,
         "parameters_dict": parameters_dict,
@@ -118,9 +142,7 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
         categories
     """
         
-    logging.warning(category_dict["list_categories"])
     number_questions = category_dict["list_categories"]
-    logging.error(number_questions)
     structure_paragraph_question = question_dict["question_paragraph_general"]
     structure_fare_rules = question_dict["structure_fare_rules"]
     question_category_dict = {}
@@ -136,14 +158,13 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
 
     #-------------------
 
-    logging.error('<<<<<<<<<<<<<<<<<<<<')
-    logging.warning(number_questions)
     
     
     category_dict["list_categories"] = number_questions
     #LOG:
-    logging.error('oioioioioioioi')
-    logging.warning(task)
+    logging.error(">>>>>>>>>>>>>>>>>>")
+    logging.warning("number_questions: " + str(number_questions))
+    logging.warning("<<<<<<<<<<<<<<<<<<")
     for number in number_questions:
         text = "text_category_" + str(number)
         # text = extract(text, task)
@@ -152,13 +173,30 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
             questions = question_dict["question_category_" + str(number)][task]
             questions_lite = question_dict["qlite_category_" + str(number)][task]
             text_category = category_dict[text]
-            text_category = extract(text_category, task)
+            logging.error("AQUI ESTÁ EL ERROR")
+            if number == 16:
+                text_category = extract(text_category, task)
+            if number == 19:
+                logging.error("@@@@@@@@@@@@@@@")
+                logging.info(questions)
+                child_list_questions = []
+                passenger_child = category_dict["data_information"]["passengerChild"]
+                for passenger in passenger_child:
+                    questions_child = replace_data(
+                        questions, passenger)
+                    child_list_questions.append(questions_child)
+                list_questions.extend(child_list_questions)
+                questions = ""
+
+                # questions = replace_data(
+                #     questions, category_dict["data_information"])
+
+
+            logging.error(text_category)
             title_category = category_dict[title]
             question_and_category = title_category + "\n" + \
                 text_category + "\n" + questions + 2*"\n"
-            logging.error('================')
-            logging.warning(question_and_category)
-            logging.error('================')
+   
             question_category_dict["question_category_" +
                                    str(number)] = question_and_category
             question_category_dict["length_category_" +
@@ -167,24 +205,18 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
             list_questions.append(questions)
             questions_lite_list.append(questions_lite)
     #LOG
-    logging.error(questions_lite_list)
     questions_lite_list = questions_lite_list[0].split("\n")
     
-    logging.error('BBBBBBBBBBBBBBBB')
+    # delete empty questions in list
+    list_questions = list(filter(None, list_questions))
+    
+    
     text = "\n".join(list_texts)
-    logging.error('CCCCCCCCCCCCCCCC')
     questions_text = "\n".join(list_questions)
-    logging.error('DDDDDDDDDDDDDDDD')
     prueba = {}
-    logging.error(type(text))
-    logging.error(type(questions_text))
-    logging.error(type(structure_paragraph_question))
-    logging.error(type(structure_fare_rules))
     prueba["text"] = text + "\n" + structure_paragraph_question + questions_text + \
         "\n" * 2 + structure_fare_rules + "\n" * 2 + \
         "SOLUTION QUESTIONS 1 to {0}".format(len(questions_lite_list))
-    logging.warning('AAAAAAAAAAAAAAAA')
-    logging.error(list_questions)
     return prueba
 
 
@@ -194,15 +226,9 @@ def count_questions(parameters: dict, list_categories: list, parameters_dict: di
     key = "qlite_category_"
     for categorie in list_categories:
         text = parameters[key + str(categorie)][task]
-        #TODO:
-        # list_questions.append(text)
         list_split = text.split('\n')
-        logging.error('.,.,.,.,.,.,.,')
-        logging.warning(list_questions)
         list_split = list(filter(None, list_split))
         list_questions.extend(list_split)
-        logging.error('.,.,.,.,.,.,.,')
-        logging.warning(list_questions)
     return list_questions
 
 
@@ -214,8 +240,6 @@ def set_data(dict_question: dict, list_question_date: list):
     """
     for key, value in dict_question.items():
         if value["category"] in list_question_date:
-            logging.error(value["category"])
-            logging.error('^^^^^^^^^^')
             if len(value["quote"]) > len(value["answer"][0]):
                 list_format_dates = build_dates(value["quote"])
             else:
@@ -241,37 +265,17 @@ def set_days(dict_question: dict, list_question_week: list, list_weeks: list):
             value["value"] = response
 
 
-# def extract_paragraph(parameters: dict) -> dict:
-#     """
-#     Split the text in a list of sentences.
-#     Args:content: String with the text.
-#     Returns: List of sentences.
-#     """
-#     logging.warning("Executing ActivitiesExtractParagraph")
+def build_date_response(departure_date: str, number_question: int):
+    date_formated = validate_date(departure_date)
 
-#     # task = parameters["task"]
-#     task = "FLEX"
-#     logging.warning(task)
-#     # if task == "CHANGE" or task == "CANCELLATION":
-#     #     response = task_change(parameters)
-#     if task == "FUELSURCHARGE" or task == "FLEX":
-#         select_text = text_segementation(
-#             "text_category_12", "FUEL", parameters)
-#         if len(select_text) > 0:
-#             response = select_text
-#         elif len(parameters["text_category_12"]) > 2000:
-#             response = parameters["text_category_12"][:2000]
-#         else:
-#             response = parameters["text_category_12"]
-#     if task == "DEPARTUREDATE":
-#         select_text = text_segementation(
-#             "text_category_12", "DEPARTURE", parameters)
-#         if len(select_text) > 0:
-#             response = select_text
-#         else:
-#             response = parameters["text_category_12"]
-
-#     return response
+    respond = build_response.edit_response(
+        question_input="Departure date?",
+        answer_input=date_formated,
+        quote_input=departure_date,
+        number_question_input=number_question,
+        boolean_input=True,
+    )
+    return respond
 
 def extract_paragraph(text: str) -> str:
     logging.warning(len(text))
@@ -323,3 +327,48 @@ def validate_category_and_questions(task: str, number_questions: list, question_
     logging.warning("Questions with category: " + str(list_questions))
     logging.warning("Questions without category: " + str(list_no_questions))
     return list_questions
+
+
+def replace_data(question_fare_rules_nineteen: str, data: dict) -> str:
+    """
+    This is a function for replace data to put in text
+    Args:
+        str (str): This is a string with the text to convert.
+        data (dict): This is a dictionary with the data to replace.
+    Returns:
+        str: This is a string with the text converted.
+
+    """
+    # child = data["passengerChild"]
+    
+    logging.warning("xxxxxxxxxxxxxxxxxxxxx")
+    logging.error(data)
+    logging.warning("xxxxxxxxxxxxxxxxxxxxx")
+
+    age = str(data["age"])
+    seat = data["seat"]
+    accompanied = data["isAccompanied"]
+
+    if seat is True:
+        seat = "with a seat"
+    else:
+        seat = "without a seat"
+
+    if accompanied is True:
+        accompanied = "and accompanied"
+    else:
+        accompanied = ""
+    logging.info(age)
+    logging.info(seat)
+    logging.info(accompanied)
+    text_question = question_fare_rules_nineteen.replace("#{AGE}#", age)
+    text_question = text_question.replace("#{SEAT}#", seat)
+    text_question = text_question.replace("#{ACCOMPANIED}#", accompanied)
+        # list_questions.append(text_question)
+
+    # question_fare_rules_nineteen = " and ".join(list_questions)
+    logging.error('++++++++++++++++++++++++++++++')
+    # logging.warning(question_fare_rules_nineteen)
+    logging.error(text_question)
+    logging.error('++++++++++++++++++++++++++++++')
+    return text_question

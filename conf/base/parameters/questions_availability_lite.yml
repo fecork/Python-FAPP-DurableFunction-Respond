@@ -42,7 +42,6 @@ qlite_category_16:
           How much is the CHARGE FOR CHANGE ONLY FOR REISSUE OR REVALIDATION?.
           How much is the CHARGE FOR NO SHOW? ONLY USE THE FEE OF NO-SHOW.
           Changes is permitted in case of no-show?.
-          According to the ticket information the departure date is?.
 
 qlite_category_19:
   cancellation: |

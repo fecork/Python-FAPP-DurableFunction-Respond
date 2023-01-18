@@ -23,8 +23,6 @@ def extract(parameters: str, task: str) -> str:
     # task.upper()
     if task.upper() == "CHANGE" or task.upper() == "CANCELLATION":
         response = task_change(parameters, task)
-        logging.error('HHHHHHHHHHHHHHHHH')
-        logging.warning(response)
     if task == "FUELSURCHARGE":
         select_text = text_segementation(
             "text_category_12", "FUEL", parameters)
@@ -43,9 +41,6 @@ def extract(parameters: str, task: str) -> str:
         else:
             response = {"DEPARTUREDATE": parameters["text_category_12"]}
     #LOG
-    logging.warning("Executing Extract Paragraph")
-    logging.error('¡?¡?¡?¡?¡?')
-    logging.info(response)
     return response
 
 
@@ -70,9 +65,7 @@ def task_change(text: str, task: str) -> dict:
     dict_split_text = {"CANCELLATION": cancellations, "CHANGE": changes}
     respond = dict_split_text[paragraph]
     # LOG
-    logging.error('qqqqqqqqqqqq')
-    logging.warning(respond)
-    logging.error('qqqqqqqqqqqq')
+
     if len(respond) > 5000:
         logging.warning(
             "ActivitiesExtractParagraph: Text is too long, summarizing")
