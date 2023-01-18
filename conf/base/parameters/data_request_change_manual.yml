@@ -36,6 +36,22 @@ question_fare_rules_change_manual_group_three: |
           3. According to SURCHARGES, What surcharges apply?
           -
 
+question_fare_rules_change_manual_group_four: |
+  
+          According to the fare rule, answer:
+
+          1. Is it possible to make an advanced purchase? Choose one:
+          - Yes
+          - No
+          - None
+
+          2. Are there restrictions or routing between cities, countries or airport? Choose one:
+          - Yes, __
+          - No
+          - None
+
+          3. What are the travel restriction days?
+          -
 
 
 structure_fare_rules_change_manual_group_one: |
@@ -48,7 +64,11 @@ structure_fare_rules_change_manual_group_two: |
 
 structure_fare_rules_change_manual_group_three: |
 
-          SOLUTION QUESTIONS 1 to 2:
+          SOLUTION QUESTIONS 1 to 3:
+            
+structure_fare_rules_change_manual_group_four: |
+
+          SOLUTION QUESTIONS 1 to 3:
 
 list_question_fare_rules_change_manual_group_one: |
           are there minimum stay requirements?,
@@ -62,20 +82,33 @@ list_question_fare_rules_change_manual_group_two: |
 list_question_fare_rules_change_manual_group_three: |
           What days or times are permitted?,
           are there any season restrictions?,
+          What surcharges apply?,
+
+list_question_fare_rules_change_manual_group_four: |
+          Is it possible to make an advanced purchase?,
+          Are there restrictions or routing between cities countries or airport?,
+          What are the travel restriction days?,
+          
 
 # number of questions in each group
 number_question_change_manual_group_one: 2
 number_question_change_manual_group_two: 2
-number_question_change_manual_group_three: 2
+number_question_change_manual_group_three: 3
+number_question_change_manual_group_four: 3
+
 
 # questions with charges
 list_question_charge_change_manual_group_one: [question_1, question_2]
 list_question_charge_change_manual_group_two: [question_1]
 list_question_charge_change_manual_group_three: []
+list_question_charge_change_manual_group_four: []
 
 #questions with dates
 list_question_date_change_manual_group_two: [question_2]
 list_question_date_change_manual_group_three: [question_2]
+list_question_date_change_manual_group_four: [question_3]
 
 # questions with weeks
 list_question_week_change_manual_group_three: [question_1]
+list_question_week_change_manual_group_four: []
+

@@ -35,11 +35,14 @@ def iterate_categories_in_penalties(
 
     text_category_two = result_categories["2"]
     text_category_three = result_categories["3"]
+    text_category_five = result_categories["5"]
     text_category_six = result_categories["6"]
     text_category_seven = result_categories["7"]
     text_category_eight = result_categories["8"]
+    text_category_nine = result_categories["9"]
     text_category_eleven = result_categories["11"]
     text_category_twelve = result_categories["12"]
+    text_category_fourteen = result_categories["14"]
     text_category_sixteen = result_categories["16"]
     text_category_nineteen = result_categories["19"]
 
@@ -53,6 +56,9 @@ def iterate_categories_in_penalties(
         "text_category_two": text_category_two,
         "text_category_three": text_category_three,
         "text_category_twelve": text_category_twelve,
+        "text_category_five": text_category_five,
+        "text_category_nine": text_category_nine,
+        "text_category_fourteen": text_category_fourteen,
         "data_information": parameter_information,
         "is_child": is_child,
         "dict_penalty": dict_penalty,

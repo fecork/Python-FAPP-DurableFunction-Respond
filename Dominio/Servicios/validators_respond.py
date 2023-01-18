@@ -66,6 +66,10 @@ def validate_structure_json(dict_questions: dict, task: str) -> dict:
         number_questions = loaded_parameters[
             "number_question_change_manual_group_three"
         ]
+    if "manual_group_four" in task.lower():
+        number_questions = loaded_parameters[
+            "number_question_change_manual_group_four"
+        ]
 
     list_numbers = range(number_questions)
     for number in list_numbers:

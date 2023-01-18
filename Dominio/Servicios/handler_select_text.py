@@ -37,21 +37,27 @@ def extract_categories(dict_penalty: dict) -> dict:
 
     thereis_two = False
     thereis_three = False
+    thereis_five = False
     thereis_six = False
     thereis_seven = False
     thereis_eight = False
+    thereis_nine = False
     thereis_eleven = False
     thereis_twelve = False
+    thereis_fourteen = False
     thereis_sixteen = False
     thereis_nineteen = False
 
     text_category_two = ""
     text_category_three = ""
+    text_category_five = ""
     text_category_six = ""
     text_category_seven = ""
     text_category_eight = ""
+    text_category_nine = ""
     text_category_eleven = ""
     text_category_twelve = ""
+    text_category_fourteen = ""
     text_category_sixteen = ""
     text_category_nineteen = ""
 
@@ -85,6 +91,15 @@ def extract_categories(dict_penalty: dict) -> dict:
         if code == "12" and thereis_twelve is False:
             text_category_twelve = dict_category["freeText"]
             thereis_twelve = True
+        if code == "5" and thereis_five is False:
+            text_category_five = dict_category["freeText"]
+            thereis_five = True
+        if code == "9" and thereis_nine is False:
+            text_category_nine = dict_category["freeText"]
+            thereis_nine = True
+        if code == "14" and thereis_fourteen is False:
+            text_category_fourteen = dict_category["freeText"]
+            thereis_fourteen = True
 
         if (
             thereis_sixteen
@@ -96,16 +111,22 @@ def extract_categories(dict_penalty: dict) -> dict:
             and thereis_three
             and thereis_eleven
             and thereis_twelve
+            and thereis_five
+            and thereis_nine
+            and thereis_fourteen
         ):
             break
     return {
         "2": text_category_two,
         "3": text_category_three,
+        "5": text_category_five,
         "6": text_category_six,
         "7": text_category_seven,
         "8": text_category_eight,
+        "9": text_category_nine,
         "11": text_category_eleven,
         "12": text_category_twelve,
+        "14": text_category_fourteen,
         "16": text_category_sixteen,
         "19": text_category_nineteen,
     }

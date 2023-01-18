@@ -21,10 +21,11 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     Returns:
         parameters_dict: This is a dictionary with the respond of the GPT
     """
-
+    #LOG
     parameters_quiz_group_one = build_text(parameters_dict, "group_1")
     parameters_quiz_group_two = build_text(parameters_dict, "group_2")
     parameters_quiz_group_three = build_text(parameters_dict, "group_3")
+    parameters_quiz_group_four = build_text(parameters_dict, "group_4")
     response_quiz_group_one = context.call_activity(
         "ActivitiesExecuteQuiz", parameters_quiz_group_one
     )
@@ -36,15 +37,21 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     response_quiz_group_three = context.call_activity(
         "ActivitiesExecuteQuiz", parameters_quiz_group_three
     )
+    
+    response_quiz_group_four = context.call_activity(
+        "ActivitiesExecuteQuiz", parameters_quiz_group_four
+    )
 
     outputs = yield context.task_all(
         [response_quiz_group_one,
          response_quiz_group_two,
-         response_quiz_group_three]
+         response_quiz_group_three,
+         response_quiz_group_four]
     )
     question_list_group_1 = outputs[0]
     question_list_group_2 = outputs[1]
     question_list_group_3 = outputs[2]
+    question_list_group_4 = outputs[3]
 
     text_category_two = parameters_dict["text_category_two"]
     text_category_three = parameters_dict["text_category_three"]
@@ -53,6 +60,9 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     text_category_eight = parameters_dict["text_category_eight"]
     text_category_eleven = parameters_dict["text_category_eleven"]
     text_category_twelve = parameters_dict["text_category_twelve"]
+    text_category_five = parameters_dict["text_category_five"]
+    text_category_nine = parameters_dict["text_category_nine"]
+    text_category_fourteen = parameters_dict["text_category_fourteen"]
 
     question_list_group_1["question_1"]["category"] = 6
     question_list_group_1["question_2"]["category"] = 7
@@ -60,6 +70,10 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_list_group_2["question_2"]["category"] = 11
     question_list_group_3["question_1"]["category"] = 2
     question_list_group_3["question_2"]["category"] = 3
+    
+    question_list_group_4["question_1"]["category"] = 5
+    question_list_group_4["question_2"]["category"] = 9
+    question_list_group_4["question_3"]["category"] = 14
 
     question_list_group_1["question_1"]["numberQuestion"] = 1
     question_list_group_1["question_2"]["numberQuestion"] = 2
@@ -67,6 +81,10 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     question_list_group_2["question_2"]["numberQuestion"] = 4
     question_list_group_3["question_1"]["numberQuestion"] = 5
     question_list_group_3["question_2"]["numberQuestion"] = 6
+    
+    question_list_group_4["question_1"]["numberQuestion"] = 7
+    question_list_group_4["question_2"]["numberQuestion"] = 8
+    question_list_group_4["question_3"]["numberQuestion"] = 9
 
     list_question_date_group_2 = parameters_quiz_group_two[
         "list_question_date_two"]
@@ -74,10 +92,17 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "list_question_date_three"]
     list_question_week_group_3 = parameters_quiz_group_three[
         "list_question_week_three"]
+    list_question_date_group_4 = parameters_quiz_group_four[
+        "list_question_date_four"]
+    
     list_weeks = parameters["weeks"]
 
+    logging.info("list_question_date_group_2: %s", question_list_group_2)
+    logging.info("list_question_date_group_3: %s", question_list_group_3)
+    logging.info("list_question_week_group_4: %s", question_list_group_4)
     set_data(question_list_group_2, list_question_date_group_2)
     set_data(question_list_group_3, list_question_date_group_3)
+    set_data(question_list_group_4, list_question_date_group_4)
     set_weeks(question_list_group_3, list_question_week_group_3, list_weeks)
 
     list_free_text = [
@@ -88,6 +113,9 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         {"category": 8, "text": text_category_eight},
         {"category": 11, "text": text_category_eleven},
         {"category": 12, "text": text_category_twelve},
+        {"category": 5, "text": text_category_five},
+        {"category": 9, "text": text_category_nine},
+        {"category": 14, "text": text_category_fourteen}
     ]
 
     model_respond = [question_list_group_1["question_1"],
@@ -95,7 +123,10 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
                      question_list_group_2["question_1"],
                      question_list_group_2["question_2"],
                      question_list_group_3["question_1"],
-                     question_list_group_3["question_2"]]
+                     question_list_group_3["question_2"],
+                     question_list_group_4["question_1"],
+                     question_list_group_4["question_2"],
+                     question_list_group_4["question_3"]]
     data_respond = {
         "outputs": outputs,
         "parameters_dict": parameters_dict,
@@ -259,6 +290,64 @@ def build_text(parameters_dict: dict, tag: str) -> dict:
             "task": "manual_group_three",
         }
 
+    if tag == "group_4":
+            question_fare_rules = parameters[
+                "question_fare_rules_change_manual_group_four"]
+            structure_fare_rules = parameters["structure_fare_rules"]
+            structure_questions = parameters[
+                "structure_fare_rules_change_manual_group_four"
+            ]
+            text_category_five = parameters_dict["text_category_five"]
+            text_category_nine = parameters_dict["text_category_nine"]
+            text_category_fourteen = parameters_dict["text_category_fourteen"]
+            parameters_dict["question_paragraph"] = parameters[
+                "question_paragraph_change_manual_group_one"
+            ]
+
+            gpt_paragraph_text = (
+                "ADVANCE PURCHASE "
+                + "\n"
+                + text_category_five
+                + "\n"
+                + "ROUTING "
+                + "\n"
+                + text_category_nine
+                + "\n"
+                + "TRAVEL RESTRICTIONS "
+                + "\n"
+                + text_category_fourteen
+                + "\n"
+            )
+
+            quiz_text_and_question = (
+                gpt_paragraph_text
+                + "\n" * 2
+                + question_fare_rules
+                + "\n" * 2
+                + structure_fare_rules
+                + "\n" * 2
+                + structure_questions
+            )
+
+            parameters_quiz = {
+                "quiz_text_and_question": quiz_text_and_question,
+                "number_questions": parameters[
+                    "number_question_change_manual_group_four"],
+                "list_questions": parameters[
+                    "list_question_fare_rules_change_manual_group_four"
+                ],
+                "list_question_charge": parameters[
+                    "list_question_charge_change_manual_group_four"
+                ],
+                "list_question_date_four": parameters[
+                    "list_question_date_change_manual_group_four"
+                ],
+                "list_question_week_four": parameters[
+                    "list_question_week_change_manual_group_four"
+                ],
+                "task": "manual_group_four",
+            }
+
     return parameters_quiz
 
 
@@ -270,9 +359,10 @@ def set_data(dict_question: dict, list_question_date: list):
     """
     for key, value in dict_question.items():
         if key in list_question_date:
-            select_text = "quote" if len(
-                value["quote"]) > len(value["answer"]) else "answer"
-            list_format_dates = build_dates(value[select_text])
+            answer = value["answer"][0]
+            quote = value["quote"]
+            select_text = quote if len(quote) > len(answer) else answer
+            list_format_dates = build_dates(select_text)
             value["value"] = list_format_dates
 
 
