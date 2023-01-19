@@ -43,22 +43,18 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     list_question = count_questions(
         parameters, list_categories, parameters_dict)
     
-    list_test = []
-    for question in list_question:
-        passenger_child = parameters_dict["data_information"]["passengerChild"]
-        # for child in passenger_child:
-        #     question = replace_data(question, child)
-        #     # question = replace_data(
-        #     #     question, parameters_dict["data_information"]["passengerChild"][0])
-        #     list_test.append(question)
-            
-        question = replace_data(question, parameters_dict["data_information"]["passengerChild"][0])
-        list_test.append(question)
+    # list_test = []
+    # for question in list_question:
+    #     passenger_child = parameters_dict["data_information"]["passengerChild"]
+    #     question = replace_data(question, passenger_child)
+    #     list_test.append(question)
         
-    list_question = list_test
+    # list_question = list_test
     
     logging.info("444")
     number_questions = len(list_question)
+    logging.info(number_questions)
+    logging.warning(list_question)
     logging.info("555")
     # list_question = ', '.join(list_question)
     
@@ -179,22 +175,15 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
             if number == 16:
                 text_category = extract(text_category, task)
             if number == 19:
-                logging.error("@@@@@@@@@@@@@@@")
-                logging.info(questions)
                 child_list_questions = []
                 passenger_child = category_dict["data_information"]["passengerChild"]
-                for passenger in passenger_child:
-                    questions_child = replace_data(
-                        questions, passenger)
-                    child_list_questions.append(questions_child)
+                child_list_questions = replace_data(
+                        questions, passenger_child)
+                    # child_list_questions.append(questions_child)
                 list_questions.extend(child_list_questions)
                 questions = ""
 
-                # questions = replace_data(
-                #     questions, category_dict["data_information"])
 
-
-            logging.error(text_category)
             title_category = category_dict[title]
             question_and_category = title_category + "\n" + \
                 text_category + "\n" + questions + 2*"\n"
@@ -206,12 +195,17 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
             list_texts.append(title_category + "\n" + text_category)
             list_questions.append(questions)
             questions_lite_list.append(questions_lite)
+            logging.warning("!!!!!!!!!!!!!!!!!")
+            logging.warning("questions_lite_list: " + str(questions_lite_list))
+            logging.warning("!!!!!!!!!!!!!!!!!")
+            #TODO agregar las preguntras de la categoria 19 a questions_lite_list
     #LOG
     questions_lite_list = questions_lite_list[0].split("\n")
     
     # delete empty questions in list
     list_questions = list(filter(None, list_questions))
-    
+    logging.info("gogogogogo")
+    logging.warning("list_questions: " + str(list_questions))
     
     text = "\n".join(list_texts)
     questions_text = "\n".join(list_questions)
@@ -331,7 +325,7 @@ def validate_category_and_questions(task: str, number_questions: list, question_
     return list_questions
 
 
-def replace_data(question_fare_rules_nineteen: str, data: dict) -> str:
+def replace_data(question_fare_rules_nineteen: str, passenger_child: dict) -> list:
     """
     This is a function for replace data to put in text
     Args:
@@ -341,36 +335,35 @@ def replace_data(question_fare_rules_nineteen: str, data: dict) -> str:
         str: This is a string with the text converted.
 
     """
-    # child = data["passengerChild"]
+    list_questions = []
+    for data in passenger_child:
     
-    logging.warning("xxxxxxxxxxxxxxxxxxxxx")
-    logging.error(data)
-    logging.warning("xxxxxxxxxxxxxxxxxxxxx")
+        logging.warning("xxxxxxxxxxxxxxxxxxxxx")
+        logging.error(data)
+        logging.warning("xxxxxxxxxxxxxxxxxxxxx")
 
-    age = str(data["age"])
-    seat = data["seat"]
-    accompanied = data["isAccompanied"]
+        age = str(data["age"])
+        seat = data["seat"]
+        accompanied = data["isAccompanied"]
 
-    if seat is True:
-        seat = "with a seat"
-    else:
-        seat = "without a seat"
+        if seat is True:
+            seat = "with a seat"
+        else:
+            seat = "without a seat"
 
-    if accompanied is True:
-        accompanied = "and accompanied"
-    else:
-        accompanied = ""
-    logging.info(age)
-    logging.info(seat)
-    logging.info(accompanied)
-    text_question = question_fare_rules_nineteen.replace("#{AGE}#", age)
-    text_question = text_question.replace("#{SEAT}#", seat)
-    text_question = text_question.replace("#{ACCOMPANIED}#", accompanied)
-        # list_questions.append(text_question)
+        if accompanied is True:
+            accompanied = "and accompanied"
+        else:
+            accompanied = ""
+        logging.info(age)
+        logging.info(seat)
+        logging.info(accompanied)
+        text_question = question_fare_rules_nineteen.replace("#{AGE}#", age)
+        text_question = text_question.replace("#{SEAT}#", seat)
+        text_question = text_question.replace("#{ACCOMPANIED}#", accompanied)
+        list_questions.append(text_question)
 
-    # question_fare_rules_nineteen = " and ".join(list_questions)
     logging.error('++++++++++++++++++++++++++++++')
-    # logging.warning(question_fare_rules_nineteen)
     logging.error(text_question)
     logging.error('++++++++++++++++++++++++++++++')
-    return text_question
+    return list_questions
