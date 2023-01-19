@@ -29,6 +29,8 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     Returns:
         parameters_dict: This is a dictionary with the respond of the GPT
     """
+    # TODO
+    # formato de Charges para dinero
     task = parameters_dict["task"]
     question_category_dict = join_question_category(parameters, parameters_dict)
     logging.info("111")    
