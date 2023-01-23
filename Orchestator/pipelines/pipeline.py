@@ -43,20 +43,13 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     list_question = count_questions(
         parameters, list_categories, parameters_dict)
     
-    # list_test = []
-    # for question in list_question:
-    #     passenger_child = parameters_dict["data_information"]["passengerChild"]
-    #     question = replace_data(question, passenger_child)
-    #     list_test.append(question)
-        
-    # list_question = list_test
+
     
     logging.info("444")
     number_questions = len(list_question)
     logging.info(number_questions)
     logging.warning(list_question)
     logging.info("555")
-    # list_question = ', '.join(list_question)
     
     #LOG
     logging.info("list_question: " + str(list_question))
@@ -139,81 +132,75 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
         question_category_dict: This is a dictionary with the questions and
         categories
     """
-        
+
     number_questions = category_dict["list_categories"]
     structure_paragraph_question = question_dict["question_paragraph_general"]
     structure_fare_rules = question_dict["structure_fare_rules"]
     question_category_dict = {}
     list_questions = []
     list_texts = []
-    questions_lite_list = []
 
-    #-------------------
     task = category_dict["task"].lower()
-            
+
     number_questions = validate_category_and_questions(
         task, number_questions, question_dict)
 
-    #-------------------
-
-    
-    
     category_dict["list_categories"] = number_questions
-    #LOG:
-    logging.error(">>>>>>>>>>>>>>>>>>")
-    logging.warning("number_questions: " + str(number_questions))
-    logging.warning("<<<<<<<<<<<<<<<<<<")
+
+    questions_lite_list_end = []
     for number in number_questions:
         text = "text_category_" + str(number)
-        # text = extract(text, task)
         title = "name_category_" + str(number)
         if text in category_dict and category_dict[text] != "":
             questions = question_dict["question_category_" + str(number)][task]
-            questions_lite = question_dict["qlite_category_" + str(number)][task]
+            questions_lite = question_dict["qlite_category_" +
+                                           str(number)][task]
+            questions_lite_list = questions_lite.split("\n")
+
             text_category = category_dict[text]
-            logging.error("AQUI ESTÁ EL ERROR")
             if number == 16:
                 text_category = extract(text_category, task)
             if number == 19:
                 child_list_questions = []
                 passenger_child = category_dict["data_information"]["passengerChild"]
                 child_list_questions = replace_data(
-                        questions, passenger_child)
-                    # child_list_questions.append(questions_child)
+                    questions, passenger_child)
                 list_questions.extend(child_list_questions)
                 questions = ""
+                questions_lite_list_end.extend(child_list_questions)
+                # questions_lite = ""
 
-
+            questions_lite_list_end.extend(questions_lite_list)
             title_category = category_dict[title]
             question_and_category = title_category + "\n" + \
                 text_category + "\n" + questions + 2*"\n"
-   
+
             question_category_dict["question_category_" +
                                    str(number)] = question_and_category
             question_category_dict["length_category_" +
                                    str(number)] = len(question_and_category)
             list_texts.append(title_category + "\n" + text_category)
             list_questions.append(questions)
-            questions_lite_list.append(questions_lite)
-            logging.warning("!!!!!!!!!!!!!!!!!")
-            logging.warning("questions_lite_list: " + str(questions_lite_list))
-            logging.warning("!!!!!!!!!!!!!!!!!")
-            #TODO agregar las preguntras de la categoria 19 a questions_lite_list
-    #LOG
-    questions_lite_list = questions_lite_list[0].split("\n")
-    
-    # delete empty questions in list
+
     list_questions = list(filter(None, list_questions))
-    logging.info("gogogogogo")
-    logging.warning("list_questions: " + str(list_questions))
-    
+    questions_lite_list_end = list(filter(None, questions_lite_list_end))
+    questions_lite_list_end = [
+        x for x in questions_lite_list_end if "#" not in x]
+
     text = "\n".join(list_texts)
     questions_text = "\n".join(list_questions)
-    prueba = {}
-    prueba["text"] = text + "\n" + structure_paragraph_question + questions_text + \
+    questions_dict = {}
+    questions_dict["text"] = text + "\n" + structure_paragraph_question + questions_text + \
         "\n" * 2 + structure_fare_rules + "\n" * 2 + \
-        "SOLUTION QUESTIONS 1 to {0}".format(len(questions_lite_list))
-    return prueba
+        "SOLUTION QUESTIONS 1 to {0}".format(len(questions_lite_list_end))
+    questions_dict["questions_lite"] = questions_lite_list_end
+    questions_dict["len_questions_lite"] = len(questions_lite)
+    questions_dict["list_questions"] = list_questions
+    questions_dict["len_list_questions"] = len(list_questions)
+    logging.error(">>>>>>>>>>>>>>>>>>")
+    logging.warning("questions_dict: " + str(questions_dict))
+    logging.warning("<<<<<<<<<<<<<<<<<<")
+    return questions_dict
 
 
 def count_questions(parameters: dict, list_categories: list, parameters_dict: dict):

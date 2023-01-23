@@ -45,4 +45,4 @@ qlite_category_16:
 
 qlite_category_19:
   cancellation: |
-          What is the PERCENTAGE for a #{AGE}# year old passenger #{SEAT}# #{ACCOMPANIED}#?
+          What is the PERCENTAGE for a #{AGE}# year old passenger #{SEAT}# #{ACCOMPANIED}#?.
