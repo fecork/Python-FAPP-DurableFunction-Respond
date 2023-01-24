@@ -8,9 +8,6 @@ from typing import Dict
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
-from validators_respond import (
-    validate_structure_json,
-)
 from Dominio.Servicios.load_parameter import load_parameters
 from Dominio.Servicios.sort_response import execute_clean_json
 
@@ -106,6 +103,4 @@ def text_to_json(
             "question_" + str(response_clean["key_number"])
         ] = response_clean["dict_response"]
 
-    # dict_questions = validate_structure_json(
-    #     dict_questions, task, number_questions, list_questions)
     return dict_questions

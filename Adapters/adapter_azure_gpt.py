@@ -30,23 +30,7 @@ def ask_openai(text: str, task: str) -> dict:
     logging.warning("Executing ask_openai")
     login_openai()
     loaded_parameters = load_parameters()
-    if task == "cancellation":
-        parameters = loaded_parameters["open_ai_parameters"]
-
-    if task == "change":
-        parameters = loaded_parameters["open_ai_parameters_change"]
-    if "manual" in task:
-        parameters = loaded_parameters["open_ai_parameters_change_manual"]
-
-    if task == "classification":
-        parameters = loaded_parameters["open_ai_parameters_classification"]
-
-    if task == "list":
-        parameters = loaded_parameters["open_ai_parameters_list"]
-    #TODO
-    if task == "flex":
-        parameters = loaded_parameters["open_ai_parameters_change"]
-
+    parameters = loaded_parameters["open_ai_parameters_change"]
     prompt = parameters["prompt"]
     prompt = f"{prompt}:\n\n{text}"
     response = openai.Completion.create(

@@ -1,12 +1,3 @@
-from Dominio.Servicios.load_parameter import load_parameters
-from Dominio.Servicios.sort_response import set_category, set_question
-from Dominio.Servicios.sort_dates import build_dates
-from Dominio.Servicios.clear_respond import format_text
-from Dominio.Servicios.extract_paragraph import extract
-from Dominio.Servicios import build_response
-from Dominio.Servicios.validators_respond import validate_date
-
-
 import azure.durable_functions as df
 import logging
 import os
@@ -15,6 +6,13 @@ import sys
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
+from Dominio.Servicios.load_parameter import load_parameters
+from Dominio.Servicios.sort_response import set_category, set_question
+from Dominio.Servicios.sort_dates import build_dates
+from Dominio.Servicios.clear_respond import format_text
+from Dominio.Servicios.extract_paragraph import extract
+from Dominio.Servicios import build_response
+from Dominio.Servicios.validators_respond import validate_date
 
 parameters = load_parameters()
 
@@ -32,25 +30,23 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     # TODO
     # formato de Charges para dinero
     task = parameters_dict["task"]
-    question_category_dict = join_question_category(parameters, parameters_dict)
-    logging.info("111")    
+    question_category_dict = join_question_category(
+        parameters, parameters_dict)
+    logging.info("111")
     quiz_text_and_question = question_category_dict["text"]
     logging.warning(quiz_text_and_question)
     logging.info("222")
     list_categories = parameters_dict["list_categories"]
     logging.info("333")
-    #TODO: list question no trae todas las preguntas.
-    list_question = count_questions(
-        parameters, list_categories, parameters_dict)
-    
 
-    
+    list_question = question_category_dict["questions_lite"]
+
     logging.info("444")
     number_questions = len(list_question)
     logging.info(number_questions)
     logging.warning(list_question)
     logging.info("555")
-    
+
     #LOG
     logging.info("list_question: " + str(list_question))
     logging.info("666")
@@ -60,7 +56,8 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         "number_questions": number_questions,
         "list_questions": list_question,
         #TODO
-        "task": "flex",
+        # "task": "flex",
+        "task": parameters_dict["task"],
         "list_categories": parameters_dict["list_categories"]
     }
 
@@ -70,24 +67,19 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     outputs = yield context.task_all([response_quiz])
     list_gpt_responses = outputs[0]
 
-    #TODO:
-    logging.error('DDDDDDDDDDDDDD')
-    logging.warning('len(list_gpt_responses): ' + str(len(list_gpt_responses)))
-    logging.warning(len(list_categories))
     if len(list_categories) < len(list_gpt_responses):
         logging.warning('len(list_categories) < len (list_gpt_responses)')
-        # resize list categories to list gpt responses, add repeat the list_categories[0]
         list_categories = list_categories * len(list_gpt_responses)
 
     set_category(list_gpt_responses, list_categories)
     list_to_format_dates = parameters["category_to_format_date"]
     list_to_days = parameters["category_to_days"]
 
-    # TODO: 
+    # TODO:
     # formatear charge
-    # cat 16 y 19
     # extraer del texto solo cancel, change
     # logica is refundable?
+    # que solo las categorias 19 tengan el numero 19
 
     list_free_text = []
     list_categories_unique = list(set(list_categories))
@@ -95,7 +87,7 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
         dict_category = {"category": category,
                          "text": parameters_dict["text_category_" + str(category)]}
         list_free_text.append(dict_category)
-    
+
     list_weeks = parameters["weeks"]
     set_data(list_gpt_responses, list_to_format_dates)
     set_days(list_gpt_responses, list_to_days, list_weeks)
@@ -104,13 +96,13 @@ def pipeline(context: df.DurableOrchestrationContext, parameters_dict: dict):
     numbers = list(range(1, number_questions + 1))
     for number in numbers:
         model_respond.append(list_gpt_responses["question_" + str(number)])
-    
+
     if task.upper() == "CHANGE":
         departure_date = parameters_dict["data_information"]["departureDate"]
         departure_date_response = build_date_response(
             departure_date, len(model_respond)+1)
         model_respond.append(departure_date_response)
-        
+
     data_respond = {
         "outputs": outputs,
         "parameters_dict": parameters_dict,
@@ -158,8 +150,10 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
             questions_lite_list = questions_lite.split("\n")
 
             text_category = category_dict[text]
+            # TODO: logica para extraer solo cancel, change
             if number == 16:
                 text_category = extract(text_category, task)
+            # TODO: loogica para crear preguntas de la categoria 19
             if number == 19:
                 child_list_questions = []
                 passenger_child = category_dict["data_information"]["passengerChild"]
@@ -168,7 +162,6 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
                 list_questions.extend(child_list_questions)
                 questions = ""
                 questions_lite_list_end.extend(child_list_questions)
-                # questions_lite = ""
 
             questions_lite_list_end.extend(questions_lite_list)
             title_category = category_dict[title]
@@ -194,25 +187,10 @@ def join_question_category(question_dict: dict, category_dict: dict) -> dict:
         "\n" * 2 + structure_fare_rules + "\n" * 2 + \
         "SOLUTION QUESTIONS 1 to {0}".format(len(questions_lite_list_end))
     questions_dict["questions_lite"] = questions_lite_list_end
-    questions_dict["len_questions_lite"] = len(questions_lite)
+    questions_dict["len_questions_lite"] = len(questions_lite_list_end)
     questions_dict["list_questions"] = list_questions
     questions_dict["len_list_questions"] = len(list_questions)
-    logging.error(">>>>>>>>>>>>>>>>>>")
-    logging.warning("questions_dict: " + str(questions_dict))
-    logging.warning("<<<<<<<<<<<<<<<<<<")
     return questions_dict
-
-
-def count_questions(parameters: dict, list_categories: list, parameters_dict: dict):
-    list_questions = []
-    task = parameters_dict["task"].lower()
-    key = "qlite_category_"
-    for categorie in list_categories:
-        text = parameters[key + str(categorie)][task]
-        list_split = text.split('\n')
-        list_split = list(filter(None, list_split))
-        list_questions.extend(list_split)
-    return list_questions
 
 
 def set_data(dict_question: dict, list_question_date: list):
@@ -239,8 +217,6 @@ def set_days(dict_question: dict, list_question_week: list, list_weeks: list):
     response = []
     for key, value in dict_question.items():
         if value["category"] in list_question_week:
-            logging.warning(value["category"])
-            logging.warning('^^^^^^^^^^')
             text_split = value["answer"][0].split(" ")
             for text in text_split:
                 if text in list_weeks:
@@ -260,38 +236,6 @@ def build_date_response(departure_date: str, number_question: int):
     )
     return respond
 
-def extract_paragraph(text: str) -> str:
-    logging.warning(len(text))
-    logging.error('zzzzzzzzzzzz')
-    if len(text) > 1500:
-        return text[:1500]
-    else:
-        return text
-    
-
-def text_segementation(
-        category: str,
-        word_to_search: str,
-        parameters: dict) -> str:
-    """
-    Split the text in a list of sentences.
-    Args:content: String
-    """
-    logging.warning("Executing Fuel Surcharge Extraction")
-    content = format_text(parameters[category], False)
-    positions = [i for i, word in enumerate(
-        content.split()) if word == word_to_search]
-    long_text = 20
-    list_paragraphs = []
-    for position in positions:
-        pre = content.split()[position: position - long_text:position]
-        words = content.split()[position: position + long_text]
-        paragraph = " ".join(pre + words)
-        list_paragraphs.append(paragraph)
-
-    full_text = " ".join(list_paragraphs)
-    return full_text
-
 
 def validate_category_and_questions(task: str, number_questions: list, question_dict: dict) -> list:
     """
@@ -299,7 +243,7 @@ def validate_category_and_questions(task: str, number_questions: list, question_
     Args: task: task of the question
     Returns: list of questions
     """
-    
+
     list_questions = []
     list_no_questions = []
     for number in number_questions:
@@ -324,11 +268,6 @@ def replace_data(question_fare_rules_nineteen: str, passenger_child: dict) -> li
     """
     list_questions = []
     for data in passenger_child:
-    
-        logging.warning("xxxxxxxxxxxxxxxxxxxxx")
-        logging.error(data)
-        logging.warning("xxxxxxxxxxxxxxxxxxxxx")
-
         age = str(data["age"])
         seat = data["seat"]
         accompanied = data["isAccompanied"]
@@ -349,8 +288,4 @@ def replace_data(question_fare_rules_nineteen: str, passenger_child: dict) -> li
         text_question = text_question.replace("#{SEAT}#", seat)
         text_question = text_question.replace("#{ACCOMPANIED}#", accompanied)
         list_questions.append(text_question)
-
-    logging.error('++++++++++++++++++++++++++++++')
-    logging.error(text_question)
-    logging.error('++++++++++++++++++++++++++++++')
     return list_questions

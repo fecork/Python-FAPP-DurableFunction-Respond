@@ -48,7 +48,7 @@ def task_change(parameters: dict) -> dict:
     Split the text in a list of sentences.
     Args:content: String with the text.
     """
-    logging.warning("Executing Change a Cancel Extraction")
+    logging.warning("Executing Change and Cancel Extraction")
     content = format_text(parameters["text_category_16"], False)
     paragraph = parameters["paragraph"]
     index_change = content.index("CHANGE")
