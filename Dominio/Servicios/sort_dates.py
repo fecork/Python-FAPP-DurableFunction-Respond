@@ -42,3 +42,34 @@ def search_date(date_str: str) -> list:
     date_str = re.sub(r"[^\w\s]", "", date_str)
     list_dates = re.findall(r"\d{2}[A-Z]{3}", date_str)
     return list_dates
+
+
+def set_date(dict_question: dict, list_question_date: list):
+    """
+    This functios is used to extract the dates in the questions
+    Args: list_question: list of questions
+    list_question_date: list of questions with dates
+    """
+    for key, value in dict_question.items():
+        if value["category"] in list_question_date:
+            if len(value["quote"]) > len(value["answer"][0]):
+                list_format_dates = build_dates(value["quote"])
+            else:
+                list_format_dates = build_dates(value["answer"][0])
+            value["value"] = list_format_dates
+
+
+def set_days(dict_question: dict, list_question_week: list, list_weeks: list):
+    """
+    This function is used to extract the weeks in the questions
+    Args: list_question: list of questions
+    list_question_week: list of questions with weeks
+    """
+    response = []
+    for key, value in dict_question.items():
+        if value["category"] in list_question_week:
+            text_split = value["answer"][0].split(" ")
+            for text in text_split:
+                if text in list_weeks:
+                    response.append(text)
+            value["value"] = response

@@ -81,28 +81,6 @@ def execute_clean_json(score, text: str, dict_parameter: dict) -> dict:
     return {"dict_response": other_response, "key_number": key_number}
 
 
-def set_number_question(
-        number_question_input: list,
-        number_question: int,
-        dict_response: dict,
-        list_questions: list
-        ) -> int:
-    """
-    function to set the number of the question
-    Args:
-        key_number: number of the question
-        number_question: number of the question
-    return:
-        number of the question
-    """
-    if number_question_input is not None:
-        number_question_input = extract_number(number_question_input)[0]
-        if int(number_question_input) < int(number_question) + 1:
-            key_number = int(number_question_input)
-            dict_response["question"] = list_questions[key_number - 1]
-            dict_response["numberQuestion"] = key_number
-
-
 def validate_charge_number(text: str) -> dict:
     """
     build a dictionary with the information about
@@ -135,20 +113,42 @@ def validate_charge_number(text: str) -> dict:
 
 
 def set_category(question_list: dict, category: list):
-    logging.error(question_list)
-    logging.warning(category)
-    logging.info('{{{{{{{{{')
     category_count = 0
     for key, value in question_list.items():
         value["category"] = category[category_count]
         category_count = category_count + 1
-        
 
-def set_question(question_dict:dict, list_categories:list):
-    #TODO
-    count_categories = 0
-    
-    for key, value in question_dict.items():
-        value["question"] = loaded_parameters["qlite_category_"+str(list_categories[count_categories])]
-        count_categories = count_categories + 1
-        logging.info(value)
+
+def replace_information_children(question_fare_rules_nineteen: str, passenger_child: dict) -> list:
+    """
+    This is a function for replace data to put in text
+    Args:
+        str (str): This is a string with the text to convert.
+        data (dict): This is a dictionary with the data to replace.
+    Returns:
+        str: This is a string with the text converted.
+
+    """
+    list_questions = []
+    for data in passenger_child:
+        age = str(data["age"])
+        seat = data["seat"]
+        accompanied = data["isAccompanied"]
+
+        if seat is True:
+            seat = "with a seat"
+        else:
+            seat = "without a seat"
+
+        if accompanied is True:
+            accompanied = "and accompanied"
+        else:
+            accompanied = ""
+        logging.info(age)
+        logging.info(seat)
+        logging.info(accompanied)
+        text_question = question_fare_rules_nineteen.replace("#{AGE}#", age)
+        text_question = text_question.replace("#{SEAT}#", seat)
+        text_question = text_question.replace("#{ACCOMPANIED}#", accompanied)
+        list_questions.append(text_question)
+    return list_questions

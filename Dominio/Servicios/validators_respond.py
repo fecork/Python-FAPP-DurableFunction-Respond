@@ -78,3 +78,22 @@ def clean_text(date_quote: str) -> str:
     date_quote = date_quote.replace("=", "")
     date_quote = date_quote.strip()
     return date_quote
+
+
+def validate_category_and_questions(task: str, number_questions: list, question_dict: dict) -> list:
+    """
+    This function is used to validate the category and the questions
+    Args: task: task of the question
+    Returns: list of questions
+    """
+
+    list_questions = []
+    list_no_questions = []
+    for number in number_questions:
+        if task in question_dict["question_category_" + str(number)].keys():
+            list_questions.append(number)
+        else:
+            list_no_questions.append(number)
+    logging.warning("Questions with category: " + str(list_questions))
+    logging.warning("Questions without category: " + str(list_no_questions))
+    return list_questions
